@@ -1,69 +1,34 @@
 import type { NextPage } from "next";
+import Layout from '../components/Layout/Index'
+import type { NextPageWithLayout } from './_app'
+import Link from 'next/link'
 import Head from "next/head";
-import { Tab } from "@headlessui/react";
 
-import FacebookCard from "../components/SocialCards/FacebookCard";
-import GoogleCard from "../components/SocialCards/GoogleCard";
-import TwitterCard from "../components/SocialCards/TwitterCard";
-import WhatsAppCard from "../components/SocialCards/WhatsAppCard";
-import LinkedinCard from "../components/SocialCards/LinkedinCard";
-import type { SocialCardProps } from "../components/SocialCards/ISocialCard";
+import React, { useEffect, useState } from "react";
 
-import { TextAreaInput, TextInput } from "../components/Inputs/Text";
-import { LabelInput } from "../components/Inputs/Label";
-import { ImageInput } from "../components/Inputs/Image";
-import React, { useState } from "react";
-
-import clsx from "clsx";
-
-
-function Preview({ socialCard }: { socialCard: SocialCardProps }) {
-
-  return (
-    <div>
-      <Tab.Group>
-        <Tab.List className="flex space-x-1 rounded-x p-1">
-        {["Cards", "Tags"].map((category) => (
-            <Tab
-              key={category}
-              className={({ selected }) =>
-                clsx(
-                  'w-full rounded-lg py-2.5 text-sm font-medium ring-offset-0 focus:outline-none',
-                  selected
-                    ? 'bg-white shadow text-emerald-500'
-                    : 'text-gray-500 hover:bg-white/[0.12] hover:text-emerald-500'
-                )
-              }
-            >
-              {category}
-            </Tab>
-        ))}
-        </Tab.List>
-        <Tab.Panels className="w-[510px] px-[5px] text-[14px]">
-          <Tab.Panel>
-            <GoogleCard socialCard={socialCard} />
-            <FacebookCard socialCard={socialCard} />
-            <TwitterCard socialCard={socialCard} />
-            <WhatsAppCard socialCard={socialCard} />
-            <LinkedinCard socialCard={socialCard} />
-          </Tab.Panel>
-          <Tab.Panel>Content 2</Tab.Panel>
-          <Tab.Panel>Content 3</Tab.Panel>
-        </Tab.Panels>
-      </Tab.Group>
-    </div>
-  );
+interface PageProps {
+  path: string;
+  id: string;
 }
 
-const Home: NextPage = () => {
-  const [socialCard, setSocialCard] = useState<SocialCardProps>({
-    title: "Facebook",
-    description:
-      "Facebook is a social networking service and website launched in February 2004, operated and privately owned by Facebook, Inc.",
-    image: "https://picsum.photos/200/300",
-    domain: "facebook.com",
-  });
-  const [url, setUrl] = useState<string>("/landing-page");
+const Home: NextPageWithLayout = () => {
+  const [pages, setPages] = useState<Array<PageProps>>([]);
+
+  function getPages() {
+    fetch("/api/pages", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => {
+      console.log(res);
+      setPages(await res.json());
+    });
+  }
+
+  useEffect(() => {
+    getPages();
+  }, []);
 
   return (
     <div className="">
@@ -74,65 +39,34 @@ const Home: NextPage = () => {
 
       <main className="p-3 mt-12">
         <div className="mb-12 px-36 flex justify-around">
-          <LabelInput label="URL" className="mb-2" />
-          <TextInput
-            className="ml-2 w-11/12"
-            name="url"
-            value={url}
-            onChange={(event) => setUrl(event.target.value)}
-          />
-          <button 
-            className='rounded-lg py-2.5 text-sm font-medium ring-offset-0 focus:outline-none bg-emerald-500 shadow text-white hover:bg-emerald-700 w-20 ml-12'
-          >
-            Save
-          </button>
-        </div>
-        <div className="flex justify-center">
-
-          <div className="px-8 w-full max-w-2xl">
-            <div className="mb-4">
-              <LabelInput label="Title" className="mb-2" />
-              <TextInput
-                className="ml-2 w-11/12"
-                name="title"
-                onChange={(event) =>
-                  setSocialCard({ ...socialCard, title: event.target.value })
-                }
-                value={socialCard.title}
-              />
-            </div>
-            <div className="mb-4">
-              <LabelInput label="Description" className="mb-2" />
-              <TextAreaInput
-                name="description"
-                className="ml-2 w-11/12"
-                onChange={(event) =>
-                  setSocialCard({
-                    ...socialCard,
-                    description: event.target.value,
-                  })
-                }
-                value={socialCard.description}
-              />
-            </div>
-            <div className="mb-4">
-              <LabelInput label="Image" className="mb-2" />
-              <ImageInput
-                image={socialCard.image}
-                className="ml-2 w-11/12"
-                onChange={(e) => {
-                  if (e.target.files !== null && e.target.files.length > 0) {
-                    const file = e.target.files[0];
-                    setSocialCard({
-                      ...socialCard,
-                      image: URL.createObjectURL(file),
-                    });
-                  }
-                }}
-              />
-            </div>
-          </div>
-          <Preview socialCard={socialCard} />
+        <Link href="/page">New Page</Link>
+        <ul role="list" className="divide-y divide-gray-200">
+        {pages.map((page) => (
+          <li key={page.id}>
+            <a href={`/pages/${page.id}`} className="block hover:bg-gray-50">
+              <div className="px-4 py-4 sm:px-6">
+                <div className="flex items-center justify-between">
+                  <p className="truncate text-sm font-medium text-emerald-500">{page.path}</p>
+                  <div className="ml-2 flex flex-shrink-0">
+                    <p className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-2 sm:flex sm:justify-between">
+                  <div className="sm:flex">
+                    <p className="flex items-center text-sm text-gray-500">
+                    </p>
+                  </div>
+                  <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                    <p>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
         </div>
       </main>
 
@@ -141,4 +75,5 @@ const Home: NextPage = () => {
   );
 };
 
+Home.getLayout = (page) => <Layout>{page}</Layout>;
 export default Home;
