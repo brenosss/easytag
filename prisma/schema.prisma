@@ -66,8 +66,11 @@ model VerificationToken {
 }
 
 model Page {
-  id        String   @id @default(cuid())
-  path      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  path        String
+  title       String?
+  image       String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

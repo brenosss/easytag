@@ -1,19 +1,19 @@
+import React, { useState, useEffect } from "react";
+import { useRouter } from 'next/router'
 import Head from "next/head";
 import { Tab } from "@headlessui/react";
-import Layout from '../components/Layout/Index'
-import type { NextPageWithLayout } from './_app'
+import type { NextPageWithLayout } from '../_app'
 
-import FacebookCard from "../components/SocialCards/FacebookCard";
-import GoogleCard from "../components/SocialCards/GoogleCard";
-import TwitterCard from "../components/SocialCards/TwitterCard";
-import WhatsAppCard from "../components/SocialCards/WhatsAppCard";
-import LinkedinCard from "../components/SocialCards/LinkedinCard";
-import type { SocialCardProps } from "../components/SocialCards/ISocialCard";
-
-import { TextAreaInput, TextInput } from "../components/Inputs/Text";
-import { LabelInput } from "../components/Inputs/Label";
-import { ImageInput } from "../components/Inputs/Image";
-import React, { useState } from "react";
+import FacebookCard from "../../components/SocialCards/FacebookCard";
+import GoogleCard from "../../components/SocialCards/GoogleCard";
+import TwitterCard from "../../components/SocialCards/TwitterCard";
+import WhatsAppCard from "../../components/SocialCards/WhatsAppCard";
+import LinkedinCard from "../../components/SocialCards/LinkedinCard";
+import type { SocialCardProps } from "../../components/SocialCards/ISocialCard";
+import Layout from '../../components/Layout/Index'
+import { TextAreaInput, TextInput } from "../../components/Inputs/Text";
+import { LabelInput } from "../../components/Inputs/Label";
+import { ImageInput } from "../../components/Inputs/Image";
 
 import clsx from "clsx";
 
@@ -49,7 +49,6 @@ function Preview({ socialCard }: { socialCard: SocialCardProps }) {
             <LinkedinCard socialCard={socialCard} />
           </Tab.Panel>
           <Tab.Panel>Content 2</Tab.Panel>
-          <Tab.Panel>Content 3</Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
     </div>
@@ -58,21 +57,35 @@ function Preview({ socialCard }: { socialCard: SocialCardProps }) {
 
 const PageDetail: NextPageWithLayout = () => {
   const [socialCard, setSocialCard] = useState<SocialCardProps>({
-    title: "Facebook",
-    description:
-      "Facebook is a social networking service and website launched in February 2004, operated and privately owned by Facebook, Inc.",
-    image: "https://picsum.photos/200/300",
+    title: "",
+    description: "",
+    image: "",
     domain: "facebook.com",
   });
   const [url, setUrl] = useState<string>();
+  const router = useRouter()
+  const { id } = router.query
 
-  function createPage(url: string) {
-    fetch("/api/pages", {
-      method: "POST",
+  useEffect(() => {
+    if (!id) return;
+    fetch(`/api/pages/${id}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ path: url }),
+    }).then((response) => response.json()
+    ).then((data) => {
+      setSocialCard(data)
+    })
+  }, [id]);
+
+  function editPage(url: string) {
+    fetch(`/api/pages/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ path: url, title: socialCard.title, description: socialCard.description, image: socialCard.image }),
     })
   }
 

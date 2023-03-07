@@ -1,8 +1,8 @@
-import Layout from '../components/Layout/Index';
-import { CheckCircleIcon, ChevronRightIcon, EnvelopeIcon } from '@heroicons/react/20/solid';
+import { CheckCircleIcon, ChevronRightIcon, MegaphoneIcon } from '@heroicons/react/20/solid';
 import type { NextPageWithLayout } from './_app';
-import Link from 'next/link';
 import Head from "next/head";
+
+import Layout from '../components/Layout/Index';
 import { TextInput } from "../components/Inputs/Text";
 import { LabelInput } from "../components/Inputs/Label";
 import { PrimaryLink } from "../components/Buttons/Links";
@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 interface PageProps {
   path: string;
   id: string;
+  description?: string;
 }
 
 
@@ -21,16 +22,19 @@ const PageList = ({ pages }: {pages: PageProps[]} ) => {
       <ul role="list" className="divide-y divide-gray-200">
         {pages.map((page) => (
           <li key={page.id}>
-            <a href={page.id} className="block hover:bg-gray-50">
+            <a href={`page/${page.id}`} className="block hover:bg-gray-50">
               <div className="flex items-center px-4 py-4 sm:px-6">
                 <div className="flex min-w-0 flex-1 items-center">
                   <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
                     <div>
                       <p className="truncate text-sm font-medium text-emerald-500">{page.path}</p>
-                      <p className="mt-2 flex items-center text-sm text-gray-500">
-                        <EnvelopeIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                        <span className="truncate">{page.path}</span>
-                      </p>
+                      {!!page.description && 
+                        <p className="mt-2 flex items-center text-sm text-gray-500">
+                          <MegaphoneIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                          <span className="truncate">{page.description}</span>
+                        </p>
+                      }
+                      {!page.description && <div className="mr-1.5 h-5 w-5" />}
                     </div>
                     <div className="hidden md:block">
                       <div>

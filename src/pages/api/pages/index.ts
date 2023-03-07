@@ -1,6 +1,6 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
 
-import { prisma } from "../../server/db/client";
+import { prisma } from "../../../server/db/client";
 
 
 async function get(req: NextApiRequest, res: NextApiResponse): Promise<void> {
@@ -12,6 +12,9 @@ async function post(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const page = await prisma.page.create({
     data: {
       path: req.body.path,
+      title: req.body.title,
+      description: req.body.description,
+      image: req.body.image,
     }
   });
   res.status(200).json(page);
