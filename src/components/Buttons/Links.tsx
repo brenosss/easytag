@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
-const a = 'rounded-lg py-2.5 text-sm font-medium ring-offset-0 focus:outline-none bg-emerald-500 shadow text-white hover:bg-emerald-700 w-20 ml-12'
+const className = 'rounded-lg py-2.5 px-4 text-sm font-medium ring-offset-0 focus:outline-none bg-emerald-500 shadow text-white hover:bg-emerald-700'
 
-export function PrimaryLink({ href, text }) {
-    return <Link href=""> </Link>
+export function PrimaryLink({ href, children }) {
+    return <Link href={href} className={className}> {children} </Link>
 }

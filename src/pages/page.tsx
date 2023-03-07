@@ -1,6 +1,7 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import { Tab } from "@headlessui/react";
+import Layout from '../components/Layout/Index'
+import type { NextPageWithLayout } from './_app'
 
 import FacebookCard from "../components/SocialCards/FacebookCard";
 import GoogleCard from "../components/SocialCards/GoogleCard";
@@ -55,7 +56,7 @@ function Preview({ socialCard }: { socialCard: SocialCardProps }) {
   );
 }
 
-const Home: NextPage = () => {
+const PageDetail: NextPageWithLayout = () => {
   const [socialCard, setSocialCard] = useState<SocialCardProps>({
     title: "Facebook",
     description:
@@ -63,7 +64,7 @@ const Home: NextPage = () => {
     image: "https://picsum.photos/200/300",
     domain: "facebook.com",
   });
-  const [url, setUrl] = useState<string>("/landing-page");
+  const [url, setUrl] = useState<string>();
 
   function createPage(url: string) {
     fetch("/api/pages", {
@@ -152,4 +153,5 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+PageDetail.getLayout = (page) => <Layout>{page}</Layout>;
+export default PageDetail;

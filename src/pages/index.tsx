@@ -1,8 +1,11 @@
-import type { NextPage } from "next";
-import Layout from '../components/Layout/Index'
-import type { NextPageWithLayout } from './_app'
-import Link from 'next/link'
+import Layout from '../components/Layout/Index';
+import { CheckCircleIcon, ChevronRightIcon, EnvelopeIcon } from '@heroicons/react/20/solid';
+import type { NextPageWithLayout } from './_app';
+import Link from 'next/link';
 import Head from "next/head";
+import { TextInput } from "../components/Inputs/Text";
+import { LabelInput } from "../components/Inputs/Label";
+import { PrimaryLink } from "../components/Buttons/Links";
 
 import React, { useEffect, useState } from "react";
 
@@ -11,8 +14,49 @@ interface PageProps {
   id: string;
 }
 
+
+const PageList = ({ pages }: {pages: PageProps[]} ) => {
+  return (
+    <div className="overflow-hidden bg-white shadow sm:rounded-md">
+      <ul role="list" className="divide-y divide-gray-200">
+        {pages.map((page) => (
+          <li key={page.id}>
+            <a href={page.id} className="block hover:bg-gray-50">
+              <div className="flex items-center px-4 py-4 sm:px-6">
+                <div className="flex min-w-0 flex-1 items-center">
+                  <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
+                    <div>
+                      <p className="truncate text-sm font-medium text-emerald-500">{page.path}</p>
+                      <p className="mt-2 flex items-center text-sm text-gray-500">
+                        <EnvelopeIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                        <span className="truncate">{page.path}</span>
+                      </p>
+                    </div>
+                    <div className="hidden md:block">
+                      <div>
+                        <p className="mt-2 flex items-center text-sm text-gray-500">
+                          <CheckCircleIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-green-400" aria-hidden="true" />
+                          { "This page is complete"/*application.stage*/ }
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <ChevronRightIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                </div>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 const Home: NextPageWithLayout = () => {
   const [pages, setPages] = useState<Array<PageProps>>([]);
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
 
   function getPages() {
     fetch("/api/pages", {
@@ -38,35 +82,20 @@ const Home: NextPageWithLayout = () => {
       </Head>
 
       <main className="p-3 mt-12">
-        <div className="mb-12 px-36 flex justify-around">
-        <Link href="/page">New Page</Link>
-        <ul role="list" className="divide-y divide-gray-200">
-        {pages.map((page) => (
-          <li key={page.id}>
-            <a href={`/pages/${page.id}`} className="block hover:bg-gray-50">
-              <div className="px-4 py-4 sm:px-6">
-                <div className="flex items-center justify-between">
-                  <p className="truncate text-sm font-medium text-emerald-500">{page.path}</p>
-                  <div className="ml-2 flex flex-shrink-0">
-                    <p className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-2 sm:flex sm:justify-between">
-                  <div className="sm:flex">
-                    <p className="flex items-center text-sm text-gray-500">
-                    </p>
-                  </div>
-                  <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                    <p>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </li>
-        ))}
-      </ul>
+        <div className="mb-12 px-36 flex flex-col justify-around">
+          <div className="flex justify-between mb-6">
+            <div className="flex w-50">
+              <LabelInput label="Search" className="mb-2" />
+              <TextInput
+                className="ml-2 w-11/12"
+                name="search"
+                onChange={(event) => setSearchKeyword(event.target.value) }
+                value={searchKeyword}
+              />
+            </div>
+            <PrimaryLink href="/page">New Page</PrimaryLink>
+          </div>
+        <PageList pages={pages} />
         </div>
       </main>
 

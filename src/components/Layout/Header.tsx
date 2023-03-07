@@ -1,6 +1,5 @@
 const navigation = [
-  { name: "Thumbnails", href: "#" },
-  { name: "Tags", href: "#" },
+  { name: "Pages", href: "/" },
   { name: "Settings", href: "#" },
 ];
 
