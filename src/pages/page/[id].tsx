@@ -75,11 +75,12 @@ const PageDetail: NextPageWithLayout = () => {
       },
     }).then((response) => response.json()
     ).then((data) => {
+      setUrl(data.path)
       setSocialCard(data)
     })
   }, [id]);
 
-  function editPage(url: string) {
+  function editPage() {
     fetch(`/api/pages/${id}`, {
       method: "PATCH",
       headers: {
@@ -107,7 +108,7 @@ const PageDetail: NextPageWithLayout = () => {
           />
           <button 
             className='rounded-lg py-2.5 text-sm font-medium ring-offset-0 focus:outline-none bg-emerald-500 shadow text-white hover:bg-emerald-700 w-20 ml-12'
-            onClick={() => {createPage(url)}}
+            onClick={() => {editPage()}}
           >
             Save
           </button>
