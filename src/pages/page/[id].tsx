@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import Head from "next/head";
 import { Tab } from "@headlessui/react";
-import type { NextPageWithLayout } from '../_app'
+import type { NextPageWithLayout } from "../_app";
 
 import FacebookCard from "../../components/SocialCards/FacebookCard";
 import GoogleCard from "../../components/SocialCards/GoogleCard";
@@ -10,35 +10,33 @@ import TwitterCard from "../../components/SocialCards/TwitterCard";
 import WhatsAppCard from "../../components/SocialCards/WhatsAppCard";
 import LinkedinCard from "../../components/SocialCards/LinkedinCard";
 import type { SocialCardProps } from "../../components/SocialCards/ISocialCard";
-import Layout from '../../components/Layout/Index'
+import Layout from "../../components/Layout/Index";
 import { TextAreaInput, TextInput } from "../../components/Inputs/Text";
 import { LabelInput } from "../../components/Inputs/Label";
 import { ImageInput } from "../../components/Inputs/Image";
 
 import clsx from "clsx";
 
-
 function Preview({ socialCard }: { socialCard: SocialCardProps }) {
-
   return (
     <div>
       <Tab.Group>
-        <Tab.List className="flex space-x-1 rounded-x p-1">
-        {["Cards", "Tags"].map((category) => (
+        <Tab.List className="rounded-x flex space-x-1 p-1">
+          {["Cards", "Tags"].map((category) => (
             <Tab
               key={category}
               className={({ selected }) =>
                 clsx(
-                  'w-full rounded-lg py-2.5 text-sm font-medium ring-offset-0 focus:outline-none',
+                  "w-full rounded-lg py-2.5 text-sm font-medium ring-offset-0 focus:outline-none",
                   selected
-                    ? 'bg-white shadow text-emerald-500'
-                    : 'text-gray-500 hover:bg-white/[0.12] hover:text-emerald-500'
+                    ? "bg-white text-emerald-500 shadow"
+                    : "text-gray-500 hover:bg-white/[0.12] hover:text-emerald-500"
                 )
               }
             >
               {category}
             </Tab>
-        ))}
+          ))}
         </Tab.List>
         <Tab.Panels className="w-[510px] px-[5px] text-[14px]">
           <Tab.Panel>
@@ -63,8 +61,8 @@ const PageDetail: NextPageWithLayout = () => {
     domain: "facebook.com",
   });
   const [url, setUrl] = useState<string>();
-  const router = useRouter()
-  const { id } = router.query
+  const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
     if (!id) return;
@@ -73,11 +71,12 @@ const PageDetail: NextPageWithLayout = () => {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((response) => response.json()
-    ).then((data) => {
-      setUrl(data.path)
-      setSocialCard(data)
     })
+      .then((response) => response.json())
+      .then((data) => {
+        setUrl(data.path);
+        setSocialCard(data);
+      });
   }, [id]);
 
   function editPage() {
@@ -86,8 +85,13 @@ const PageDetail: NextPageWithLayout = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ path: url, title: socialCard.title, description: socialCard.description, image: socialCard.image }),
-    })
+      body: JSON.stringify({
+        path: url,
+        title: socialCard.title,
+        description: socialCard.description,
+        image: socialCard.image,
+      }),
+    });
   }
 
   return (
@@ -97,8 +101,8 @@ const PageDetail: NextPageWithLayout = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="p-3 mt-12">
-        <div className="mb-12 px-36 flex justify-around">
+      <main className="mt-12 p-3">
+        <div className="mb-12 flex justify-around px-36">
           <LabelInput label="URL" className="mb-2" />
           <TextInput
             className="ml-2 w-11/12"
@@ -106,16 +110,17 @@ const PageDetail: NextPageWithLayout = () => {
             value={url}
             onChange={(event) => setUrl(event.target.value)}
           />
-          <button 
-            className='rounded-lg py-2.5 text-sm font-medium ring-offset-0 focus:outline-none bg-emerald-500 shadow text-white hover:bg-emerald-700 w-20 ml-12'
-            onClick={() => {editPage()}}
+          <button
+            className="ml-12 w-20 rounded-lg bg-emerald-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-700 focus:outline-none"
+            onClick={() => {
+              editPage();
+            }}
           >
             Save
           </button>
         </div>
         <div className="flex justify-center">
-
-          <div className="px-8 w-full max-w-2xl">
+          <div className="w-full max-w-2xl px-8">
             <div className="mb-4">
               <LabelInput label="Title" className="mb-2" />
               <TextInput
@@ -168,4 +173,5 @@ const PageDetail: NextPageWithLayout = () => {
 };
 
 PageDetail.getLayout = (page) => <Layout>{page}</Layout>;
+PageDetail.auth = true;
 export default PageDetail;
