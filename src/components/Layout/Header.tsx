@@ -38,7 +38,9 @@ export default function Header() {
             {session.status === "authenticated" ? (
               <button
                 onClick={() => {
-                  signOut();
+                  signOut({
+                    callbackUrl: "http://localhost:3000",
+                  });
                 }}
                 className="inline-block rounded-md border border-transparent bg-white py-2 px-4 text-base font-medium text-emerald-600 hover:bg-emerald-50"
               >
