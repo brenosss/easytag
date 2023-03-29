@@ -150,7 +150,7 @@ const Landing = () => {
                 <span className="sr-only">Your Company</span>
                 <img
                   className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=emerald&shade=600"
                   alt=""
                 />
               </a>
@@ -198,7 +198,7 @@ const Landing = () => {
                   <span className="sr-only">Your Company</span>
                   <img
                     className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                    src="https://tailwindui.com/img/logos/mark.svg?color=emerald&shade=600"
                     alt=""
                   />
                 </a>
@@ -280,7 +280,7 @@ const Landing = () => {
                   <div className="mt-10 flex items-center justify-center gap-x-6">
                     <a
                       href="#"
-                      className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="rounded-md bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
                     >
                       Get started
                     </a>
@@ -377,7 +377,7 @@ const Landing = () => {
                   Transistor saves up to $40,000 per year, per employee by
                   working with us.
                 </span>
-                <a href="#" className="font-semibold text-indigo-600">
+                <a href="#" className="font-semibold text-emerald-600">
                   <span className="absolute inset-0" aria-hidden="true" /> Read
                   our case study <span aria-hidden="true">&rarr;</span>
                 </a>
@@ -388,7 +388,7 @@ const Landing = () => {
           {/* Feature section */}
           <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
             <div className="mx-auto max-w-2xl lg:text-center">
-              <h2 className="text-base font-semibold leading-7 text-indigo-600">
+              <h2 className="text-base font-semibold leading-7 text-emerald-600">
                 Deploy faster
               </h2>
               <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -405,7 +405,7 @@ const Landing = () => {
                 {features.map((feature) => (
                   <div key={feature.name} className="relative pl-16">
                     <dt className="text-base font-semibold leading-7 text-gray-900">
-                      <div className="absolute top-0 left-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                      <div className="absolute top-0 left-0 flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600">
                         <feature.icon
                           className="h-6 w-6 text-white"
                           aria-hidden="true"
@@ -495,7 +495,7 @@ const Landing = () => {
           <div className="py-24 sm:pt-48">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
               <div className="mx-auto max-w-4xl text-center">
-                <h2 className="text-base font-semibold leading-7 text-indigo-600">
+                <h2 className="text-base font-semibold leading-7 text-emerald-600">
                   Pricing
                 </h2>
                 <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
@@ -526,7 +526,7 @@ const Landing = () => {
                           id={tier.id}
                           className={classNames(
                             tier.mostPopular
-                              ? "text-indigo-600"
+                              ? "text-emerald-600"
                               : "text-gray-900",
                             "text-lg font-semibold leading-8"
                           )}
@@ -534,7 +534,7 @@ const Landing = () => {
                           {tier.name}
                         </h3>
                         {tier.mostPopular ? (
-                          <p className="rounded-full bg-indigo-600/10 py-1 px-2.5 text-xs font-semibold leading-5 text-indigo-600">
+                          <p className="rounded-full bg-emerald-600/10 py-1 px-2.5 text-xs font-semibold leading-5 text-emerald-600">
                             Most popular
                           </p>
                         ) : null}
@@ -557,7 +557,7 @@ const Landing = () => {
                         {tier.features.map((feature) => (
                           <li key={feature} className="flex gap-x-3">
                             <CheckIcon
-                              className="h-6 w-5 flex-none text-indigo-600"
+                              className="h-6 w-5 flex-none text-emerald-600"
                               aria-hidden="true"
                             />
                             {feature}
@@ -570,9 +570,9 @@ const Landing = () => {
                       aria-describedby={tier.id}
                       className={classNames(
                         tier.mostPopular
-                          ? "bg-indigo-600 text-white shadow-sm hover:bg-indigo-500"
-                          : "text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300",
-                        "mt-8 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          ? "bg-emerald-600 text-white shadow-sm hover:bg-emerald-500"
+                          : "text-emerald-600 ring-1 ring-inset ring-emerald-200 hover:ring-emerald-300",
+                        "mt-8 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
                       )}
                     >
                       Buy plan
@@ -648,7 +648,7 @@ const Landing = () => {
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
                   href="#"
-                  className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="rounded-md bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
                 >
                   Get started
                 </a>
@@ -701,7 +701,7 @@ const Landing = () => {
             <div className="xl:grid xl:grid-cols-3 xl:gap-8">
               <img
                 className="h-7"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                src="https://tailwindui.com/img/logos/mark.svg?color=emerald&shade=600"
                 alt="Company name"
               />
               <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
