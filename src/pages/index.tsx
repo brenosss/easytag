@@ -1,26 +1,32 @@
 import Head from "next/head";
-import type { NextPageWithLayout } from "./_app";
+import { type NextPageWithLayout } from "./_app";
 
-import { useSession } from "next-auth/react";
 import Landing from "../components/Landing/Index";
-import Home from "../components/Home/Index";
+import { type GetServerSideProps } from "next";
+import { getServerAuthSession } from "../server/common/get-server-auth-session";
 
-const StartPage: NextPageWithLayout = () => {
-  const session = useSession();
+const LandingPage: NextPageWithLayout = () => {
   return (
     <>
       <Head>
         <title>EasyTag</title>
       </Head>
-      {session.status === "authenticated" ? (
-        <Home />
-      ) : session.status === "loading" ? (
-        <>Loading...</>
-      ) : (
-        <Landing />
-      )}
+      <Landing />
     </>
   );
 };
 
-export default StartPage;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req, res } = context;
+  const session = await getServerAuthSession({ req, res });
+
+  if (session) {
+    return { redirect: { destination: "/projects" } };
+  }
+
+  return {
+    props: {},
+  };
+};
+
+export default LandingPage;
