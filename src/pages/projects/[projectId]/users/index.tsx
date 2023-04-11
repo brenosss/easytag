@@ -1,17 +1,35 @@
-import type { UsersInProjects, User } from "@prisma/client";
+import type { User, UsersInProjects } from "@prisma/client";
 import { getCookie } from "cookies-next";
-import { type GetServerSideProps } from "next";
 import Head from "next/head";
-import { PrimaryLink } from "../../../components/Buttons/Links";
-import Layout from "../../../components/Layout/Index";
-import { type NextPageWithLayout } from "../../_app";
+import { useEffect, useState } from "react";
+import { PrimaryLink } from "../../../../components/Buttons/Links";
+import Layout from "../../../../components/Layout/Index";
+import { type NextPageWithLayout } from "../../../_app";
 
-const UsersInProjectPage: NextPageWithLayout = ({
-  usersInProject,
-}: {
-  usersInProject: UsersInProjects & { user: User }[];
-}) => {
+const UsersInProjectPage: NextPageWithLayout = () => {
   const projectId = getCookie("projectId");
+  const [usersInProject, setUsersInProject] = useState<UsersInProjects & { user: User }[]>([]);
+
+  async function getUsersInProject() {
+    const usersInProjectsResponse = await fetch(
+      `/api/projects/${projectId}/users`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const usersInProject = await usersInProjectsResponse.json();
+    setUsersInProject(usersInProject)
+  }
+
+  useEffect(() => {
+    (async () => {
+      await getUsersInProject();
+    })();
+  }, []);
+
   return (
     <>
       <Head>
@@ -19,7 +37,7 @@ const UsersInProjectPage: NextPageWithLayout = ({
       </Head>
       <div className="mx-auto max-w-lg p-5">
         <PrimaryLink
-          href={{ pathname: "/[projectId]/users/invite", query: { projectId } }}
+          href={{ pathname: "/projects/[projectId]/users/invite", query: { projectId } }}
         >
           Invite a new user
         </PrimaryLink>
@@ -44,26 +62,5 @@ const UsersInProjectPage: NextPageWithLayout = ({
 
 UsersInProjectPage.auth = true;
 UsersInProjectPage.getLayout = (page) => <Layout>{page}</Layout>;
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context;
-  const { projectId } = req.cookies;
-
-  const usersInProjectsResponse = await fetch(
-    `http://localhost:3000/api/projects/${projectId}/users`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        ...req.headers,
-      },
-    }
-  );
-
-  const usersInProject = await usersInProjectsResponse.json();
-  return {
-    props: { usersInProject },
-  };
-};
 
 export default UsersInProjectPage;

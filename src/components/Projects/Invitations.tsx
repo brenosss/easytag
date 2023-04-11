@@ -24,7 +24,7 @@ const Invitations = () => {
 
   async function acceptInvite(invitation: Project) {
     await fetch(
-      `http://localhost:3000/api/projects/${invitation.id}/users/${session?.data?.user?.id}`,
+      `/api/projects/${invitation.id}/users/${session?.data?.user?.id}`,
       {
         method: "PATCH",
         headers: {

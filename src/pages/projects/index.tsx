@@ -1,9 +1,9 @@
 import { getCookie, setCookie } from "cookies-next";
-import { type GetServerSideProps } from "next";
 import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 interface Project {
   id: string;
@@ -11,14 +11,29 @@ interface Project {
   description: string;
 }
 
-const Projects = ({ projects }: { projects: Project[] }) => {
+const Projects = () => {
   const router = useRouter();
   const session = useSession();
+
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  async function getProjects() {
+    const projectsResponse = await fetch("/api/projects", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (projectsResponse.status === 200) {
+      const projectsData = await projectsResponse.json();
+      return projectsData.length === 0 ? await router.push("/projects/create") : setProjects(projectsData);
+    }
+  }
 
   async function selectProject(project: Project) {
     setCookie("projectId", project.id);
     await router.push({
-      pathname: "/[projectId]/pages",
+      pathname: "/projects/[projectId]/pages",
       query: { projectId: project.id },
     });
   }
@@ -29,6 +44,12 @@ const Projects = ({ projects }: { projects: Project[] }) => {
     });
     router.reload();
   }
+
+  useEffect(() => {
+    (async () => {
+      await getProjects();
+    })();
+  }, []);
 
   return (
     <>
@@ -41,7 +62,7 @@ const Projects = ({ projects }: { projects: Project[] }) => {
             <Link
               className="rounded bg-emerald-600 py-1.5 px-2 text-sm font-bold text-white"
               href={{
-                pathname: "/[projectId]/pages",
+                pathname: "/projects/[projectId]/pages",
                 query: { projectId: getCookie("projectId") },
               }}
             >
@@ -50,7 +71,7 @@ const Projects = ({ projects }: { projects: Project[] }) => {
           )}
           <button
             type="button"
-            onClick={() => signOut({ callbackUrl: "http://localhost:3000" })}
+            onClick={() => signOut({ callbackUrl: process.env.NEXT_PUBLIC_FRONTEND_URL })}
             className="rounded bg-emerald-600 py-1.5 px-2 text-sm font-bold text-white"
           >
             Sign out
@@ -131,22 +152,6 @@ const Projects = ({ projects }: { projects: Project[] }) => {
       </div>
     </>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const projectsResponse = await fetch("http://localhost:3000/api/projects", {
-    method: "GET",
-    headers: { "Content-Type": "application/json", ...context.req.headers },
-  });
-  const projects = await projectsResponse.json();
-  if (projects.length === 0) {
-    return {
-      redirect: { destination: "/projects/create", permanent: false },
-    };
-  }
-  return {
-    props: { projects },
-  };
 };
 
 Projects.auth = true;

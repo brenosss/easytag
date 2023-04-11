@@ -1,8 +1,8 @@
 import { getCookie } from "cookies-next";
 import Head from "next/head";
 import { useState } from "react";
-import Layout from "../../../components/Layout/Index";
-import { type NextPageWithLayout } from "../../_app";
+import Layout from "../../../../components/Layout/Index";
+import { type NextPageWithLayout } from "../../../_app";
 
 const InviteUser: NextPageWithLayout = () => {
   const [email, setEmail] = useState("");

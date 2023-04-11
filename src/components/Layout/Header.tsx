@@ -20,7 +20,7 @@ export default function Header() {
           <div className="flex items-center">
             <Link
               href={{
-                pathname: "/[projectId]/pages",
+                pathname: "/projects/[projectId]/pages",
                 query: { projectId },
               }}
             >
@@ -35,7 +35,7 @@ export default function Header() {
               <Link
                 className="text-base font-medium text-white hover:text-emerald-50"
                 href={{
-                  pathname: "/[projectId]/pages",
+                  pathname: "/projects/[projectId]/pages",
                   query: { projectId },
                 }}
               >
@@ -57,7 +57,7 @@ export default function Header() {
               <button
                 onClick={() => {
                   signOut({
-                    callbackUrl: "http://localhost:3000",
+                    callbackUrl: process.env.NEXT_PUBLIC_FRONTEND_URL,
                   });
                   removeCookies("projectId");
                 }}
@@ -74,7 +74,7 @@ export default function Header() {
               </Link>
             )}
             <Link
-              href={{ pathname: "/[projectId]/users", query: { projectId } }}
+              href={{ pathname: "/projects/[projectId]/users", query: { projectId } }}
               className="inline-block rounded-md border border-transparent bg-white py-2 px-4 text-base font-medium text-emerald-600 hover:bg-emerald-50"
             >
               Users on project

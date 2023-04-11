@@ -7,7 +7,7 @@ import { type SocialCardProps } from "./SocialCards/ISocialCard";
 
 interface PageFormProps {
   socialCard: SocialCardProps;
-  setSocialCard: Dispatch<SetStateAction<SocialCardProps>>;
+  setSocialCard: Dispatch<SetStateAction<SocialCardProps | undefined>>;
   url: string;
   setUrl: Dispatch<SetStateAction<string>>;
   submitFunction: (event: React.FormEvent) => void;

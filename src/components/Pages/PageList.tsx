@@ -14,7 +14,7 @@ const PageList = ({ pages }: { pages: Page[] }) => {
           <Link
             key={page.id}
             href={{
-              pathname: "/[projectId]/pages/[pageId]",
+              pathname: "/projects/[projectId]/pages/[pageId]",
               query: { projectId: page.projectId, pageId: page.id },
             }}
             className="block hover:bg-gray-50"

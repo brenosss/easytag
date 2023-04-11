@@ -40,7 +40,7 @@ const CreateProject = () => {
               <button
                 type="button"
                 onClick={() =>
-                  signOut({ callbackUrl: "http://localhost:3000" })
+                  signOut({ callbackUrl: process.env.NEXT_PUBLIC_FRONTEND_URL })
                 }
                 className="rounded bg-emerald-600 py-1.5 px-2 text-sm font-bold text-white"
               >

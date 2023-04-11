@@ -2,14 +2,14 @@ import { getCookie } from "cookies-next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Layout from "../../../components/Layout/Index";
-import PageForm from "../../../components/Pages/PageForm";
-import type { SocialCardProps } from "../../../components/Pages/SocialCards/ISocialCard";
-import type { NextPageWithLayout } from "../../_app";
+import Layout from "../../../../components/Layout/Index";
+import PageForm from "../../../../components/Pages/PageForm";
+import type { SocialCardProps } from "../../../../components/Pages/SocialCards/ISocialCard";
+import type { NextPageWithLayout } from "../../../_app";
 
 const CreatePage: NextPageWithLayout = () => {
   const router = useRouter();
-  const [socialCard, setSocialCard] = useState<SocialCardProps>({
+  const [socialCard, setSocialCard] = useState<SocialCardProps | undefined>({
     title: "Facebook",
     description:
       "Facebook is a social networking service and website launched in February 2004, operated and privately owned by Facebook, Inc.",
@@ -18,9 +18,12 @@ const CreatePage: NextPageWithLayout = () => {
   });
   const [url, setUrl] = useState("https://facebook.com");
 
+  const projectId = getCookie("projectId");
+
   async function createPage(event: React.FormEvent) {
     event.preventDefault();
-    await fetch("/api/pages", {
+    if (!socialCard || !url) return;
+    await fetch(`/api/projects/${projectId}/pages`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,8 +37,8 @@ const CreatePage: NextPageWithLayout = () => {
       }),
     });
     await router.push({
-      pathname: "/[projectId]/pages",
-      query: { projectId: getCookie("projectId") },
+      pathname: "/projects/[projectId]/pages",
+      query: { projectId },
     });
   }
 
@@ -45,13 +48,15 @@ const CreatePage: NextPageWithLayout = () => {
         <title>New page</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <PageForm
-        socialCard={socialCard}
-        setSocialCard={setSocialCard}
-        url={url}
-        setUrl={setUrl}
-        submitFunction={createPage}
-      />
+      {socialCard &&
+        <PageForm
+          socialCard={socialCard}
+          setSocialCard={setSocialCard}
+          url={url}
+          setUrl={setUrl}
+          submitFunction={createPage}
+        />
+      }
     </>
   );
 };
