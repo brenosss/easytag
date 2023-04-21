@@ -12,6 +12,15 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 
+const GradientUnits = () => {
+  return (
+    <>
+      <stop stopColor="#10b998" />
+      <stop offset={1} stopColor="#10b951" />
+    </>
+  )
+};
+
 const Landing = () => {
   const navigation = [
     { name: "Product", href: "#" },
@@ -260,8 +269,7 @@ const Landing = () => {
                     y2="474.645"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stopColor="#9089FC" />
-                    <stop offset={1} stopColor="#FF80B5" />
+                    <GradientUnits />
                   </linearGradient>
                 </defs>
               </svg>
@@ -324,8 +332,7 @@ const Landing = () => {
                     y2="474.645"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stopColor="#9089FC" />
-                    <stop offset={1} stopColor="#FF80B5" />
+                    <GradientUnits />
                   </linearGradient>
                 </defs>
               </svg>
@@ -629,8 +636,7 @@ const Landing = () => {
                     y2="-7.05"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stopColor="#9089FC" />
-                    <stop offset={1} stopColor="#FF80B5" />
+                    <GradientUnits />
                   </linearGradient>
                 </defs>
               </svg>
@@ -680,8 +686,7 @@ const Landing = () => {
                     y2="474.645"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stopColor="#9089FC" />
-                    <stop offset={1} stopColor="#FF80B5" />
+                    <GradientUnits />
                   </linearGradient>
                 </defs>
               </svg>

@@ -1,10 +1,12 @@
-import { signOut } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, type FormEvent } from "react";
 
-const CreateProject = () => {
+import Layout from "../../components/Layout/Index";
+import { type NextPageWithLayout } from "../_app";
+
+const CreateProject: NextPageWithLayout = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -37,15 +39,6 @@ const CreateProject = () => {
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="flex justify-between text-base font-semibold leading-7 text-gray-900">
               New project
-              <button
-                type="button"
-                onClick={() =>
-                  signOut({ callbackUrl: process.env.NEXT_PUBLIC_FRONTEND_URL })
-                }
-                className="rounded bg-emerald-600 py-1.5 px-2 text-sm font-bold text-white"
-              >
-                Sign out
-              </button>
             </h2>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -112,6 +105,9 @@ const CreateProject = () => {
     </>
   );
 };
+
+CreateProject.auth = true;
+CreateProject.getLayout = (page) => <Layout>{page}</Layout>;
 
 CreateProject.auth = true;
 export default CreateProject;

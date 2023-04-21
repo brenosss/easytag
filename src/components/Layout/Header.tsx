@@ -3,15 +3,19 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import Invitations from "../Projects/Invitations";
 
-const navigation = [
-  { name: "Settings", href: "#" },
-  { name: "Projects", href: "/projects" },
-];
 
 export default function Header() {
   const session = useSession();
 
   const projectId = getCookie("projectId");
+
+  const navigation = [
+    { name: "Pages", href: "/projects/[projectId]/pages", query: { projectId } },
+    { name: "Projects", href: "/projects" },
+    { name: "Users", href: "/projects/[projectId]/users", query: { projectId } },
+    { name: "Settings", href: "/settings" },
+  ];
+
 
   return (
     <header className="bg-emerald-600">
@@ -32,19 +36,13 @@ export default function Header() {
               />
             </Link>
             <div className="ml-10 hidden space-x-8 lg:block">
-              <Link
-                className="text-base font-medium text-white hover:text-emerald-50"
-                href={{
-                  pathname: "/projects/[projectId]/pages",
-                  query: { projectId },
-                }}
-              >
-                Pages
-              </Link>
               {navigation.map((link) => (
                 <Link
                   key={link.name}
-                  href={link.href}
+                  href={{
+                    pathname: link.href,
+                    query: link.query ? link.query : {},
+                  }}
                   className="text-base font-medium text-white hover:text-emerald-50"
                 >
                   {link.name}
@@ -73,13 +71,6 @@ export default function Header() {
                 Sign in
               </Link>
             )}
-            <Link
-              href={{ pathname: "/projects/[projectId]/users", query: { projectId } }}
-              className="inline-block rounded-md border border-transparent bg-white py-2 px-4 text-base font-medium text-emerald-600 hover:bg-emerald-50"
-            >
-              Users on project
-            </Link>
-            <Invitations />
           </div>
         </div>
         <div className="flex flex-wrap justify-center space-x-6 py-4 lg:hidden">

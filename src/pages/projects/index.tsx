@@ -5,13 +5,16 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import Layout from "../../components/Layout/Index";
+import { type NextPageWithLayout } from "../_app";
+
 interface Project {
   id: string;
   name: string;
   description: string;
 }
 
-const Projects = () => {
+const Projects: NextPageWithLayout = () => {
   const router = useRouter();
   const session = useSession();
 
@@ -57,26 +60,6 @@ const Projects = () => {
         <title>Projects</title>
       </Head>
       <div className="flex h-screen flex-col items-center p-8">
-        <div className="flex gap-x-2">
-          {getCookie("projectId") && (
-            <Link
-              className="rounded bg-emerald-600 py-1.5 px-2 text-sm font-bold text-white"
-              href={{
-                pathname: "/projects/[projectId]/pages",
-                query: { projectId: getCookie("projectId") },
-              }}
-            >
-              Homepage
-            </Link>
-          )}
-          <button
-            type="button"
-            onClick={() => signOut({ callbackUrl: process.env.NEXT_PUBLIC_FRONTEND_URL })}
-            className="rounded bg-emerald-600 py-1.5 px-2 text-sm font-bold text-white"
-          >
-            Sign out
-          </button>
-        </div>
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center justify-center">
             <div>
@@ -120,28 +103,12 @@ const Projects = () => {
               </thead>
               <tbody className="w-full divide-y divide-gray-200">
                 {projects.map((project) => (
-                  <tr key={project.name}>
+                  <tr key={project.name} onClick={() => selectProject(project)} className="cursor-pointer">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                       {project.name}
                     </td>
                     <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
                       {project.description}
-                    </td>
-                    <td className="relative flex gap-x-2 whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                      {project.id !== getCookie("projectId") && (
-                        <button
-                          onClick={() => selectProject(project)}
-                          className="text-emerald-600 hover:text-emerald-900"
-                        >
-                          Select
-                        </button>
-                      )}
-                      <button
-                        onClick={() => leftProject(project)}
-                        className="text-red-600 hover:text-emerald-900"
-                      >
-                        Left
-                      </button>
                     </td>
                   </tr>
                 ))}
@@ -153,6 +120,9 @@ const Projects = () => {
     </>
   );
 };
+
+Projects.auth = true;
+Projects.getLayout = (page) => <Layout>{page}</Layout>;
 
 Projects.auth = true;
 export default Projects;
