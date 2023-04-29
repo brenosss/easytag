@@ -9,9 +9,10 @@ import (
 	"github.com/brenosss/easytag/backend/internal/database"
 	"github.com/brenosss/easytag/backend/internal/repository"
 	"go.uber.org/zap"
+	"os"
 
 	// Imported for side effects
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 )
 
 type Page struct {
@@ -27,8 +28,9 @@ type Page struct {
 
 func main() {
 	log.Setup()
+	zap.S().Info(os.Getenv("DATABASE_URL"))
 
-	db, err := database.NewSqlite("../prisma/db.sqlite")
+	db, err := database.NewPostgres(os.Getenv("DATABASE_URL"))
 
 	if err != nil {
 		zap.S().Panic(err)

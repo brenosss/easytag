@@ -1,10 +1,10 @@
 SELECT
     id,
-    path,
+    "path",
     title,
     image,
     description,
-    createdAt,
-    updatedAt,
-    projectId
-FROM Page WHERE projectId = $1;
+    "createdAt",
+    "updatedAt",
+    public."Page"."projectId"
+FROM public."Page" WHERE public."Page"."projectId" = $1;

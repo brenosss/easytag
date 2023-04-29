@@ -8,26 +8,26 @@ import (
 	"github.com/jmoiron/sqlx"
 
 	// Imported for side effects
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 )
 
-type Sqlite struct {
+type Postgres struct {
 	db *sqlx.DB
 }
 
-func NewSqlite(conStr string) (*Sqlite, error) {
-	db, err := sqlx.Connect("sqlite3", conStr)
+func NewPostgres(conStr string) (*Postgres, error) {
+	db, err := sqlx.Connect("postgres", conStr)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &Sqlite{
+	return &Postgres{
 		db: db,
 	}, nil
 }
 
-func (s *Sqlite) Read(ctx context.Context, dest interface{}, query string, args ...interface{}) error {
+func (s *Postgres) Read(ctx context.Context, dest interface{}, query string, args ...interface{}) error {
 	if !isPointer(dest) {
 		return errors.New("destination should be a pointer")
 	}
@@ -37,7 +37,7 @@ func (s *Sqlite) Read(ctx context.Context, dest interface{}, query string, args 
 	return s.db.GetContext(ctx, dest, query, args...)
 }
 
-func (s *Sqlite) Close() {
+func (s *Postgres) Close() {
 	s.db.Close()
 }
 
