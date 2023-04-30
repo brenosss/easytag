@@ -3,13 +3,15 @@ package main
 import (
 	"time"
 
+	"os"
+
 	"github.com/brenosss/easytag/backend/config/log"
 	"github.com/brenosss/easytag/backend/config/server"
 	"github.com/brenosss/easytag/backend/internal/api"
 	"github.com/brenosss/easytag/backend/internal/database"
+	"github.com/brenosss/easytag/backend/internal/domain"
 	"github.com/brenosss/easytag/backend/internal/repository"
 	"go.uber.org/zap"
-	"os"
 
 	// Imported for side effects
 	_ "github.com/lib/pq"
@@ -37,7 +39,9 @@ func main() {
 	}
 	defer db.Close()
 
-	handler := api.NewPageHandler(repository.NewPageRepository(db))
+	handler := api.NewPageHandler(
+		domain.NewPageService(repository.NewPageRepository(db)),
+		domain.NewTokenService(repository.NewTokenRepository(db)))
 
 	srv := server.SetupHTTPServer(handler)
 	if err := srv.ListenAndServe(); err != nil {

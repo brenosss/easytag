@@ -3,7 +3,7 @@
 Running the project
 
 ```
-go run cmd/main.go
+make run
 ```
 
 ### Testing

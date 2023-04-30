@@ -12,3 +12,21 @@ type Page struct {
 	UpdatedAt   time.Time `db:"updatedAt" json:"updated_at"`
 	ProjectID   string    `db:"projectId" json:"project_id"`
 }
+
+func (p Page) Snippet() string {
+	s := ``
+	if p.Title != "" {
+		s += meta("og:title", p.Title)
+	}
+	if p.Image != "" {
+		s += meta("og:image", p.Image)
+	}
+	if p.Path != "" {
+		s += meta("og:url", p.Path)
+	}
+	return s
+}
+
+func meta(property, content string) string {
+	return "<meta property=\"" + property + "\" content=\"" + content + "\">\n"
+}
