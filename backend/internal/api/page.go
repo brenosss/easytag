@@ -83,5 +83,5 @@ func (h PageHandler) getSnippet(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "something bad happened"})
 		return
 	}
-	c.JSON(http.StatusOK, pages)
+	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(pages))
 }
