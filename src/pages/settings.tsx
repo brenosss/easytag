@@ -19,6 +19,7 @@ const Settings: NextPageWithLayout = () => {
 
   const [project, setProject] = useState<Project>();
   const [showKey, setShowKey] = useState(false);
+  const [token, setToken] = useState<string>("");
   const session = useSession();
 
   async function getProject(projectId: string) {
@@ -34,7 +35,33 @@ const Settings: NextPageWithLayout = () => {
     }
   }
 
-  const shouldShowKey = (key: string) : string => {
+  async function getAPIToken() {
+    const projectResponse = await fetch("/api/settings/tokens", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (projectResponse.status === 200) {
+      const projectJson = await projectResponse.json();
+      setToken(projectJson.token);
+    }
+  }
+
+  async function generateNewAPIToken() {
+    const projectResponse = await fetch("/api/settings/tokens", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (projectResponse.status === 200) {
+      const projectJson = await projectResponse.json();
+      setToken(projectJson.token);
+    }
+  }
+
+  const shouldShowToken = (key: string) : string => {
     return showKey ? key : "*".repeat(key.length);
   };
 
@@ -50,6 +77,7 @@ const Settings: NextPageWithLayout = () => {
     (async () => {
       const projectId = getCookie("projectId");
       await getProject(typeof projectId === "string" ? projectId : "");
+      await getAPIToken();
     })();
   }, []);
 
@@ -59,8 +87,8 @@ const Settings: NextPageWithLayout = () => {
         <title>Settings</title>
       </Head>
       <div className="flex h-screen flex-col items-center p-8">
-        <div className="flex flex-col items-center justify-center">
-        <main className="px-4 py-16 sm:px-6 lg:flex-auto lg:px-0 lg:py-20">
+        <div className="flex flex-col items-center justify-center w-3/5">
+        <main className="px-4 py-16 sm:px-6 lg:flex-auto lg:px-0 lg:py-20 w-full">
           <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
             <div>
               <h2 className="text-base font-semibold leading-7 text-gray-900">Project</h2>
@@ -84,13 +112,18 @@ const Settings: NextPageWithLayout = () => {
                 <div className="pt-6 sm:flex">
                   <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">API Key</dt>
                   <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                    <div className="text-gray-900">{project && shouldShowKey("123213213123")}</div>
+                    <div className="text-gray-900">{project && shouldShowToken(token)}</div>
                     <button type="button" onClick={() => setShowKey(!showKey)} className="font-semibold text-emerald-600 hover:text-emerald-500">
-                      Show
+                      { showKey ? "Hide" : "Show" }
                     </button>
                   </dd>
                 </div>
               </dl>
+              <div className="flex pt-6">
+                <button type="button" className="text-sm font-semibold leading-6 text-red-600 hover:text-red-500" onClick={() => generateNewAPIToken()}>
+                  <span aria-hidden="true"></span> Generate a new API Token
+                </button>
+              </div>
               <div className="flex pt-6">
                 <button type="button" className="text-sm font-semibold leading-6 text-red-600 hover:text-red-500">
                   <span aria-hidden="true"></span> Delete project
