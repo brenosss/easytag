@@ -20,6 +20,8 @@ const Settings: NextPageWithLayout = () => {
   const [project, setProject] = useState<Project>();
   const [showKey, setShowKey] = useState(false);
   const [token, setToken] = useState<string>("");
+  const [creatingPaymentLink, setCreatingPaymentLink] = useState(false);
+  const [subscriptionStatus, setSubscriptionStatus] = useState<string>("");
   const session = useSession();
 
   async function getProject(projectId: string) {
@@ -32,6 +34,36 @@ const Settings: NextPageWithLayout = () => {
     if (projectResponse.status === 200) {
       const projectJson = await projectResponse.json();
       setProject(projectJson);
+    }
+  }
+
+  async function getSubscriptionStatus() {
+    const projectResponse = await fetch("/api/settings/payments", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (projectResponse.status === 200) {
+      const subscriptionJson = await projectResponse.json();
+      setSubscriptionStatus(subscriptionJson.status);
+    }
+  }
+
+  async function createCheckoutSession() {
+    setCreatingPaymentLink(true);
+    const projectResponse = await fetch("/api/settings/payments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (projectResponse.status === 200) {
+      const subscriptionJson = await projectResponse.json();
+      if(subscriptionJson != null && typeof subscriptionJson.url === "string"){
+        window.open(subscriptionJson.url, '_blank').focus();
+        setCreatingPaymentLink(false);
+      }
     }
   }
 
@@ -78,6 +110,7 @@ const Settings: NextPageWithLayout = () => {
       const projectId = getCookie("projectId");
       await getProject(typeof projectId === "string" ? projectId : "");
       await getAPIToken();
+      await getSubscriptionStatus();
     })();
   }, []);
 
@@ -137,16 +170,16 @@ const Settings: NextPageWithLayout = () => {
 
               <ul role="list" className="mt-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
                 <li className="flex justify-between gap-x-6 py-6">
-                  <div className="font-medium text-gray-900 cursor-pointer">Basic Plan</div>
-                  <button type="button" className="font-semibold text-emerald-600 hover:text-emerald-500">
-                    Change
-                  </button>
-                </li>
-                <li className="flex justify-between gap-x-6 py-6">
-                  <div className="font-medium text-gray-900">Your subscription is active</div>
-                  <button type="button" className="font-semibold text-red-600 hover:text-red-500">
-                    Cancel
-                  </button>
+                  <div className="font-medium text-gray-900">Your subscription is { subscriptionStatus }</div>
+                  { subscriptionStatus === "incomplete" ? (
+                    <button type="button" className="text-emerald-600 hover:text-emerald-500" onClick={ () => createCheckoutSession()}>
+                      Complete
+                    </button>
+                  ) : (
+                    <button type="button" className="font-semibold text-red-600 hover:text-red-500">
+                      Cancel
+                    </button>
+                  )}
                 </li>
               </ul>
               
