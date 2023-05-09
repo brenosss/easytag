@@ -52,7 +52,7 @@ model User {
   tokens          APIToken[]
   accounts        Account[]
   sessions        Session[]
-  stripeCustomer  StripeCustomer?
+  customer  Customer?
   UsersInProjects UsersInProjects[]
 }
 
@@ -94,7 +94,7 @@ model UsersInProjects {
   @@unique([projectId, userId])
 }
 
-model StripeCustomer {
+model Customer {
   id               String @id @default(cuid())
   stripeCustomerId String @unique
   paymentStatus    String

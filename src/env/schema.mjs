@@ -27,6 +27,7 @@ export const serverSchema = z.object({
 
   STRIPE_SECRET_KEY: z.string(),
   STRIPE_WEBHOOK_SECRET: z.string(),
+  PAYMENTS_SUCCESS_URL: z.string(),
 });
 
 /**

@@ -15,7 +15,7 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
 
 async function createCheckoutSession(stripeCustomerId: string): Promise<Stripe.Checkout.Session> {
   const session = await stripe.checkout.sessions.create({
-    success_url: 'https://example.com/success',
+    success_url: env.PAYMENTS_SUCCESS_URL,
     line_items: [
       {price: BASIC_PRODUCT, quantity: 1},
     ],
@@ -35,20 +35,20 @@ async function post(
       id: sessionUser.id,
     },
     include: {
-      stripeCustomer: true,
+      customer: true,
     },
   });
   if (!user) {
     return res.status(404).json({ error: "Not found" });
   }
-  if (user.stripeCustomer === null) {
+  if (user.customer === null) {
     const params: Stripe.CustomerCreateParams = {
         email: user.email,
         name: user.name,
       };
 
     const customer = await stripe.customers.create(params)
-    await prisma.stripeCustomer.create({
+    await prisma.customer.create({
       data: {
         stripeCustomerId: customer.id,
         userId: user.id,
@@ -57,7 +57,7 @@ async function post(
     });
     return res.status(200).json({ url: (await createCheckoutSession(customer.id)).url });
   }
-  return res.status(200).json({ url: (await createCheckoutSession(user.stripeCustomer.stripeCustomerId)).url });
+  return res.status(200).json({ url: (await createCheckoutSession(user.customer.stripeCustomerId)).url });
 }
 
 async function get(
@@ -66,14 +66,14 @@ async function get(
   sessionUser: SessionUser
 ): Promise<void> {
 
-  const stripeCustomer = await prisma.stripeCustomer.findFirst({
+  const customer = await prisma.customer.findFirst({
     where: {
       userId: sessionUser.id,
     },
   });
 
-  if (stripeCustomer) {
-    return res.status(200).json({status: stripeCustomer.paymentStatus});
+  if (customer) {
+    return res.status(200).json({status: customer.paymentStatus});
   } else {
     return res.status(200).json({status: "incomplete"});
   }

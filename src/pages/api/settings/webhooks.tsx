@@ -17,7 +17,6 @@ export const config = {
   },
 }
 
-
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
 });
@@ -38,7 +37,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       if(event.data.object.customer === null) {
         res.status(400).send("Webhook Error!")
       }
-      await prisma.stripeCustomer.update({
+      await prisma.customer.update({
         where: {
           stripeCustomerId: event.data.object.customer,
         },
