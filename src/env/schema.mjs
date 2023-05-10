@@ -28,6 +28,9 @@ export const serverSchema = z.object({
   STRIPE_SECRET_KEY: z.string(),
   STRIPE_WEBHOOK_SECRET: z.string(),
   PAYMENTS_SUCCESS_URL: z.string(),
+
+  CLOUDFLARE_ACCOUNT_ID: z.string(),
+  CLOUDFLARE_API_TOKEN: z.string(),
 });
 
 /**

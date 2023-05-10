@@ -2,10 +2,12 @@ import { getCookie } from "cookies-next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Layout from "../../../../components/Layout/Index";
-import PageForm from "../../../../components/Pages/PageForm";
-import type { SocialCardProps } from "../../../../components/Pages/SocialCards/ISocialCard";
-import type { NextPageWithLayout } from "../../../_app";
+
+import Layout from "src/components/Layout/Index";
+import PageForm from "src/components/Pages/PageForm";
+import type { SocialCardProps } from "src/components/Pages/SocialCards/ISocialCard";
+import type { NextPageWithLayout } from "src/pages/_app";
+import { blobUrlToBase64 } from "src/services/files";
 
 const CreatePage: NextPageWithLayout = () => {
   const router = useRouter();
@@ -33,6 +35,7 @@ const CreatePage: NextPageWithLayout = () => {
         title: socialCard.title,
         description: socialCard.description,
         image: socialCard.image,
+        newImage: await blobUrlToBase64(socialCard.image),
         projectId: getCookie("projectId"),
       }),
     });
