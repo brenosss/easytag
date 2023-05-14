@@ -3,12 +3,16 @@ import { getCookie } from "cookies-next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Layout from "../../../../components/Layout/Index";
-import PageForm from "../../../../components/Pages/PageForm";
-import type { SocialCardProps } from "../../../../components/Pages/SocialCards/ISocialCard";
+
+import Layout from "src/components/Layout/Index";
+import PageForm from "src/components/Pages/PageForm";
+import type { SocialCardProps } from "src/components/Pages/SocialCards/ISocialCard";
+import { blobUrlToBase64 } from "src/services/files";
+
 
 const PageDetail = () => {
   const [socialCard, setSocialCard] = useState<SocialCardProps>();
+  const [currentImage, setCurrentImage] = useState<string>('');
   const [url, setUrl] = useState<string>('');
 
   const router = useRouter();
@@ -25,6 +29,7 @@ const PageDetail = () => {
     });
     if (pageResponse.status === 200) {
       const pageData: Page = await pageResponse.json();
+      setCurrentImage(pageData.image);
       setSocialCard({
         title: pageData.title,
         description: pageData.description,
@@ -38,10 +43,11 @@ const PageDetail = () => {
     }
   }
 
-  function editPage(event: React.FormEvent) {
+  async function editPage(event: React.FormEvent) {
     event.preventDefault();
     if (!socialCard || !url) return;
-    fetch(`/api/projects/${projectId}/pages/${pageId}`, {
+    const newImage = socialCard.image !== currentImage ? await blobUrlToBase64(socialCard.image) : undefined;
+    await fetch(`/api/projects/${projectId}/pages/${pageId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -51,6 +57,7 @@ const PageDetail = () => {
         title: socialCard.title,
         description: socialCard.description,
         image: socialCard.image,
+        newImage: newImage,
       }),
     });
   }

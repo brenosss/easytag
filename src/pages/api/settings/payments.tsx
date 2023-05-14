@@ -3,7 +3,7 @@ import { getServerAuthSession } from "../../../server/common/get-server-auth-ses
 
 import { prisma } from "../../../server/db/client";
 import { type SessionUser } from "../../../types/next-auth";
-import { env } from "../../../env/server.mjs";
+import { env } from "src/env/server.mjs";
 
 import Stripe from 'stripe';
 

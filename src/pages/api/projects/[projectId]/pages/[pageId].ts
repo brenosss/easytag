@@ -1,8 +1,9 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
-import { getServerAuthSession } from "../../../../../server/common/get-server-auth-session";
+import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 
-import { prisma } from "../../../../../server/db/client";
-import { type SessionUser } from "../../../../../types/next-auth";
+import { prisma } from "src/server/db/client";
+import { type SessionUser } from "src/types/next-auth";
+import { CloudFlareImage } from "src/server/integrations/cloud-flare";
 
 async function get(
   req: NextApiRequest,
@@ -21,13 +22,18 @@ async function patch(
   res: NextApiResponse,
   pageId: string
 ): Promise<void> {
+  let image = req.body.image;
+  if (req.body.newImage && typeof req.body.newImage === "string" ) {
+    const cloudFlareImage = new CloudFlareImage(req.body.newImage)
+    image = (await cloudFlareImage.upload()).result.variants[0];
+  }
   const page = await prisma.page.update({
     where: { id: pageId },
     data: {
       path: req.body.path,
       title: req.body.title,
       description: req.body.description,
-      image: req.body.image,
+      image: image,
     },
   });
   res.status(200).json({ message: "Page updated", data: page });
