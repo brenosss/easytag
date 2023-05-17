@@ -2,11 +2,9 @@ import type { User, UsersInProjects } from "@prisma/client";
 import { getCookie } from "cookies-next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { PrimaryLink } from "../../../../components/Buttons/Links";
-import Layout from "../../../../components/Layout/Index";
-import { type NextPageWithLayout } from "../../../_app";
+import { PrimaryLink } from "src/components/Buttons/Links";
 
-const UsersInProjectPage: NextPageWithLayout = () => {
+const UsersInProjectPage = () => {
   const projectId = getCookie("projectId");
   const [usersInProject, setUsersInProject] = useState<UsersInProjects & { user: User }[]>([]);
 
@@ -61,6 +59,5 @@ const UsersInProjectPage: NextPageWithLayout = () => {
 };
 
 UsersInProjectPage.auth = true;
-UsersInProjectPage.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default UsersInProjectPage;

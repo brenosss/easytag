@@ -3,13 +3,11 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import Layout from "src/components/Layout/Index";
 import PageForm from "src/components/Pages/PageForm";
 import type { SocialCardProps } from "src/components/Pages/SocialCards/ISocialCard";
-import type { NextPageWithLayout } from "src/pages/_app";
 import { blobUrlToBase64 } from "src/services/files";
 
-const CreatePage: NextPageWithLayout = () => {
+const CreatePage = () => {
   const router = useRouter();
   const [socialCard, setSocialCard] = useState<SocialCardProps | undefined>({
     title: "Facebook",
@@ -64,6 +62,5 @@ const CreatePage: NextPageWithLayout = () => {
   );
 };
 
-CreatePage.getLayout = (page) => <Layout>{page}</Layout>;
 CreatePage.auth = true;
 export default CreatePage;

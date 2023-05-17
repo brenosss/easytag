@@ -1,12 +1,11 @@
+'use client';
+
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { signOut, useSession } from "next-auth/react";
-import { getCookie, removeCookies } from "cookies-next";
-
-import Layout from "../components/Layout/Index";
-import { type NextPageWithLayout } from "./_app";
+import { useSession } from "next-auth/react";
+import { getCookie } from "cookies-next";
 
 interface Project {
   id: string;
@@ -14,13 +13,13 @@ interface Project {
   description: string;
 }
 
-const Settings: NextPageWithLayout = () => {
+const Settings = () => {
   const router = useRouter();
 
   const [project, setProject] = useState<Project>();
   const [showKey, setShowKey] = useState(false);
   const [token, setToken] = useState<string>("");
-  const [creatingPaymentLink, setCreatingPaymentLink] = useState(false);
+  const [_, setCreatingPaymentLink] = useState(false);
   const [subscriptionStatus, setSubscriptionStatus] = useState<string>("");
   const session = useSession();
 
@@ -202,9 +201,6 @@ const Settings: NextPageWithLayout = () => {
     </>
   );
 };
-
-Settings.auth = true;
-Settings.getLayout = (page) => <Layout>{page}</Layout>;
 
 Settings.auth = true;
 export default Settings;

@@ -2,12 +2,10 @@ import { type Page } from "@prisma/client";
 import { getCookie } from "cookies-next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { PrimaryLink } from "../../../../components/Buttons/Links";
-import Layout from "../../../../components/Layout/Index";
-import PageList from "../../../../components/Pages/PageList";
-import { type NextPageWithLayout } from "../../../_app";
+import { PrimaryLink } from "src/components/Buttons/Links";
+import PageList from "src/components/Pages/PageList";
 
-const Pages: NextPageWithLayout = () => {
+const Pages = () => {
   const [pages, setPages] = useState<Page[]>([]);
   const projectId = getCookie("projectId");
 
@@ -59,6 +57,5 @@ const Pages: NextPageWithLayout = () => {
 };
 
 Pages.auth = true;
-Pages.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default Pages;
