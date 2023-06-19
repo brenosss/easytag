@@ -1,4 +1,3 @@
-import AuthContext from "src/app/AuthContext";
 import "../styles/globals.css";
 
 

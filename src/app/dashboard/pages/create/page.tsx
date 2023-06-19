@@ -1,6 +1,8 @@
+'use client';
+
 import { getCookie } from "cookies-next";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import PageForm from "src/components/Pages/PageForm";
@@ -37,10 +39,7 @@ const CreatePage = () => {
         projectId: getCookie("projectId"),
       }),
     });
-    await router.push({
-      pathname: "/projects/[projectId]/pages",
-      query: { projectId },
-    });
+    await router.push("/dashboard/pages");
   }
 
   return (

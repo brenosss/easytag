@@ -13,10 +13,12 @@ export async function middleware(req: NextRequest) {
       url.pathname = "/api/auth/signin"
       return NextResponse.redirect(url.toString(), { status: 302 })
     }
-    if(session.projects === "undefined" || session.projects.length === 0){
-      const url = req.nextUrl.clone()
-      url.pathname = "/dashboard/projects/create"
-      return NextResponse.redirect(url.toString(), { status: 302 })
+    if(session.user.projects === undefined || session.user.projects.length === 0){
+      if(req.nextUrl.pathname !== "/dashboard/projects/create"){
+        const url = req.nextUrl.clone()
+        url.pathname = "/dashboard/projects/create"
+        return NextResponse.redirect(url.toString(), { status: 302 })
+      }
     }
   }
   return NextResponse.next();

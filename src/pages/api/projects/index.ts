@@ -46,6 +46,7 @@ async function post(
       pending: false,
     },
   });
+  user.projects.push(project);
   res.status(201).json(project);
 }
 

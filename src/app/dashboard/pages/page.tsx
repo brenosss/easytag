@@ -1,3 +1,5 @@
+'use client';
+
 import { type Page } from "@prisma/client";
 import { getCookie } from "cookies-next";
 import Head from "next/head";
@@ -38,10 +40,7 @@ const Pages = () => {
           <div className="mb-12 flex flex-col justify-around px-36">
             <div className="mb-6 flex justify-between">
               <PrimaryLink
-                href={{
-                  pathname: "/projects/[projectId]/pages/create",
-                  query: { projectId },
-                }}
+                href={"/dashboard/pages/create"}
               >
                 New Page
               </PrimaryLink>

@@ -10,9 +10,9 @@ export default function Header() {
     const projectId = getCookie("projectId");
   
     const navigation = [
-      { name: "Pages", href: `/dashboard/projects/${projectId}/pages`},
+      { name: "Pages", href: `/dashboard/pages`},
       { name: "Projects", href: "/dashboard/projects" },
-      { name: "Users", href: `/dashboard/projects/${projectId}/users`},
+      { name: "Users", href: `/dashboard/users`},
       { name: "Settings", href: "/dashboard/settings" },
     ];
   

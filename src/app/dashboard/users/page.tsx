@@ -1,3 +1,5 @@
+'use client';
+
 import type { User, UsersInProjects } from "@prisma/client";
 import { getCookie } from "cookies-next";
 import Head from "next/head";
@@ -35,7 +37,7 @@ const UsersInProjectPage = () => {
       </Head>
       <div className="mx-auto max-w-lg p-5">
         <PrimaryLink
-          href={{ pathname: "/projects/[projectId]/users/invite", query: { projectId } }}
+          href={`/dashboard/users/invite` }
         >
           Invite a new user
         </PrimaryLink>

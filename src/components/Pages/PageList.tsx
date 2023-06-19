@@ -13,10 +13,7 @@ const PageList = ({ pages }: { pages: Page[] }) => {
         {pages.map((page) => (
           <Link
             key={page.id}
-            href={{
-              pathname: "/projects/[projectId]/pages/[pageId]",
-              query: { projectId: page.projectId, pageId: page.id },
-            }}
+            href={`/dashboard/pages/${page.id}`}
             className="block hover:bg-gray-50"
           >
             <div className="flex items-center px-4 py-4 sm:px-6">
