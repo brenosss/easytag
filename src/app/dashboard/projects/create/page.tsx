@@ -44,7 +44,7 @@ const CreateProject = () => {
     });
     if (response.status === 201) {
       const project = await response.json();
-      setCookie("projectId", project.id);
+      setCookie("project", JSON.stringify(project));
       router.push("/dashboard");
     }
   };

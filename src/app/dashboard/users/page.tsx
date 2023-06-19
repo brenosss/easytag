@@ -1,18 +1,18 @@
 'use client';
 
 import type { User, UsersInProjects } from "@prisma/client";
-import { getCookie } from "cookies-next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { PrimaryLink } from "src/components/Buttons/Links";
+import { getProjectFromCookie } from "src/app/cookies";
 
 const UsersInProjectPage = () => {
-  const projectId = getCookie("projectId");
+  const project = getProjectFromCookie();
   const [usersInProject, setUsersInProject] = useState<UsersInProjects & { user: User }[]>([]);
 
   async function getUsersInProject() {
     const usersInProjectsResponse = await fetch(
-      `/api/projects/${projectId}/users`,
+      `/api/projects/${project.id}/users`,
       {
         method: "GET",
         headers: {

@@ -1,7 +1,7 @@
 'use client';
 
-import { getCookie, setCookie } from "cookies-next";
-import { signOut, useSession } from "next-auth/react";
+import { setCookie } from "cookies-next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -33,8 +33,8 @@ const Projects = () => {
   }
 
   async function selectProject(project: Project) {
-    setCookie("projectId", project.id);
-    await router.push(`/projects/${projectId}/pages`);
+    setCookie("project", JSON.stringify(project));
+    await router.push(`/dashboard/pages`);
   }
 
   async function leftProject(project: Project) {
@@ -55,7 +55,7 @@ const Projects = () => {
       <Head>
         <title>Projects</title>
       </Head>
-      <div className="flex h-screen flex-col items-center p-8">
+      <div className="flex h-screen flex-col items-center">
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center justify-center">
             <div>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { getCookie } from "cookies-next";
+import { getProjectFromCookie } from "src/app/cookies";
 
 interface Project {
   id: string;
@@ -106,8 +106,8 @@ const Settings = () => {
 
   useEffect(() => {
     (async () => {
-      const projectId = getCookie("projectId");
-      await getProject(typeof projectId === "string" ? projectId : "");
+      const project = getProjectFromCookie();
+      await getProject(typeof project === Object ? project.id : "");
       await getAPIToken();
       await getSubscriptionStatus();
     })();
@@ -118,7 +118,7 @@ const Settings = () => {
       <Head>
         <title>Settings</title>
       </Head>
-      <div className="flex h-screen flex-col items-center p-8">
+      <div className="flex h-screen flex-col items-center">
         <div className="flex flex-col items-center justify-center w-3/5">
         <main className="px-4 py-16 sm:px-6 lg:flex-auto lg:px-0 lg:py-20 w-full">
           <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">

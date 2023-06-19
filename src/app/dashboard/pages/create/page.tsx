@@ -1,6 +1,5 @@
 'use client';
 
-import { getCookie } from "cookies-next";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,6 +7,8 @@ import { useState } from "react";
 import PageForm from "src/components/Pages/PageForm";
 import type { SocialCardProps } from "src/components/Pages/SocialCards/ISocialCard";
 import { blobUrlToBase64 } from "src/services/files";
+import { getProjectFromCookie } from "src/app/cookies";
+
 
 const CreatePage = () => {
   const router = useRouter();
@@ -20,12 +21,12 @@ const CreatePage = () => {
   });
   const [url, setUrl] = useState("https://facebook.com");
 
-  const projectId = getCookie("projectId");
+  const project = getProjectFromCookie();
 
   async function createPage(event: React.FormEvent) {
     event.preventDefault();
     if (!socialCard || !url) return;
-    await fetch(`/api/projects/${projectId}/pages`, {
+    await fetch(`/api/projects/${project.id}/pages`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +37,7 @@ const CreatePage = () => {
         description: socialCard.description,
         image: socialCard.image,
         newImage: await blobUrlToBase64(socialCard.image),
-        projectId: getCookie("projectId"),
+        projectId: project.id,
       }),
     });
     await router.push("/dashboard/pages");

@@ -6,7 +6,6 @@ export async function middleware(req: NextRequest) {
   if(req.nextUrl.pathname.startsWith("/dashboard")){
     const cookie = req.headers.get("cookie")
     const session = await getSession({ req: { headers: { cookie } } as any });
-    console.log(session)
 
     if (!session) {
       const url = req.nextUrl.clone()
