@@ -1,18 +1,18 @@
+'use client';
+
 import type { User, UsersInProjects } from "@prisma/client";
-import { getCookie } from "cookies-next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { PrimaryLink } from "../../../../components/Buttons/Links";
-import Layout from "../../../../components/Layout/Index";
-import { type NextPageWithLayout } from "../../../_app";
+import { PrimaryLink } from "src/components/Buttons/Links";
+import { getProjectFromCookie } from "src/app/cookies";
 
-const UsersInProjectPage: NextPageWithLayout = () => {
-  const projectId = getCookie("projectId");
+const UsersInProjectPage = () => {
+  const project = getProjectFromCookie();
   const [usersInProject, setUsersInProject] = useState<UsersInProjects & { user: User }[]>([]);
 
   async function getUsersInProject() {
     const usersInProjectsResponse = await fetch(
-      `/api/projects/${projectId}/users`,
+      `/api/projects/${project.id}/users`,
       {
         method: "GET",
         headers: {
@@ -37,7 +37,7 @@ const UsersInProjectPage: NextPageWithLayout = () => {
       </Head>
       <div className="mx-auto max-w-lg p-5">
         <PrimaryLink
-          href={{ pathname: "/projects/[projectId]/users/invite", query: { projectId } }}
+          href={`/dashboard/users/invite` }
         >
           Invite a new user
         </PrimaryLink>
@@ -61,6 +61,5 @@ const UsersInProjectPage: NextPageWithLayout = () => {
 };
 
 UsersInProjectPage.auth = true;
-UsersInProjectPage.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default UsersInProjectPage;

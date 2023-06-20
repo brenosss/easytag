@@ -1,12 +1,11 @@
+'use client';
+
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { signOut, useSession } from "next-auth/react";
-import { getCookie, removeCookies } from "cookies-next";
-
-import Layout from "../components/Layout/Index";
-import { type NextPageWithLayout } from "./_app";
+import { useSession } from "next-auth/react";
+import { getProjectFromCookie } from "src/app/cookies";
 
 interface Project {
   id: string;
@@ -14,13 +13,13 @@ interface Project {
   description: string;
 }
 
-const Settings: NextPageWithLayout = () => {
+const Settings = () => {
   const router = useRouter();
 
   const [project, setProject] = useState<Project>();
   const [showKey, setShowKey] = useState(false);
   const [token, setToken] = useState<string>("");
-  const [creatingPaymentLink, setCreatingPaymentLink] = useState(false);
+  const [_, setCreatingPaymentLink] = useState(false);
   const [subscriptionStatus, setSubscriptionStatus] = useState<string>("");
   const session = useSession();
 
@@ -107,8 +106,8 @@ const Settings: NextPageWithLayout = () => {
 
   useEffect(() => {
     (async () => {
-      const projectId = getCookie("projectId");
-      await getProject(typeof projectId === "string" ? projectId : "");
+      const project = getProjectFromCookie();
+      await getProject(typeof project === Object ? project.id : "");
       await getAPIToken();
       await getSubscriptionStatus();
     })();
@@ -119,7 +118,7 @@ const Settings: NextPageWithLayout = () => {
       <Head>
         <title>Settings</title>
       </Head>
-      <div className="flex h-screen flex-col items-center p-8">
+      <div className="flex h-screen flex-col items-center">
         <div className="flex flex-col items-center justify-center w-3/5">
         <main className="px-4 py-16 sm:px-6 lg:flex-auto lg:px-0 lg:py-20 w-full">
           <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
@@ -202,9 +201,6 @@ const Settings: NextPageWithLayout = () => {
     </>
   );
 };
-
-Settings.auth = true;
-Settings.getLayout = (page) => <Layout>{page}</Layout>;
 
 Settings.auth = true;
 export default Settings;

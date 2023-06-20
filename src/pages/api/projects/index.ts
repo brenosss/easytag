@@ -29,14 +29,14 @@ async function post(
 ): Promise<void> {
   if (
     typeof req.body.name !== "string" ||
-    typeof req.body.description !== "string"
+    typeof req.body.domain !== "string"
   ) {
     return res.status(400).json({ error: "Invalid param" });
   }
   const project = await prisma.project.create({
     data: {
       name: req.body.name,
-      description: req.body.description,
+      domain: req.body.domain,
     },
   });
   await prisma.usersInProjects.create({
@@ -46,6 +46,7 @@ async function post(
       pending: false,
     },
   });
+  user.projects.push(project);
   res.status(201).json(project);
 }
 

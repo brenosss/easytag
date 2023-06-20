@@ -1,27 +1,28 @@
+'use client';
+
 import { type Page } from "@prisma/client";
-import { getCookie } from "cookies-next";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import Layout from "src/components/Layout/Index";
 import PageForm from "src/components/Pages/PageForm";
 import type { SocialCardProps } from "src/components/Pages/SocialCards/ISocialCard";
 import { blobUrlToBase64 } from "src/services/files";
+import { getProjectFromCookie } from "src/app/cookies";
 
 
-const PageDetail = () => {
+const PageDetail = ({ params }) => {
   const [socialCard, setSocialCard] = useState<SocialCardProps>();
   const [currentImage, setCurrentImage] = useState<string>('');
   const [url, setUrl] = useState<string>('');
 
   const router = useRouter();
-  const { pageId } = router.query;
+  const { pageId } = params;
 
-  const projectId = getCookie("projectId");
+  const project = getProjectFromCookie();
 
   async function getPage() {
-    const pageResponse = await fetch(`/api/projects/${projectId}/pages/${pageId}`, {
+    const pageResponse = await fetch(`/api/projects/${project.id}/pages/${pageId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +48,7 @@ const PageDetail = () => {
     event.preventDefault();
     if (!socialCard || !url) return;
     const newImage = socialCard.image !== currentImage ? await blobUrlToBase64(socialCard.image) : undefined;
-    await fetch(`/api/projects/${projectId}/pages/${pageId}`, {
+    await fetch(`/api/projects/${project.id}/pages/${pageId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -87,8 +88,5 @@ const PageDetail = () => {
     </>
   );
 };
-
-PageDetail.getLayout = (page: JSX.Element) => <Layout>{page}</Layout>;
-PageDetail.auth = true;
 
 export default PageDetail;

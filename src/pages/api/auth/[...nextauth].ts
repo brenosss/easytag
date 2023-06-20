@@ -4,18 +4,27 @@ import AzureAd from "next-auth/providers/azure-ad";
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
-import { env } from "../../../env/server.mjs";
-import { prisma } from "../../../server/db/client";
+import { env } from "src/env/server.mjs";
+import { prisma } from "src/server/db/client";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    session({ session, user }) {
+    async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
+        session.user.projects = await prisma.usersInProjects.findMany({
+          where: {
+            userId: user.id,
+          },
+        });
       }
+      
       return session;
     },
+    async redirect() {
+      return "/dashboard/"
+    }
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
@@ -31,6 +40,7 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
+  secret: env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);

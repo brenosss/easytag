@@ -1,12 +1,11 @@
-import { getCookie, setCookie } from "cookies-next";
-import { signOut, useSession } from "next-auth/react";
+'use client';
+
+import { setCookie } from "cookies-next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import Layout from "../../components/Layout/Index";
-import { type NextPageWithLayout } from "../_app";
 
 interface Project {
   id: string;
@@ -14,7 +13,7 @@ interface Project {
   description: string;
 }
 
-const Projects: NextPageWithLayout = () => {
+const Projects = () => {
   const router = useRouter();
   const session = useSession();
 
@@ -29,16 +28,13 @@ const Projects: NextPageWithLayout = () => {
     });
     if (projectsResponse.status === 200) {
       const projectsData = await projectsResponse.json();
-      return projectsData.length === 0 ? await router.push("/projects/create") : setProjects(projectsData);
+      return projectsData.length === 0 ? await router.push("/dashboard/projects/create") : setProjects(projectsData);
     }
   }
 
   async function selectProject(project: Project) {
-    setCookie("projectId", project.id);
-    await router.push({
-      pathname: "/projects/[projectId]/pages",
-      query: { projectId: project.id },
-    });
+    setCookie("project", JSON.stringify(project));
+    await router.push(`/dashboard/pages`);
   }
 
   async function leftProject(project: Project) {
@@ -59,7 +55,7 @@ const Projects: NextPageWithLayout = () => {
       <Head>
         <title>Projects</title>
       </Head>
-      <div className="flex h-screen flex-col items-center p-8">
+      <div className="flex h-screen flex-col items-center">
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center justify-center">
             <div>
@@ -72,7 +68,7 @@ const Projects: NextPageWithLayout = () => {
             </div>
             <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
               <Link
-                href="/projects/create"
+                href="/dashboard/projects/create"
                 type="button"
                 className="block rounded-md bg-emerald-600 py-2 px-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
               >
@@ -122,7 +118,6 @@ const Projects: NextPageWithLayout = () => {
 };
 
 Projects.auth = true;
-Projects.getLayout = (page) => <Layout>{page}</Layout>;
 
 Projects.auth = true;
 export default Projects;

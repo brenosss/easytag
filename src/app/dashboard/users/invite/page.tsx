@@ -1,19 +1,21 @@
-import { getCookie } from "cookies-next";
+'use client';
+
+
 import Head from "next/head";
 import { useState } from "react";
-import Layout from "../../../../components/Layout/Index";
-import { type NextPageWithLayout } from "../../../_app";
+import { getProjectFromCookie } from "src/app/cookies";
 
-const InviteUser: NextPageWithLayout = () => {
+
+const InviteUser = () => {
   const [email, setEmail] = useState("");
   const [result, setResult] = useState({ success: false, message: "" });
 
-  const projectId = getCookie("projectId");
+  const project = getProjectFromCookie();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setResult({ success: false, message: "" });
-    const response = await fetch(`/api/projects/${projectId}/users`, {
+    const response = await fetch(`/api/projects/${project.id}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,6 +88,5 @@ const InviteUser: NextPageWithLayout = () => {
   );
 };
 InviteUser.auth = true;
-InviteUser.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default InviteUser;
