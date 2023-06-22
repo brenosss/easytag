@@ -4,6 +4,7 @@ import { LabelInput } from "../Inputs/Label";
 import { TextAreaInput, TextInput } from "../Inputs/Text";
 import Preview from "./Preview";
 import { type SocialCardProps } from "./SocialCards/ISocialCard";
+import { useState } from "react";
 
 interface PageFormProps {
   socialCard: SocialCardProps;
@@ -20,6 +21,23 @@ const PageForm = ({
   setUrl,
   submitFunction,
 }: PageFormProps) => {
+  const [descriptionTip, setDescriptionTip] = useState(false)
+  const [titleTip, setTitleTip] = useState(false)
+
+  function validateTitle(title: string) {
+    if (title.length >= 60 && title.length <= 70) {
+      setTitleTip(false)
+    } else {
+      setTitleTip(true)
+    }
+  }
+  function validateDescription(description: string) {
+    if (description.length >= 150 && description.length <= 200) {
+      setDescriptionTip(false)
+    } else {
+      setDescriptionTip(true)
+    }
+  }
   return (
     <form className="mt-12 p-3" onSubmit={submitFunction}>
       <div className="mb-12 flex justify-around px-36">
@@ -44,25 +62,33 @@ const PageForm = ({
             <TextInput
               className="ml-2 w-11/12"
               name="title"
-              onChange={(event) =>
-                setSocialCard({ ...socialCard, title: event.target.value })
+              onChange={(event) => {
+                const title = event.target.value;
+                setSocialCard({ ...socialCard, title })
               }
+              }
+              onBlur={() => validateTitle(socialCard.title)}
               value={socialCard.title}
             />
+            {titleTip && <p className="mt-1 text-orange-200">Keep the title between 60-70 characters to ensure it displays properly across platforms without truncation. Ensure the title is descriptive and accurately represents the content.</p>}
           </div>
           <div className="mb-4">
             <LabelInput label="Description" className="mb-2" />
             <TextAreaInput
               name="description"
               className="ml-2 w-11/12"
-              onChange={(event) =>
+              onChange={(event) => {
+                const description = event.target.value;
                 setSocialCard({
                   ...socialCard,
-                  description: event.target.value,
+                  description
                 })
               }
+              }
+              onBlur={() => validateDescription(socialCard.description)}
               value={socialCard.description}
             />
+            {descriptionTip && <p className="mt-1 text-amber-200">Limit the description to 150-200 characters to ensure proper display without truncation on different platforms. Make the description engaging, concise, and accurately represent the content.</p>}
           </div>
           <div className="mb-4">
             <LabelInput label="Image" className="mb-2" />
