@@ -12,6 +12,7 @@ interface PageFormProps {
   url: string;
   setUrl: Dispatch<SetStateAction<string>>;
   submitFunction: (event: React.FormEvent) => void;
+  isLoading: string;
 }
 
 const PageForm = ({
@@ -20,6 +21,7 @@ const PageForm = ({
   url,
   setUrl,
   submitFunction,
+  isLoading,
 }: PageFormProps) => {
   const [descriptionTip, setDescriptionTip] = useState(false)
   const [titleTip, setTitleTip] = useState(false)
@@ -51,8 +53,9 @@ const PageForm = ({
         <button
           className="ml-12 w-20 rounded-lg bg-emerald-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-700 focus:outline-none"
           type="submit"
+          onSubmit={submitFunction}
         >
-          Save
+          {isLoading ? "Loading..." : "Save"}
         </button>
       </div>
       <div className="flex justify-center">
