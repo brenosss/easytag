@@ -23,12 +23,12 @@ const CreatePage = () => {
 
   const project = getProjectFromCookie();
 
-  const [isLoading, setIsLoading] = useState("1");
+  const [isLoading, setIsLoading] = useState(true);
 
   async function createPage(event: React.FormEvent) {
     event.preventDefault();
     setTimeout(() => {
-      setIsLoading("1")
+      setIsLoading(true)
     }, 2000);
     if (!socialCard || !url) return;
     await fetch(`/api/projects/${project.id}/pages`, {
@@ -47,7 +47,7 @@ const CreatePage = () => {
 
     });
     await router.push("/dashboard/pages");
-    setIsLoading("0")
+    setIsLoading(false)
   }
 
   return (

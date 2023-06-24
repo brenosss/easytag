@@ -12,7 +12,7 @@ interface PageFormProps {
   url: string;
   setUrl: Dispatch<SetStateAction<string>>;
   submitFunction: (event: React.FormEvent) => void;
-  isLoading: string;
+  isLoading: boolean;
 }
 
 const PageForm = ({
