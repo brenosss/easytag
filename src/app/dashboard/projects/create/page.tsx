@@ -16,8 +16,8 @@ const CreateProject = () => {
 
   const router = useRouter();
 
-  const regexDomain = /^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
-  
+  const regexDomain = /^(?:https?:\/\/)?([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
+
   const handleChange = (e: FormEvent) => {
     const { name, value } = e.target as HTMLInputElement;
     console.log(name, value)
@@ -99,8 +99,7 @@ const CreateProject = () => {
                 </label>
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-600 sm:max-w-md">
-                    <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">easytag.com/projects/</span>
-                    <input
+                    <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">https://</span>                    <input
                       type="text"
                       value={data.domain}
                       onChange={(e) => handleChange(e)}
