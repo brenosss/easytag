@@ -23,13 +23,11 @@ const CreatePage = () => {
 
   const project = getProjectFromCookie();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function createPage(event: React.FormEvent) {
     event.preventDefault();
-    setTimeout(() => {
-      setIsLoading(true)
-    }, 2000);
+    setIsLoading(true)
     if (!socialCard || !url) return;
     await fetch(`/api/projects/${project.id}/pages`, {
       method: "POST",

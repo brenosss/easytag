@@ -15,6 +15,7 @@ const PageDetail = ({ params }) => {
   const [socialCard, setSocialCard] = useState<SocialCardProps>();
   const [currentImage, setCurrentImage] = useState<string>('');
   const [url, setUrl] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
   const { pageId } = params;
@@ -46,6 +47,7 @@ const PageDetail = ({ params }) => {
 
   async function editPage(event: React.FormEvent) {
     event.preventDefault();
+    setIsLoading(true)
     if (!socialCard || !url) return;
     const newImage = socialCard.image !== currentImage ? await blobUrlToBase64(socialCard.image) : undefined;
     await fetch(`/api/projects/${project.id}/pages/${pageId}`, {
@@ -61,6 +63,7 @@ const PageDetail = ({ params }) => {
         newImage: newImage,
       }),
     });
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -83,6 +86,7 @@ const PageDetail = ({ params }) => {
           url={url}
           setUrl={setUrl}
           submitFunction={editPage}
+          isLoading={isLoading}
         />
       }
     </>
