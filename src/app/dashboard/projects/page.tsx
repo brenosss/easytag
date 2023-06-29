@@ -5,7 +5,8 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import projectContext from "src/contexts/projectContext";
 
 interface Project {
   id: string;
@@ -17,7 +18,9 @@ const Projects = () => {
   const router = useRouter();
   const session = useSession();
 
+
   const [projects, setProjects] = useState<Project[]>([]);
+  const { currentProject, setCurrentProject } = useContext(projectContext);
 
   async function getProjects() {
     const projectsResponse = await fetch("/api/projects", {
@@ -34,14 +37,14 @@ const Projects = () => {
 
   async function selectProject(project: Project) {
     setCookie("project", JSON.stringify(project));
-    await router.push(`/dashboard/pages`);
+    setCurrentProject(project);
+    await router.replace(`/dashboard/pages`);
   }
 
   async function leftProject(project: Project) {
     await fetch(`/api/projects/${project.id}/users/${session.data?.user?.id}`, {
       method: "DELETE",
     });
-    router.reload();
   }
 
   useEffect(() => {

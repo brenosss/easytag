@@ -6,6 +6,8 @@ import { SessionProvider } from "next-auth/react";
 import Header from "src/app/dashboard/header";
 import Footer from "src/app/dashboard/footer";
 
+import ProjectProvider from "src/contexts/projectProvider";
+
 
 export default function DashboardLayout({
   children,
@@ -15,13 +17,15 @@ export default function DashboardLayout({
   return (
     <SessionProvider>
       <AuthContext >
-        <Header />
-        <main>
-            <div className="-mt-24 bg-white mx-auto w-4/5 rounded-3xl p-8">
-              {children}
-            </div>
-        </main>
-        <Footer />
+        <ProjectProvider>
+          <Header />
+          <main>
+              <div className="-mt-24 bg-white mx-auto w-4/5 rounded-3xl p-8">
+                {children}
+              </div>
+          </main>
+          <Footer />
+        </ProjectProvider>
       </AuthContext>
     </SessionProvider>
   );

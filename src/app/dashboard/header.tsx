@@ -1,13 +1,16 @@
 
 import "src/styles/globals.css";
 import Link from "next/link";
+import { Suspense, useContext } from 'react'
 import LogoutButton from "src/components/Buttons/LogoutButton";
 import{ getProjectFromCookie } from "src/app/cookies";
 import { ArrowSmallLeftIcon } from "@heroicons/react/20/solid";
 
+import projectContext from "src/contexts/projectContext";
+
 export default function Header() {
   
-    const project = getProjectFromCookie();
+    const { currentProject, setCurrentProject } = useContext(projectContext);
 
     const navigation_user = [
       { name: "Account", href: `/dashboard/pages`},
@@ -24,11 +27,13 @@ export default function Header() {
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 border-b border-white border-opacity-20" aria-label="Top">
           <div className="flex w-full items-center justify-between border-b border-emerald-500 py-6 lg:border-none">
             <div className="flex items-center">
-              <Link
-                href={`/projects/${project.id}/pages`}
-              >
-                <span className="sr-only">Your Company</span>
-              </Link>
+              {currentProject && (
+                <Link
+                  href={`/projects/${currentProject.id}/pages`}
+                >
+                  <span className="sr-only">Your Company</span>
+                </Link>
+              )}
               <div className="ml-10 hidden space-x-8 lg:block">
                 {navigation_user.map((link) => (
                   <Link
@@ -61,14 +66,16 @@ export default function Header() {
           <div className="flex w-full items-center border-b border-emerald-500 py-6 lg:border-none hidden lg:flex justify-between px-20">
                 <Link className="flex items-center" href="/dashboard/projects">
                   <ArrowSmallLeftIcon className="text-white p-2 w-20" />
+                  <Suspense fallback={<p>Loading project...</p>}>
                   <div>
                     <p className="font-semibold text-3xl text-white">
-                      {project && project.name}
+                      {currentProject && currentProject.name}
                     </p>
                     <p className="flex-none text-xs text-white">
-                      {project && project.domain}
+                      {currentProject && currentProject.domain}
                     </p>
                   </div>
+                  </Suspense>
                 </Link>
                 <div className="flex items-center justify-between gap-x-4">
                   {navigation_project.map((link) => (
