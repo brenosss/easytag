@@ -23,8 +23,11 @@ const CreatePage = () => {
 
   const project = getProjectFromCookie();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   async function createPage(event: React.FormEvent) {
     event.preventDefault();
+    setIsLoading(true)
     if (!socialCard || !url) return;
     await fetch(`/api/projects/${project.id}/pages`, {
       method: "POST",
@@ -39,8 +42,10 @@ const CreatePage = () => {
         newImage: await blobUrlToBase64(socialCard.image),
         projectId: project.id,
       }),
+
     });
     await router.push("/dashboard/pages");
+    setIsLoading(false)
   }
 
   return (
@@ -56,6 +61,7 @@ const CreatePage = () => {
           url={url}
           setUrl={setUrl}
           submitFunction={createPage}
+          isLoading={isLoading}
         />
       }
     </>

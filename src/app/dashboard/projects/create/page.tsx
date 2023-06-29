@@ -11,11 +11,13 @@ type ProjectData = {
 }
 
 const CreateProject = () => {
-  const [errors, setErrors] = useState<ProjectData>({domain: "", name: ""});
-  const [data, setData] = useState<ProjectData>({domain: "", name: ""});
+  const [errors, setErrors] = useState<ProjectData>({ domain: "", name: "" });
+  const [data, setData] = useState<ProjectData>({ domain: "", name: "" });
 
   const router = useRouter();
 
+  const regexDomain = /^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
+  
   const handleChange = (e: FormEvent) => {
     const { name, value } = e.target as HTMLInputElement;
     console.log(name, value)
@@ -24,14 +26,17 @@ const CreateProject = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const errors = {domain: "", name: ""};
-    if(data.name === "") {
+    const errors = { domain: "", name: "" };
+    if (data.name === "") {
       errors.name = "Name is required"
     }
-    if(data.domain === "") {
+    if (data.domain === "") {
       errors.domain = "Domain is required"
     }
-    if(errors.name !== "" || errors.domain !== "") {
+    if (!regexDomain.test(data.domain)) {
+      errors.domain = "Invalid domain!"
+    }
+    if (errors.name !== "" || errors.domain !== "") {
       setErrors(errors);
       return;
     }
@@ -94,15 +99,17 @@ const CreateProject = () => {
                 </label>
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-600 sm:max-w-md">
+                    <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">easytag.com/projects/</span>
                     <input
                       type="text"
                       value={data.domain}
                       onChange={(e) => handleChange(e)}
-                      name="domain" 
+                      name="domain"
                       autoComplete="domain"
                       className="block flex-1 rounded-md border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="myproject.com"
                     />
+
                   </div>
                   <p className="text-red-500 text-xs italic pt-2">{errors.domain && errors.domain}</p>
                 </div>
