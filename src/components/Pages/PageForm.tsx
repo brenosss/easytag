@@ -4,8 +4,8 @@ import { LabelInput } from "../Inputs/Label";
 import { TextAreaInput, TextInput } from "../Inputs/Text";
 import Preview from "./Preview";
 import { type SocialCardProps } from "./SocialCards/ISocialCard";
-import { useState } from "react";
-
+import { useState, useContext } from "react";
+import projectContext from "src/contexts/projectContext";
 interface PageFormProps {
   socialCard: SocialCardProps;
   setSocialCard: Dispatch<SetStateAction<SocialCardProps | undefined>>;
@@ -26,8 +26,8 @@ const PageForm = ({
   const [descriptionTip, setDescriptionTip] = useState(false)
   const [titleTip, setTitleTip] = useState(false)
   const [pathError, setPathError] = useState("");
-
-  const regexDomain = /^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
+  const { currentProject, setCurrentProject } = useContext(projectContext);
+  const regexDomain = /^(?:https?:\/\/)?([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
 
   function validateTitle(title: string) {
     if (title.length >= 60 && title.length <= 70) {
@@ -56,13 +56,16 @@ const PageForm = ({
       <div className="mb-12">
         <div className=" flex justify-around px-32">
           <LabelInput label="Path" className="mb-2" />
-          <TextInput
-            className="ml-2 w-10/12"
-            name="url"
-            value={url}
-            onChange={(event) => setUrl(event.target.value)}
-            onBlur={() => validatePath(url)}
-          />
+          <div className="ml-5 w-10/12 flex">
+            <TextInput
+              displayText={currentProject.domain + "/"}
+              className="ml-2 w-full"
+              name="url"
+              value={url}
+              onChange={(event) => setUrl(event.target.value)}
+              onBlur={() => validatePath(url)}
+            />
+          </div>
           <button
             className="ml-12 w-1/12 items-center rounded-lg disabled:cursor-not-allowed bg-emerald-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-700 focus:outline-none"
             type="submit"
