@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
 import { useState, type FormEvent } from "react";
-
+import { TextInput } from "src/components/Inputs/Text"
 type ProjectData = {
   domain: string;
   name: string;
@@ -16,8 +16,8 @@ const CreateProject = () => {
 
   const router = useRouter();
 
-  const regexDomain = /^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
-  
+  const regexDomain = /^([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
+
   const handleChange = (e: FormEvent) => {
     const { name, value } = e.target as HTMLInputElement;
     console.log(name, value)
@@ -33,7 +33,7 @@ const CreateProject = () => {
     if (data.domain === "") {
       errors.domain = "Domain is required"
     }
-    if (!regexDomain.test(data.domain)) {
+    else if (!regexDomain.test(data.domain)) {
       errors.domain = "Invalid domain!"
     }
     if (errors.name !== "" || errors.domain !== "") {
@@ -75,7 +75,7 @@ const CreateProject = () => {
                   Name
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-400 sm:max-w-md">
                     <input
                       type="text"
                       value={data.name}
@@ -98,18 +98,17 @@ const CreateProject = () => {
                   Domain
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-600 sm:max-w-md">
-                    <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">easytag.com/projects/</span>
-                    <input
-                      type="text"
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-400 sm:max-w-md">
+                    <TextInput
+                      displayText="https://"
                       value={data.domain}
                       onChange={(e) => handleChange(e)}
+                      className="ml-2 w-full sm:text-sm sm:leading-6"
                       name="domain"
                       autoComplete="domain"
-                      className="block flex-1 rounded-md border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="myproject.com"
                     />
-
+                    
                   </div>
                   <p className="text-red-500 text-xs italic pt-2">{errors.domain && errors.domain}</p>
                 </div>
