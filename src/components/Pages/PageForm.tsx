@@ -27,7 +27,7 @@ const PageForm = ({
   const [titleTip, setTitleTip] = useState(false)
   const [pathError, setPathError] = useState("");
   const { currentProject, setCurrentProject } = useContext(projectContext);
-  const regexDomain = /^(?:https?:\/\/)?([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
+  const regexDomain = /^([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
 
   function validateTitle(title: string) {
     if (title.length >= 60 && title.length <= 70) {

@@ -9,12 +9,12 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export function TextInput({ ...props }: TextInputProps) {
   return (
     <div className="flex w-full rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-400 ">
-      {props.displayText && <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">{props.displayText}</span>}
+      {props.displayText && <span className="flex select-none items-center pl-3 text-gray-500">{props.displayText}</span>}
       <input
         type="text"
         {...props}
         className={clsx(
-          "w-full block focus:ring-0 border-0 bg-transparent border-gray-300 p-1 py-2",
+          "w-full block focus:ring-0 border-0 bg-transparent border-gray-300 px-0.5 py-2",
           props.className
         )}
       />

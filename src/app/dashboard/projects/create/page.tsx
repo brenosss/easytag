@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
 import { useState, type FormEvent } from "react";
-import { TextInput } from "/home/josue/Documents/easytag/easytag/src/components/Inputs/Text.tsx";
+import { TextInput } from "src/components/Inputs/Text"
 type ProjectData = {
   domain: string;
   name: string;
@@ -16,7 +16,7 @@ const CreateProject = () => {
 
   const router = useRouter();
 
-  const regexDomain = /^(?:https?:\/\/)?([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
+  const regexDomain = /^([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
 
   const handleChange = (e: FormEvent) => {
     const { name, value } = e.target as HTMLInputElement;
@@ -75,7 +75,7 @@ const CreateProject = () => {
                   Name
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-400 sm:max-w-md">
                     <input
                       type="text"
                       value={data.name}
@@ -98,7 +98,7 @@ const CreateProject = () => {
                   Domain
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-400 sm:max-w-md">
                     <TextInput
                       displayText="https://"
                       value={data.domain}
