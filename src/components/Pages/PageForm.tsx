@@ -6,6 +6,7 @@ import Preview from "./Preview";
 import { type SocialCardProps } from "./SocialCards/ISocialCard";
 import { useState, useContext } from "react";
 import projectContext from "src/contexts/projectContext";
+import { ShowMore } from "../Buttons/ShowMore";
 interface PageFormProps {
   socialCard: SocialCardProps;
   setSocialCard: Dispatch<SetStateAction<SocialCardProps | undefined>>;
@@ -155,26 +156,28 @@ const PageForm = ({
                 }
               }}
             />
-            {imageTip && <p className="mt-1 text-orange-200">
-              Adjust image sizes to meet recommended dimensions for each platform:
-              <ul>
-                <li className="hover:font-semibold">- Facebook: 1200x630 px (1.91:1)</li>
-                <li className="hover:font-semibold">- Twitter: 1200x675 px (16:9)</li>
-                <li className="hover:font-semibold">- LinkedIn: 1200x627 px (1.91:1)</li>
-                <li className="hover:font-semibold">- Pinterest: min width 600 px (2:3)</li>
-              </ul>
-            </p>}
-            {imageDimensionsTip && <p className="mt-1 text-orange-200">
-              keep the file size under 200 KB to ensure faster loading times and better user experience.
-              To achieve this, consider the following tips:
-              <ul>
-                <li className="hover:font-semibold">- Optimize image compression: Save images in formats like JPEG or WebP, which typically offer better compression without significant loss of quality. Adjust the compression level to balance image quality and file size.</li>
-                <li className="hover:font-semibold">- Use image optimization tools: Tools like TinyPNG, ImageOptim, or Kraken.io can help compress your images without a noticeable loss of quality, reducing file size significantly.</li>
-                <li className="hover:font-semibold">- Remove unnecessary metadata: Image files often contain metadata like camera information, location data, and color profiles. Use tools to remove this unnecessary data, which can reduce the file size without affecting the image quality.</li>
-                <li className="hover:font-semibold">- Consider responsive images: If your website uses responsive design, you might want to serve different image sizes for different devices to ensure faster loading times on mobile devices with smaller screens and slower connections.</li>
-                <li className="hover:font-semibold">- Remember, the most important factor is to ensure your images maintain good visual quality when shared on social media, so always test your images on various platforms to make sure they appear clear and sharp.</li>
-              </ul>
-            </p>}
+            {imageTip &&
+              <ShowMore title="Adjust image sizes to meet recommended dimensions for each platform:" description={
+                <ul>
+                  <li>- Facebook: 1200x630 px (1.91:1)</li>
+                  <li>- Twitter: 1200x675 px (16:9)</li>
+                  <li>- LinkedIn: 1200x627 px (1.91:1)</li>
+                  <li>- Pinterest: min width 600 px (2:3)</li>
+                </ul>
+              }></ShowMore>
+            }
+            {imageDimensionsTip &&
+              <ShowMore title="keep the file size under 200 KB to ensure faster loading times and better user experience.
+            To achieve this, consider the following tips:" description={
+                  <ul>
+                    <li>- Optimize image compression: Save images in formats like JPEG or WebP, which typically offer better compression without significant loss of quality. Adjust the compression level to balance image quality and file size.</li>
+                    <li>- Use image optimization tools: Tools like TinyPNG, ImageOptim, or Kraken.io can help compress your images without a noticeable loss of quality, reducing file size significantly.</li>
+                    <li>- Remove unnecessary metadata: Image files often contain metadata like camera information, location data, and color profiles. Use tools to remove this unnecessary data, which can reduce the file size without affecting the image quality.</li>
+                    <li>- Consider responsive images: If your website uses responsive design, you might want to serve different image sizes for different devices to ensure faster loading times on mobile devices with smaller screens and slower connections.</li>
+                    <li>- Remember, the most important factor is to ensure your images maintain good visual quality when shared on social media, so always test your images on various platforms to make sure they appear clear and sharp.</li>
+                  </ul>
+                }></ShowMore>
+            }
           </div>
         </div>
         <Preview socialCard={socialCard} />
