@@ -62,6 +62,7 @@ const CreatePage = () => {
           setUrl={setUrl}
           submitFunction={createPage}
           isLoading={isLoading}
+          deleteButton={false}
         />
       }
     </>

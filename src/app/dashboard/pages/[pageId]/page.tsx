@@ -44,6 +44,18 @@ const PageDetail = ({ params }) => {
       router.push('/projects');
     }
   }
+  async function deletePage(event: React.FormEvent) {
+    event.preventDefault();
+    if (!socialCard || !url) return;
+    try {
+      await fetch(`/api/pages/delete/${project.id}/${pageId}`, {
+        method: "DELETE"
+      });
+      console.log('Item deleted');
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function editPage(event: React.FormEvent) {
     event.preventDefault();
@@ -87,6 +99,8 @@ const PageDetail = ({ params }) => {
           setUrl={setUrl}
           submitFunction={editPage}
           isLoading={isLoading}
+          deleteButton={true}
+          deleteFunction={deletePage}
         />
       }
     </>

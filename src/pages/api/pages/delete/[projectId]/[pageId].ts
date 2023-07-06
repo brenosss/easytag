@@ -12,8 +12,10 @@ async function deletePage(
     await prisma.page.delete({
       where: { id: pageId },
     });
+    res.status(200).json({ message: "Page deleted successfully" });
   } catch (error) {
     console.error('This error ocurred:', error);
+    res.status(500).json({ error: "Something went wrong" });
   }
 }
 
@@ -51,4 +53,5 @@ const Delete = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500).json({ error: "Something went wrong" });
   }
 }
+
 export default Delete;
