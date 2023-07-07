@@ -7,6 +7,7 @@ import { type SocialCardProps } from "./SocialCards/ISocialCard";
 import { useState, useContext } from "react";
 import projectContext from "src/contexts/projectContext";
 import { ShowMore } from "../Buttons/ShowMore";
+import MyModal from "../Buttons/Modal";
 interface PageFormProps {
   socialCard: SocialCardProps;
   setSocialCard: Dispatch<SetStateAction<SocialCardProps | undefined>>;
@@ -35,6 +36,7 @@ const PageForm = ({
   const [imageDimensionsTip, setImageDimensionsTip] = useState(false)
   const { currentProject, setCurrentProject } = useContext(projectContext);
   const regexDomain = /^([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
+  const [modal, setModal] = useState(false);
 
   function validateTitle(title: string) {
     if (title.length >= 60 && title.length <= 70) {
@@ -60,6 +62,12 @@ const PageForm = ({
   }
   return (
     <form className="mt-12 p-3" onSubmit={submitFunction}>
+      {modal && <MyModal
+      onClose={() => {
+        setModal(false);
+      }}  
+      onAccept={deleteFunction}
+      />}
       <div className="mb-12">
         <div className=" flex justify-around px-32">
           <LabelInput label="Path" className="mb-2" />
@@ -93,7 +101,7 @@ const PageForm = ({
             <button
               className="ml-5 w-2/12 items-center rounded-lg disabled:cursor-not-allowed bg-red-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-red-800 focus:outline-none"
               type="submit"
-              onClick={ deleteFunction }
+              onClick={() => setModal(true)}
             >
               Delete
             </button>

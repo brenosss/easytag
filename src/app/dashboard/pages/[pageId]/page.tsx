@@ -45,13 +45,13 @@ const PageDetail = ({ params }) => {
     }
   }
   async function deletePage(event: React.FormEvent) {
-    event.preventDefault();
     if (!socialCard || !url) return;
     try {
       await fetch(`/api/pages/delete/${project.id}/${pageId}`, {
         method: "DELETE"
       });
       console.log('Item deleted');
+      window.location.href = "/dashboard/pages"
     } catch (error) {
       console.error(error);
     }
