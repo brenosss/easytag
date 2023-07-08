@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import {
   ExclamationTriangleIcon
 } from "@heroicons/react/24/outline";
@@ -7,14 +7,33 @@ import {
 interface modalProps {
   onClose: () => void;
   onAccept: () => void;
+  modalTheme?: string;
+  title: string;
+  message: string;
+  acceptButtonMessage: string;
 }
 
 export default function MyModal(props: modalProps) {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(true);
+  const [buttonTheme, setButtonTheme] = useState("");
+  const [iconTheme, setIconTheme] = useState("");
+  useEffect(() => {
+    if (props.modalTheme == "danger" || props.modalTheme == null) {
+      setButtonTheme("bg-red-600 hover:bg-red-500")
+      setIconTheme("text-red-600 bg-red-100")
+    }
+    if (props.modalTheme == "alert") {
+      setButtonTheme("bg-yellow-500 hover:bg-yellow-400")
+      setIconTheme("text-yellow-400 bg-yellow-100")
+    }
+  }, [props.modalTheme]);
 
   function closeModal() {
     setIsOpen(false)
-    props.onClose();
+    setTimeout(() => {
+      // waiting until the animation ends
+      props.onClose();
+    }, 395);
   }
 
   return (
@@ -46,17 +65,16 @@ export default function MyModal(props: modalProps) {
               >
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                   <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                    <div className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10 ${iconTheme}`}>
+                      <ExclamationTriangleIcon className="h-6 w-6" aria-hidden="true" />
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                       <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                        You are about to delete this page
+                        {props.title}
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          Are you sure you want to proceed? All of this data will be permanently removed
-                          from our servers forever. This action cannot be undone.
+                          {props.message}
                         </p>
                       </div>
                     </div>
@@ -64,14 +82,13 @@ export default function MyModal(props: modalProps) {
                   <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                     <button
                       type="button"
-                      className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                      onClick={()=>{
+                      className={`inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto ${buttonTheme}`}
+                      onClick={() => {
                         props.onAccept?.();
                         closeModal;
-                        props.onClose();
                       }}
                     >
-                      Delete
+                      {props.acceptButtonMessage}
                     </button>
                     <button
                       type="button"

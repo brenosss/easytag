@@ -67,6 +67,9 @@ const PageForm = ({
         setModal(false);
       }}  
       onAccept={deleteFunction}
+      title="You are about to delete this page"
+      message="Are you sure you want to proceed? All of this data will be permanently removed from our servers forever. This action cannot be undone."
+      acceptButtonMessage="Delete"
       />}
       <div className="mb-12">
         <div className=" flex justify-around px-32">
