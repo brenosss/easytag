@@ -50,7 +50,6 @@ const PageDetail = ({ params }) => {
       await fetch(`/api/pages/${project.id}/${pageId}`, {
         method: "DELETE"
       });
-      console.log('Item deleted');
       router.push('/dashboard/pages')
     } catch (error) {
       console.error(error);

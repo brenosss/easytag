@@ -6,8 +6,8 @@ import Preview from "./Preview";
 import { type SocialCardProps } from "./SocialCards/ISocialCard";
 import { useState, useContext } from "react";
 import projectContext from "src/contexts/projectContext";
-import { ShowMore } from "../Buttons/ShowMore";
-import MyModal from "../Buttons/Modal";
+import { ShowMore } from "src/components/Buttons/ShowMore";
+import MyModal from "src/components/Buttons/Modal";
 interface PageFormProps {
   socialCard: SocialCardProps;
   setSocialCard: Dispatch<SetStateAction<SocialCardProps | undefined>>;
