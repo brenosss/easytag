@@ -1,5 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState } from 'react'
+import clsx from "clsx"
 import {
   ExclamationTriangleIcon
 } from "@heroicons/react/24/outline";
@@ -11,23 +12,16 @@ interface modalProps {
   title: string;
   message: string;
   acceptButtonMessage: string;
+  children: React.ReactNode;
 }
 
 export default function MyModal(props: modalProps) {
   const [isOpen, setIsOpen] = useState(true);
-  const [buttonTheme, setButtonTheme] = useState("");
-  const [iconTheme, setIconTheme] = useState("");
-  useEffect(() => {
-    if (props.modalTheme == "danger" || props.modalTheme == null) {
-      setButtonTheme("bg-red-600 hover:bg-red-500")
-      setIconTheme("text-red-600 bg-red-100")
-    }
-    if (props.modalTheme == "alert") {
-      setButtonTheme("bg-yellow-500 hover:bg-yellow-400")
-      setIconTheme("text-yellow-400 bg-yellow-100")
-    }
-  }, [props.modalTheme]);
-
+  const baseStyles = {
+    danger: { button: "bg-red-600 hover:bg-red-500", icon: "text-red-600 bg-red-100" },
+    alert: { button: "bg-yellow-500 hover:bg-yellow-400", icon: "text-yellow-400 bg-yellow-100" }
+  }
+  const modalTheme = props.modalTheme || "danger";
   function closeModal() {
     setIsOpen(false)
     setTimeout(() => {
@@ -65,7 +59,7 @@ export default function MyModal(props: modalProps) {
               >
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                   <div className="sm:flex sm:items-start">
-                    <div className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10 ${iconTheme}`}>
+                    <div className={clsx('mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10', baseStyles[modalTheme]['icon'])}>
                       <ExclamationTriangleIcon className="h-6 w-6" aria-hidden="true" />
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
@@ -74,7 +68,7 @@ export default function MyModal(props: modalProps) {
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          {props.message}
+                          {props.children}
                         </p>
                       </div>
                     </div>
@@ -82,7 +76,7 @@ export default function MyModal(props: modalProps) {
                   <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                     <button
                       type="button"
-                      className={`inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto ${buttonTheme}`}
+                      className={clsx('inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto', baseStyles[modalTheme]['button'])}
                       onClick={() => {
                         props.onAccept?.();
                         closeModal;

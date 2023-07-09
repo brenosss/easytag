@@ -7,7 +7,7 @@ import { type SocialCardProps } from "./SocialCards/ISocialCard";
 import { useState, useContext } from "react";
 import projectContext from "src/contexts/projectContext";
 import { ShowMore } from "src/components/Buttons/ShowMore";
-import MyModal from "src/components/Buttons/Modal";
+import Modal from "src/components/Buttons/Modal";
 interface PageFormProps {
   socialCard: SocialCardProps;
   setSocialCard: Dispatch<SetStateAction<SocialCardProps | undefined>>;
@@ -62,15 +62,14 @@ const PageForm = ({
   }
   return (
     <form className="mt-12 p-3" onSubmit={submitFunction}>
-      {modal && <MyModal
+      {modal && <Modal
       onClose={() => {
         setModal(false);
       }}  
       onAccept={deleteFunction}
       title="You are about to delete this page"
-      message="Are you sure you want to proceed? All of this data will be permanently removed from our servers forever. This action cannot be undone."
       acceptButtonMessage="Delete"
-      />}
+      >Are you sure you want to proceed? All of this data will be permanently removed from our servers forever. This action cannot be undone.</Modal>}
       <div className="mb-12">
         <div className=" flex justify-around px-32">
           <LabelInput label="Path" className="mb-2" />
