@@ -44,6 +44,17 @@ const PageDetail = ({ params }) => {
       router.push('/projects');
     }
   }
+  
+  async function deletePage() {
+    try {
+      await fetch(`/api/pages/${project.id}/${pageId}`, {
+        method: "DELETE"
+      });
+      router.push('/dashboard/pages')
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function editPage(event: React.FormEvent) {
     event.preventDefault();
@@ -87,6 +98,8 @@ const PageDetail = ({ params }) => {
           setUrl={setUrl}
           submitFunction={editPage}
           isLoading={isLoading}
+          deleteButton={true}
+          deleteFunction={deletePage}
         />
       }
     </>

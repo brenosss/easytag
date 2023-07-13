@@ -6,7 +6,8 @@ import Preview from "./Preview";
 import { type SocialCardProps } from "./SocialCards/ISocialCard";
 import { useState, useContext } from "react";
 import projectContext from "src/contexts/projectContext";
-import { ShowMore } from "../Buttons/ShowMore";
+import { ShowMore } from "src/components/Buttons/ShowMore";
+import Modal from "src/components/Buttons/Modal";
 interface PageFormProps {
   socialCard: SocialCardProps;
   setSocialCard: Dispatch<SetStateAction<SocialCardProps | undefined>>;
@@ -14,6 +15,8 @@ interface PageFormProps {
   setUrl: Dispatch<SetStateAction<string>>;
   submitFunction: (event: React.FormEvent) => void;
   isLoading: boolean;
+  deleteButton: boolean;
+  deleteFunction?: (event: React.FormEvent) => void;
 }
 
 const PageForm = ({
@@ -23,6 +26,8 @@ const PageForm = ({
   setUrl,
   submitFunction,
   isLoading,
+  deleteButton,
+  deleteFunction,
 }: PageFormProps) => {
   const [descriptionTip, setDescriptionTip] = useState(false)
   const [titleTip, setTitleTip] = useState(false)
@@ -31,6 +36,7 @@ const PageForm = ({
   const [imageDimensionsTip, setImageDimensionsTip] = useState(false)
   const { currentProject, setCurrentProject } = useContext(projectContext);
   const regexDomain = /^([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
+  const [modal, setModal] = useState(false);
 
   function validateTitle(title: string) {
     if (title.length >= 60 && title.length <= 70) {
@@ -56,6 +62,14 @@ const PageForm = ({
   }
   return (
     <form className="mt-12 p-3" onSubmit={submitFunction}>
+      {modal && <Modal
+      onClose={() => {
+        setModal(false);
+      }}  
+      onAccept={deleteFunction}
+      title="You are about to delete this page"
+      acceptButtonMessage="Delete"
+      >Are you sure you want to proceed? All of this data will be permanently removed from our servers forever. This action cannot be undone.</Modal>}
       <div className="mb-12">
         <div className=" flex justify-around px-32">
           <LabelInput label="Path" className="mb-2" />
@@ -70,14 +84,14 @@ const PageForm = ({
             />
           </div>
           <button
-            className="ml-12 w-1/12 items-center rounded-lg disabled:cursor-not-allowed bg-emerald-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-700 focus:outline-none"
+            className="ml-12 w-2/12 items-center rounded-lg disabled:cursor-not-allowed bg-emerald-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-700 focus:outline-none"
             type="submit"
             onSubmit={submitFunction}
             disabled={isLoading || pathError.length > 0}
           >
             {isLoading ?
-              <div className="pl-2 text-sm font-medium text-white flex items-center">
-                <svg className="animate-spin h-5 w-5 text-white mr-2" fill="none" viewBox="0 0 24 24">
+              <div className="pl-2 text-sm font-medium text-white  items-center">
+                <svg className="animate-spin h-5 w-5 text-white mr-2 absolute" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -85,6 +99,15 @@ const PageForm = ({
               </div>
               : "Save"}
           </button>
+          {deleteButton &&
+            <button
+              className="ml-5 w-2/12 items-center rounded-lg disabled:cursor-not-allowed bg-red-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-red-800 focus:outline-none"
+              type="submit"
+              onClick={() => setModal(true)}
+            >
+              Delete
+            </button>
+          }
         </div>
         {pathError && <p className="text-red-500 relative text-xs italic pt-2 cmb-12 px-44">{pathError}</p>}
       </div>
