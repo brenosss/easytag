@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import footer_bg from 'src/images/footer/footer_bg.svg'
+import logo from"src/images/logo/logo.svg"
 export default function Footer() {
   return (
     <footer className="footer bg-cover bg-no-repeat bg-right-top pt-120 mt-25 bg-theme-color md:bg-transparent md:pt-260 lg:pt-260"  style={{backgroundImage: `url(${footer_bg.src})`}}>
@@ -10,7 +11,7 @@ export default function Footer() {
             <div className="w-full md:w-6/12 lg:w-4/12">
               <div className="footer-widget mb-10 mx-3">
                 <div className="logo mb-8">
-                  <a href="/"> <Image src="src/images/logo/logo.svg" width={12} height={12} alt=""/> </a>
+                  <a href="/"> <Image src={logo} alt=""/> </a>
                 </div>
                 <p className="mb-8 text-white sm:pr-13 md:pr-0 2xl:pr-25">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed dinonumy eirmod tempor invidunt.</p>
                 <ul className="socials flex items-center">
