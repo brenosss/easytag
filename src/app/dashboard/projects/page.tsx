@@ -20,6 +20,8 @@ const Projects = () => {
 
 
   const [projects, setProjects] = useState<Project[]>([]);
+  const [pendingProjects, setPendingProjects] = useState<Project[]>([]);
+
   const { currentProject, setCurrentProject } = useContext(projectContext);
 
   async function getProjects() {
@@ -32,6 +34,18 @@ const Projects = () => {
     if (projectsResponse.status === 200) {
       const projectsData = await projectsResponse.json();
       return projectsData.length === 0 ? await router.push("/dashboard/projects/create") : setProjects(projectsData);
+    }
+  }
+  async function getPendingProjects() {
+    const projectsResponse = await fetch("/api/projects/invitations", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (projectsResponse.status === 200) {
+      const projectsData = await projectsResponse.json();
+      return projectsData.length === 0 ? await false : setPendingProjects(projectsData);
     }
   }
 
@@ -47,9 +61,16 @@ const Projects = () => {
     });
   }
 
+  async function acceptInvite(project: Project) {
+    await fetch(`/api/projects/${project.id}/users/${session.data?.user?.id}`, {
+      method: "PATCH",
+    });
+  }
+
   useEffect(() => {
     (async () => {
       await getProjects();
+      await getPendingProjects();
     })();
   }, []);
 
@@ -58,7 +79,7 @@ const Projects = () => {
       <Head>
         <title>Projects</title>
       </Head>
-      <div className="flex h-screen flex-col items-center">
+      <div className="flex flex-col items-center">
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center justify-center">
             <div>
@@ -103,7 +124,7 @@ const Projects = () => {
               <tbody className="w-full divide-y divide-gray-200">
                 {projects.map((project) => (
                   <tr key={project.name} onClick={() => selectProject(project)} className="cursor-pointer">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                    <td className="whitespace-nowrap hover:text-emerald-500 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                       {project.name}
                     </td>
                     <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
@@ -113,6 +134,70 @@ const Projects = () => {
                 ))}
               </tbody>
             </table>
+            <div className="flex items-center justify-center">
+              <div>
+                <h1 className="text-base font-semibold leading-6 text-gray-900">
+                  Invited Projects
+                </h1>
+                <p className="mt-2 text-sm text-gray-700">
+                  Projects you were invited to be a part of.
+                </p>
+              </div>
+            </div>
+            <div className="inline-block min-w-full p-6">
+              <table className="w-full min-w-full divide-y divide-gray-300">
+                <thead>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                    >
+                      Name
+                    </th>
+                    <th
+                      scope="col"
+                      className="py-3.5 px-3 text-center text-sm font-semibold text-gray-900"
+                    >
+                      Description
+                    </th>
+                    <th
+                      scope="col"
+                      className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    >
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="w-full divide-y divide-gray-200">
+                  {pendingProjects.map((project) => (
+                    <tr key={project.name} className="cursor:auto">
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                        {project.name}
+                      </td>
+                      <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
+                        {project.description}
+                      </td>
+                      <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
+                        <button
+                          className="ml-12 items-center rounded-lg disabled:cursor-not-allowed bg-emerald-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-700 focus:outline-3"
+                          type="submit"
+                          onClick={() => acceptInvite(project)}
+                        >
+                          Accept
+                        </button>
+                        <button
+                          className="ml-5 items-center rounded-lg disabled:cursor-not-allowed bg-red-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-red-800 focus:outline-3"
+                          type="submit"
+                          onClick={() => leftProject(project)}
+                        >
+                          Decline
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
