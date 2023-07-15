@@ -1,6 +1,6 @@
 import Head from "next/head";
 import HeroSection from "./HeroSection";
-import FeatureSection1 from "./FeatureSection1"
+import FeatureSection1 from "./FeatureSection1";
 import AboutSection1 from "./AboutSection1";
 import "src/styles/LineIcons.2.0.css";
 import "src/styles/tailwindcss.css";
@@ -36,6 +36,9 @@ const Landing = () => {
           <Footer />
         </div>
       </div>
+      <a href="#" className="scroll-top btn-hover">
+        <i className="lni lni-chevron-up"></i>
+      </a>
     </>
   );
 };
