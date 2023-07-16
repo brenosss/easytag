@@ -11,16 +11,16 @@ import projectContext from "src/contexts/projectContext";
 interface Project {
   id: string;
   name: string;
-  description: string;
+  domain: string;
 }
 
 const Projects = () => {
   const router = useRouter();
   const session = useSession();
 
-
   const [projects, setProjects] = useState<Project[]>([]);
   const [pendingProjects, setPendingProjects] = useState<Project[]>([]);
+  const [hasPendingProjects, setHasPendingProjects] = useState(false); // Adicione o estado para verificar se existem projetos pendentes
 
   const { currentProject, setCurrentProject } = useContext(projectContext);
 
@@ -45,7 +45,13 @@ const Projects = () => {
     });
     if (projectsResponse.status === 200) {
       const projectsData = await projectsResponse.json();
-      return projectsData.length === 0 ? await false : setPendingProjects(projectsData);
+      if (projectsData.length === 0) {
+        setPendingProjects([]);
+        setHasPendingProjects(false);
+      } else {
+        setPendingProjects(projectsData);
+        setHasPendingProjects(true);
+      }
     }
   }
 
@@ -56,13 +62,18 @@ const Projects = () => {
   }
 
   async function leftProject(project: Project) {
-    await fetch(`/api/projects/${project.id}/users/${session.data?.user?.id}`, {
+    await fetch(`/api/projects/${project.id}/users/${session.data?.user?.id}/`, {
       method: "DELETE",
+    });
+  }
+  async function declineInvitation(project: Project) {
+    await fetch(`/api/projects/${project.id}/users/update/recused`, {
+      method: "PATCH",
     });
   }
 
   async function acceptInvite(project: Project) {
-    await fetch(`/api/projects/${project.id}/users/${session.data?.user?.id}`, {
+    await fetch(`/api/projects/${project.id}/users/update/accepted`, {
       method: "PATCH",
     });
   }
@@ -114,7 +125,7 @@ const Projects = () => {
                     scope="col"
                     className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
                   >
-                    Description
+                    Domain
                   </th>
                   <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
                     <span className="sr-only">Edit</span>
@@ -128,15 +139,15 @@ const Projects = () => {
                       {project.name}
                     </td>
                     <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-                      {project.description}
+                      {project.domain}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center divide-gray-200">
               <div>
-                <h1 className="text-base font-semibold leading-6 text-gray-900">
+                <h1 className="text-base font-semibold  pt-10 text-center leading-6 text-gray-900">
                   Invited Projects
                 </h1>
                 <p className="mt-2 text-sm text-gray-700">
@@ -144,60 +155,65 @@ const Projects = () => {
                 </p>
               </div>
             </div>
-            <div className="inline-block min-w-full p-6">
-              <table className="w-full min-w-full divide-y divide-gray-300">
-                <thead>
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3.5 px-3 text-center text-sm font-semibold text-gray-900"
-                    >
-                      Description
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="w-full divide-y divide-gray-200">
-                  {pendingProjects.map((project) => (
-                    <tr key={project.name} className="cursor:auto">
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                        {project.name}
-                      </td>
-                      <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-                        {project.description}
-                      </td>
-                      <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-                        <button
-                          className="ml-12 items-center rounded-lg disabled:cursor-not-allowed bg-emerald-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-700 focus:outline-3"
-                          type="submit"
-                          onClick={() => acceptInvite(project)}
-                        >
-                          Accept
-                        </button>
-                        <button
-                          className="ml-5 items-center rounded-lg disabled:cursor-not-allowed bg-red-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-red-800 focus:outline-3"
-                          type="submit"
-                          onClick={() => leftProject(project)}
-                        >
-                          Decline
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {
+              hasPendingProjects ?
+                <>
+                  <div className="inline-block min-w-full p-6">
+                    <table className="w-full min-w-full divide-y divide-gray-300">
+                      <thead>
+                        <tr>
+                          <th
+                            scope="col"
+                            className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                          >
+                            Name
+                          </th>
+                          <th
+                            scope="col"
+                            className="py-3.5 px-3 text-center text-sm font-semibold text-gray-900"
+                          >
+                            Domain
+                          </th>
+                          <th
+                            scope="col"
+                            className="py-3.5 px-3 text-center text-sm font-semibold text-gray-900"
+                          >
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="w-full divide-y divide-gray-200">
+                        {pendingProjects.map((project) => (
+                          <tr key={project.name} className="cursor:auto">
+                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                              {project.name}
+                            </td>
+                            <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
+                              {project.domain}
+                            </td>
+                            <td className="whitespace-nowrap items-center py-4 px-3 text-sm text-gray-500">
+                              <button
+                                className="rounded-lg m-2.5 bg-emerald-600 p-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-500 focus:outline-3"
+                                type="submit"
+                                onClick={() => acceptInvite(project)}
+                              >
+                                Accept
+                              </button>
+                              <button
+                                className="rounded-lg m-2.5 bg-red-600 p-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-red-500 focus:outline-3"
+                                type="submit"
+                                onClick={() => declineInvitation(project)}
+                              >
+                                Decline
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </> :
+                <p className="mt-4 text-sm bg-yellow-100 rounded-full py-1 text-yellow-400 text-center">You have not been invited to any projects</p>}
           </div>
         </div>
       </div>

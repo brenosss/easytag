@@ -25,7 +25,7 @@ const patch = async (
   if (!amITryingToUpdateMyself) {
     return res.status(403).json({ error: "Forbidden" });
   }
-  if (invitation.pending === false) {
+  if (invitation.projectStatus === "accepted") {
     return res.status(400).json({ error: "Already accepted" });
   }
   await prisma.usersInProjects.update({
@@ -36,7 +36,7 @@ const patch = async (
       },
     },
     data: {
-      pending: false,
+      projectStatus: "accepted",
     },
   });
   res.status(200).json({ message: "Invite accepted" });

@@ -14,7 +14,7 @@ async function get(
       UsersInProjects: {
         some: {
           userId: user.id,
-          pending: false,
+          projectStatus: "accepted",
         },
       },
     },
@@ -43,41 +43,14 @@ async function post(
     data: {
       userId: user.id,
       projectId: project.id,
-      pending: false,
+      projectStatus: "accepted",
     },
   });
   user.projects.push(project);
   res.status(201).json(project);
 }
 
-const patch = async (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  user: SessionUser,
-  projectId: string
-): Promise<void> => {
-  const projects = await prisma.usersInProjects.update({
-    where: {
-      userId: user.id,
-      projectId: projectId,
-    },
-    data: {pending:false}
-  })
-}
-const deleteFunc = async (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  user: SessionUser,
-  projectId: string
-): Promise<void> => {
-  const projects = await prisma.usersInProjects.delete({
-    where: {
-      userId: user.id,
-      projectId: projectId,
-    },
-  })
-}
-const projects = async (req: NextApiRequest, res: NextApiResponse, project: string) => {
+const projects = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getServerAuthSession({ req, res });
   if (!session || !session.user) {
     return res.status(401).json({ error: "Not authenticated" });
@@ -85,8 +58,6 @@ const projects = async (req: NextApiRequest, res: NextApiResponse, project: stri
   try {
     if (req.method === "GET") await get(req, res, session.user);
     if (req.method === "POST") await post(req, res, session.user);
-    if (req.method === "PATCH") await patch(req, res, session.user, project);
-    if (req.method === "DELETE") await deleteFunc(req, res, session.user, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong" });

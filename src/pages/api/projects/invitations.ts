@@ -13,7 +13,7 @@ const get = async (
       UsersInProjects: {
         some: {
           userId: user.id,
-          pending: true,
+          projectStatus: "pending"
         },
       },
     },
