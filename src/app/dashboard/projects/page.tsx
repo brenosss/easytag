@@ -7,7 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useContext } from "react";
 import projectContext from "src/contexts/projectContext";
-
+import { LoadingButton } from "src/components/Buttons/LoadingButton";
+import Notification from "src/components/Buttons/Notification";
 interface Project {
   id: string;
   name: string;
@@ -21,6 +22,9 @@ const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [pendingProjects, setPendingProjects] = useState<Project[]>([]);
   const [hasPendingProjects, setHasPendingProjects] = useState(false); // Adicione o estado para verificar se existem projetos pendentes
+  const [isLoading, setIsLoading] = useState(false);
+  const [notificationTitle, setNotificationTitle] = useState("")
+  const [notificationDescription, setNotificationDescription] = useState("Reload the page to update your Projects")
 
   const { currentProject, setCurrentProject } = useContext(projectContext);
 
@@ -67,15 +71,21 @@ const Projects = () => {
     });
   }
   async function declineInvitation(project: Project) {
+    setIsLoading(true);
     await fetch(`/api/projects/${project.id}/users/update/recused`, {
       method: "PATCH",
     });
+    setIsLoading(false);
+    setNotificationTitle("Invitation declined")
   }
 
   async function acceptInvite(project: Project) {
+    setIsLoading(true);
     await fetch(`/api/projects/${project.id}/users/update/accepted`, {
       method: "PATCH",
     });
+    setIsLoading(false);
+    setNotificationTitle("Invite accepted")
   }
 
   useEffect(() => {
@@ -90,6 +100,12 @@ const Projects = () => {
       <Head>
         <title>Projects</title>
       </Head>
+      {notificationTitle &&
+        <Notification
+          onClose={() => { setNotificationTitle("") }}
+          title={notificationTitle}
+          description={notificationDescription}
+        />}
       <div className="flex flex-col items-center">
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center justify-center">
@@ -192,20 +208,22 @@ const Projects = () => {
                               {project.domain}
                             </td>
                             <td className="whitespace-nowrap items-center py-4 px-3 text-sm text-gray-500">
-                              <button
-                                className="rounded-lg m-2.5 bg-emerald-600 p-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-500 focus:outline-3"
+                              <LoadingButton
+                                className="rounded-lg m-2.5 bg-emerald-600 p-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-500 focus:outline-3 disabled:cursor-not-allowed"
                                 type="submit"
                                 onClick={() => acceptInvite(project)}
-                              >
-                                Accept
-                              </button>
-                              <button
-                                className="rounded-lg m-2.5 bg-red-600 p-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-red-500 focus:outline-3"
+                                disabled={isLoading}
+                                isLoading={isLoading}
+                                text="Accept"
+                              />
+                              <LoadingButton
+                                className="rounded-lg m-2.5 bg-red-600 p-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-red-500 focus:outline-3 disabled:cursor-not-allowed"
                                 type="submit"
                                 onClick={() => declineInvitation(project)}
-                              >
-                                Decline
-                              </button>
+                                disabled={isLoading}
+                                isLoading={isLoading}
+                                text="Decline"
+                              />
                             </td>
                           </tr>
                         ))}
