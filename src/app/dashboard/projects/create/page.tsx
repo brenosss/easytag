@@ -3,8 +3,10 @@
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
-import { useState, type FormEvent } from "react";
+import { useState, useContext, type FormEvent } from "react";
 import { TextInput } from "src/components/Inputs/Text"
+import projectContext from "src/contexts/projectContext";
+
 type ProjectData = {
   domain: string;
   name: string;
@@ -13,6 +15,7 @@ type ProjectData = {
 const CreateProject = () => {
   const [errors, setErrors] = useState<ProjectData>({ domain: "", name: "" });
   const [data, setData] = useState<ProjectData>({ domain: "", name: "" });
+  const { currentProject, setCurrentProject } = useContext(projectContext);
 
   const router = useRouter();
 
@@ -50,6 +53,7 @@ const CreateProject = () => {
     if (response.status === 201) {
       const project = await response.json();
       setCookie("project", JSON.stringify(project));
+      setCurrentProject(project);
       await router.replace(`/dashboard/`);
     }
   };
@@ -108,7 +112,6 @@ const CreateProject = () => {
                       autoComplete="domain"
                       placeholder="myproject.com"
                     />
-                    
                   </div>
                   <p className="text-red-500 text-xs italic pt-2">{errors.domain && errors.domain}</p>
                 </div>
