@@ -44,7 +44,7 @@ const get = async (
   const usersInProject = await prisma.usersInProjects.findMany({
     where: {
       projectId,
-      pending: false,
+      projectStatus: "ACCEPTED",
     },
     include: {
       user: true,
