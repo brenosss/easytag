@@ -112,7 +112,6 @@ const CreateProject = () => {
                       autoComplete="domain"
                       placeholder="myproject.com"
                     />
-
                   </div>
                   <p className="text-red-500 text-xs italic pt-2">{errors.domain && errors.domain}</p>
                 </div>
