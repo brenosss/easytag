@@ -14,7 +14,7 @@ async function get(
       UsersInProjects: {
         some: {
           userId: user.id,
-          projectStatus: "accepted",
+          projectStatus: "ACCEPTED",
         },
       },
     },
@@ -43,7 +43,7 @@ async function post(
     data: {
       userId: user.id,
       projectId: project.id,
-      projectStatus: "accepted",
+      projectStatus: "ACCEPTED",
     },
   });
   user.projects.push(project);

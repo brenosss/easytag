@@ -87,7 +87,7 @@ model Project {
 model UsersInProjects {
   projectId     String
   userId        String
-  projectStatus Pending @default(pending)
+  projectStatus Pending @default(PENDING)
   project       Project @relation(fields: [projectId], references: [id])
   user          User    @relation(fields: [userId], references: [id])
 
@@ -95,9 +95,9 @@ model UsersInProjects {
 }
 
 enum Pending {
-  pending
-  accepted
-  recused
+  PENDING
+  ACCEPTED
+  RECUSED
 }
 
 model Customer {

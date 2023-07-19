@@ -72,7 +72,7 @@ const Projects = () => {
   }
   async function declineInvitation(project: Project) {
     setIsLoading(true);
-    await fetch(`/api/projects/${project.id}/users/update/recused`, {
+    await fetch(`/api/projects/${project.id}/users/update/RECUSED`, {
       method: "PATCH",
     });
     setIsLoading(false);
@@ -81,7 +81,7 @@ const Projects = () => {
 
   async function acceptInvite(project: Project) {
     setIsLoading(true);
-    await fetch(`/api/projects/${project.id}/users/update/accepted`, {
+    await fetch(`/api/projects/${project.id}/users/update/ACCEPTED`, {
       method: "PATCH",
     });
     setIsLoading(false);
