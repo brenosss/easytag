@@ -25,7 +25,7 @@ export default function SubscribeSection() {
                   name="subs-email"
                   id="subs-email"
                   placeholder="Your Email"
-                  className="text-body-color solid w-full rounded-2xl border bg-white py-5 px-8 ring-4 transition duration-300 focus:border-emerald-500 focus:shadow-xl focus:ring-emerald-500"
+                  className="text-body-color w-full rounded-2xl bg-white py-5 px-8 ring-emerald-500 focus:ring-2 focus:ring-emerald-500 transition duration-300 border-emerald-500 focus:border-emerald-500"
                 />
                 <button type="submit" className="main-btn btn-hover">
                   Subscribe

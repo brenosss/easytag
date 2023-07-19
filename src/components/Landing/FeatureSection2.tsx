@@ -1,7 +1,7 @@
 export default function FeatureSection2() {
   return (
     <section id="why" className="feature-extended-section pt-25">
-      <div className="feature-extended-wrapper py-18 bg-theme-color bg-opacity-10">
+      <div className="feature-extended-wrapper py-18 bg-emerald-50">
         <div className="container">
           <div className="row flex justify-center">
             <div className="w-full md:w-9/12 lg:w-8/12 xl:w-6/12">
