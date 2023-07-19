@@ -38,6 +38,9 @@ const Projects = () => {
   async function selectProject(project: Project) {
     setCookie("project", JSON.stringify(project));
     setCurrentProject(project);
+    await fetch(`/api/projects/${project.id}`, {
+      method: "PATCH",
+    });
     await router.replace(`/dashboard/pages`);
   }
 

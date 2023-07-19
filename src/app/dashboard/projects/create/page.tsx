@@ -50,7 +50,7 @@ const CreateProject = () => {
     if (response.status === 201) {
       const project = await response.json();
       setCookie("project", JSON.stringify(project));
-      await router.replace(`/dashboard/`);
+      await router.replace(`/dashboard/projects`);
     }
   };
 
@@ -108,7 +108,7 @@ const CreateProject = () => {
                       autoComplete="domain"
                       placeholder="myproject.com"
                     />
-                    
+
                   </div>
                   <p className="text-red-500 text-xs italic pt-2">{errors.domain && errors.domain}</p>
                 </div>
