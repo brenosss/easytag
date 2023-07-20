@@ -20,11 +20,11 @@ const PageList = ({ pages }: { pages: Page[] }) => {
               <div className="flex min-w-0 flex-1 items-center">
                 <div className="flex min-w-0 flex-1 items-center px-4 md:grid md:grid-cols-2 md:gap-4">
                   <div>
-                    <p className="truncate text-sm font-medium text-emerald-500">
+                    <p className="truncate text-base font-medium text-emerald-500">
                       {page.path}
                     </p>
                     {!!page.description && (
-                      <p className="mt-2 flex items-center text-sm text-gray-500">
+                      <p className="mt-2 flex items-center text-base text-gray-500">
                         <MegaphoneIcon
                           className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                           aria-hidden="true"
@@ -36,7 +36,7 @@ const PageList = ({ pages }: { pages: Page[] }) => {
                   </div>
                   <div className="hidden md:block">
                     <div>
-                      <p className="mt-2 flex items-center text-sm text-gray-500">
+                      <p className="mt-2 flex items-center text-base text-gray-500">
                         <CheckCircleIcon
                           className="mr-1.5 h-5 w-5 flex-shrink-0 text-green-400"
                           aria-hidden="true"

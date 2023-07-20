@@ -36,7 +36,7 @@ const PageForm = ({
   const [imageTip, setImageTip] = useState(false)
   const [imageDimensionsTip, setImageDimensionsTip] = useState(false)
   const { currentProject, setCurrentProject } = useContext(projectContext);
-  const regexDomain = /^([a-zA-Z0-9\-{1,63}]+(\.[a-zA-Z]{2,})+)$/;
+  const regexPath = /^[\w\-\?=\&][\w\/\-\?=\&]*$/;
   const [modal, setModal] = useState(false);
 
   function validateTitle(title: string) {
@@ -54,7 +54,7 @@ const PageForm = ({
     }
   }
   function validatePath(path: string) {
-    if (regexDomain.test(path)) {
+    if (regexPath.test(path)){
       setPathError("")
     } else {
       setPathError("Invalid path!")
@@ -62,22 +62,26 @@ const PageForm = ({
     return;
   }
   return (
-    <form className="mt-12 p-3" onSubmit={submitFunction}>
-      {modal && <Modal
-        onClose={() => {
-          setModal(false);
-        }}
-        onAccept={deleteFunction}
-        title="You are about to delete this page"
-        acceptButtonMessage="Delete"
-      >Are you sure you want to proceed? All of this data will be permanently removed from our servers forever. This action cannot be undone.</Modal>}
+    <form className="" onSubmit={submitFunction}>
+      {
+        modal && <Modal
+          onClose={() => {
+            setModal(false);
+          }}
+          onAccept={deleteFunction}
+          title="You are about to delete this page"
+          acceptButtonMessage="Delete"
+        >
+          Are you sure you want to proceed? All of this data will be permanently removed from our servers forever. This action cannot be undone.
+        </Modal>
+      }
       <div className="mb-12">
-        <div className=" flex justify-around px-32">
-          <LabelInput label="Path" className="mb-2" />
-          <div className="ml-5 w-10/12 flex">
+        <LabelInput label="Path" className="mb-2" />
+        <div className="flex justify-around">
+          <div className="w-10/12 flex">
             <TextInput
               displayText={currentProject.domain + "/"}
-              className="ml-2 w-full"
+              className="w-full"
               name="url"
               value={url}
               onChange={(event) => setUrl(event.target.value)}
@@ -85,7 +89,7 @@ const PageForm = ({
             />
           </div>
           <LoadingButton
-            className="ml-12 w-2/12 items-center rounded-lg disabled:cursor-not-allowed bg-emerald-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-700 focus:outline-none"
+            className="ml-12 w-2/12 items-center rounded-lg disabled:cursor-not-allowed bg-emerald-500 py-2.5 text-base font-medium text-white shadow ring-offset-0 hover:bg-emerald-700 focus:outline-none"
             type="submit"
             onSubmit={submitFunction}
             disabled={isLoading || pathError.length > 0}
@@ -94,7 +98,7 @@ const PageForm = ({
           />
           {deleteButton &&
             <button
-              className="ml-5 w-2/12 items-center rounded-lg disabled:cursor-not-allowed bg-red-500 py-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-red-800 focus:outline-none"
+              className="ml-5 w-2/12 items-center rounded-lg disabled:cursor-not-allowed bg-red-500 py-2.5 text-base font-medium text-white shadow ring-offset-0 hover:bg-red-800 focus:outline-none"
               type="submit"
               onClick={() => setModal(true)}
             >
@@ -104,12 +108,12 @@ const PageForm = ({
         </div>
         {pathError && <p className="text-red-500 relative text-xs italic pt-2 cmb-12 px-44">{pathError}</p>}
       </div>
-      <div className="flex justify-center">
-        <div className="w-full max-w-2xl px-8">
+      <div className="flex justify-between">
+        <div className="w-full max-w-2xl pr-8">
           <div className="mb-4">
             <LabelInput label="Title" className="mb-2" />
             <TextInput
-              className="ml-2 w-11/12"
+              className="ml-2"
               name="title"
               onChange={(event) => {
                 const title = event.target.value;
@@ -125,7 +129,7 @@ const PageForm = ({
             <LabelInput label="Description" className="mb-2" />
             <TextAreaInput
               name="description"
-              className="ml-2 w-11/12"
+              className="ml-2"
               onChange={(event) => {
                 const description = event.target.value;
                 setSocialCard({
@@ -143,7 +147,7 @@ const PageForm = ({
             <LabelInput label="Image" className="mb-2" />
             <ImageInput
               image={socialCard.image}
-              className="ml-2 w-11/12"
+              className="ml-2"
               onChange={(e) => {
                 if (e.target.files !== null && e.target.files.length > 0) {
                   const file = e.target.files[0] as File;

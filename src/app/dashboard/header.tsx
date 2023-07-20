@@ -1,17 +1,16 @@
-
 import "src/styles/globals.css";
 import Link from "next/link";
+import { clsx } from "clsx";
 import { Suspense, useContext } from 'react'
 import LogoutButton from "src/components/Buttons/LogoutButton";
 import { ArrowSmallLeftIcon } from "@heroicons/react/20/solid";
-
-
 import projectContext from "src/contexts/projectContext";
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
   
     const { currentProject, setCurrentProject } = useContext(projectContext);
-
+    const pathname = usePathname();
     const navigation_user = [
       { name: "Account", href: `/dashboard/pages`},
     ];
@@ -21,6 +20,10 @@ export default function Header() {
       { name: "Users", href: `/dashboard/users`},
       { name: "Settings", href: "/dashboard/settings" },
     ];
+
+    function isCurrentRouter(href: string): boolean {
+      return pathname ? pathname.includes(href) : false;
+    };
   
     return (
       <header className="rounded-b-3xl pb-36">
@@ -39,7 +42,7 @@ export default function Header() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="text-base font-medium text-white hover:text-emerald-50"
+                    className="text-lg font-medium text-white hover:text-emerald-50"
                   >
                     {link.name}
                   </Link>
@@ -55,7 +58,7 @@ export default function Header() {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-base font-medium text-white hover:text-emerald-50"
+                className="text-lg font-medium text-white hover:text-emerald-50"
               >
                 {link.name}
               </a>
@@ -64,30 +67,38 @@ export default function Header() {
         </nav>
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 " aria-label="Top">
           <div className="flex w-full items-center border-b border-emerald-500 py-6 lg:border-none hidden lg:flex justify-between px-20">
-                <Link className="flex items-center" href="/dashboard/projects">
-                  <ArrowSmallLeftIcon className="text-white p-2 w-20" />
-                  <Suspense fallback={<p>Loading project...</p>}>
-                  <div>
-                    <p className="font-semibold text-3xl text-white">
-                      {currentProject && currentProject.name}
-                    </p>
-                    <p className="flex-none text-xs text-white">
-                      {currentProject && currentProject.domain}
-                    </p>
-                  </div>
-                  </Suspense>
+            <Link className="flex items-center" href="/dashboard/projects">
+              <ArrowSmallLeftIcon className="text-white p-2 w-20" />
+              <Suspense fallback={<p>Loading project...</p>}>
+              <div>
+                <p
+                  className={clsx(
+                    "font-semibold text-3xl text-white hover:underline decoration-yellow-400 decoration-4",
+                    isCurrentRouter("/dashboard/projects") && "underline"
+                  )}
+                >
+                  {currentProject && currentProject.name}
+                </p>
+                <p className="flex-none text-xs text-white">
+                  {currentProject && currentProject.domain}
+                </p>
+              </div>
+              </Suspense>
+            </Link>
+            <div className="flex items-center justify-between gap-x-4">
+              {navigation_project.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={clsx(
+                    "items-center font-medium text-white hover:text-emerald-50 text-xl px-4 hover:underline decoration-yellow-400 decoration-4",
+                    isCurrentRouter(link.href) && "underline font-bold"
+                  )}
+                >
+                  {link.name}
                 </Link>
-                <div className="flex items-center justify-between gap-x-4">
-                  {navigation_project.map((link) => (
-                    <Link
-                      key={link.name}
-                      href={link.href}
-                      className="items-center font-medium text-white hover:text-emerald-50 text-xl px-4"
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-                </div>
+              ))}
+            </div>
           </div>
           <div className="flex flex-wrap justify-center space-x-6 py-4 lg:hidden">
             {navigation_project.map((link) => (

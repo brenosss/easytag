@@ -110,10 +110,10 @@ const Projects = () => {
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center justify-center">
             <div>
-              <h1 className="text-base font-semibold leading-6 text-gray-900">
+              <h1 className="text-lg font-semibold leading-6 text-gray-900">
                 Your projects
               </h1>
-              <p className="mt-2 text-sm text-gray-700">
+              <p className="mt-2 text-base text-gray-700">
                 A list of all projects that you are currently working on.
               </p>
             </div>
@@ -121,7 +121,7 @@ const Projects = () => {
               <Link
                 href="/dashboard/projects/create"
                 type="button"
-                className="block rounded-md bg-emerald-600 py-2 px-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+                className="block rounded-md bg-emerald-600 py-2 px-3 text-center text-base font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
               >
                 Create a new project
               </Link>
@@ -133,13 +133,13 @@ const Projects = () => {
                 <tr>
                   <th
                     scope="col"
-                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                    className="py-3.5 pl-4 pr-3 text-left text-base font-semibold text-gray-900 sm:pl-0"
                   >
                     Name
                   </th>
                   <th
                     scope="col"
-                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    className="py-3.5 px-3 text-left text-base font-semibold text-gray-900"
                   >
                     Domain
                   </th>
@@ -151,10 +151,10 @@ const Projects = () => {
               <tbody className="w-full divide-y divide-gray-200">
                 {projects.map((project) => (
                   <tr key={project.name} onClick={() => selectProject(project)} className="cursor-pointer">
-                    <td className="whitespace-nowrap hover:text-emerald-500 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                    <td className="whitespace-nowrap hover:text-emerald-500 py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-0">
                       {project.name}
                     </td>
-                    <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
+                    <td className="whitespace-nowrap py-4 px-3 text-base text-gray-500">
                       {project.domain}
                     </td>
                   </tr>
@@ -163,10 +163,10 @@ const Projects = () => {
             </table>
             <div className="flex items-center justify-center divide-gray-200">
               <div>
-                <h1 className="text-base font-semibold  pt-10 text-center leading-6 text-gray-900">
+                <h1 className="text-lg font-semibold  pt-10 text-center leading-6 text-gray-900">
                   Invited Projects
                 </h1>
-                <p className="mt-2 text-sm text-gray-700">
+                <p className="mt-2 text-base text-gray-700">
                   Projects you were invited to be a part of.
                 </p>
               </div>
@@ -180,19 +180,19 @@ const Projects = () => {
                         <tr>
                           <th
                             scope="col"
-                            className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                            className="py-3.5 pl-4 pr-3 text-left text-base font-semibold text-gray-900 sm:pl-0"
                           >
                             Name
                           </th>
                           <th
                             scope="col"
-                            className="py-3.5 px-3 text-center text-sm font-semibold text-gray-900"
+                            className="py-3.5 px-3 text-center text-base font-semibold text-gray-900"
                           >
                             Domain
                           </th>
                           <th
                             scope="col"
-                            className="py-3.5 px-3 text-center text-sm font-semibold text-gray-900"
+                            className="py-3.5 px-3 text-center text-base font-semibold text-gray-900"
                           >
                             Action
                           </th>
@@ -201,15 +201,15 @@ const Projects = () => {
                       <tbody className="w-full divide-y divide-gray-200">
                         {pendingProjects.map((project) => (
                           <tr key={project.name} className="cursor:auto">
-                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-0">
                               {project.name}
                             </td>
-                            <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
+                            <td className="whitespace-nowrap py-4 px-3 text-base text-gray-500">
                               {project.domain}
                             </td>
-                            <td className="whitespace-nowrap items-center py-4 px-3 text-sm text-gray-500">
+                            <td className="whitespace-nowrap items-center py-4 px-3 text-base text-gray-500">
                               <LoadingButton
-                                className="rounded-lg m-2.5 bg-emerald-600 p-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-emerald-500 focus:outline-3 disabled:cursor-not-allowed"
+                                className="rounded-lg m-2.5 bg-emerald-600 p-2.5 text-base font-medium text-white shadow ring-offset-0 hover:bg-emerald-500 focus:outline-3 disabled:cursor-not-allowed"
                                 type="submit"
                                 onClick={() => acceptInvite(project)}
                                 disabled={isLoading}
@@ -217,7 +217,7 @@ const Projects = () => {
                                 text="Accept"
                               />
                               <LoadingButton
-                                className="rounded-lg m-2.5 bg-red-600 p-2.5 text-sm font-medium text-white shadow ring-offset-0 hover:bg-red-500 focus:outline-3 disabled:cursor-not-allowed"
+                                className="rounded-lg m-2.5 bg-red-600 p-2.5 text-base font-medium text-white shadow ring-offset-0 hover:bg-red-500 focus:outline-3 disabled:cursor-not-allowed"
                                 type="submit"
                                 onClick={() => declineInvitation(project)}
                                 disabled={isLoading}
@@ -231,7 +231,7 @@ const Projects = () => {
                     </table>
                   </div>
                 </> :
-                <p className="mt-4 text-sm bg-yellow-100 rounded-full py-1 text-yellow-400 text-center">You have not been invited to any projects</p>}
+                <p className="mt-4 text-base bg-yellow-100 rounded-full py-1 text-yellow-400 text-center">You have not been invited to any projects</p>}
           </div>
         </div>
       </div>

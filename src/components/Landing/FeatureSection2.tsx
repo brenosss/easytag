@@ -7,7 +7,7 @@ export default function FeatureSection2() {
             <div className="w-full md:w-9/12 lg:w-8/12 xl:w-6/12">
               <div className="section-title text-center mb-15">
                 <h1 className="mb-6">Why Choose SaaSpal</h1>
-                <p className="text-lg">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore</p>
+                <p className="text-xl">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore</p>
               </div>
             </div>
           </div>
@@ -19,7 +19,7 @@ export default function FeatureSection2() {
                 </div>
                 <div className="content">
                   <h3 className="mb-5">SaaS Focused</h3>
-                  <p className="text-lg">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
+                  <p className="text-xl">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
                 </div>
               </div>
             </div>
@@ -30,7 +30,7 @@ export default function FeatureSection2() {
                 </div>
                 <div className="content">
                   <h3 className="mb-5">Awesome Design</h3>
-                  <p className="text-lg">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
+                  <p className="text-xl">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
                 </div>
               </div>
             </div>
@@ -41,7 +41,7 @@ export default function FeatureSection2() {
                 </div>
                 <div className="content">
                   <h3 className="mb-5">Ready to Use</h3>
-                  <p className="text-lg">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
+                  <p className="text-xl">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
                 </div>
               </div>
             </div>
@@ -52,7 +52,7 @@ export default function FeatureSection2() {
                 </div>
                 <div className="content">
                   <h3 className="mb-5">Vanilla JS</h3>
-                  <p className="text-lg">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
+                  <p className="text-xl">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
                 </div>
               </div>
             </div>
@@ -63,7 +63,7 @@ export default function FeatureSection2() {
                 </div>
                 <div className="content">
                   <h3 className="mb-5">Essential Sections</h3>
-                  <p className="text-lg">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
+                  <p className="text-xl">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
                 </div>
               </div>
             </div>
@@ -74,7 +74,7 @@ export default function FeatureSection2() {
                 </div>
                 <div className="content">
                   <h3 className="mb-5">Highly Optimized</h3>
-                  <p className="text-lg">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
+                  <p className="text-xl">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
                 </div>
               </div>
             </div>

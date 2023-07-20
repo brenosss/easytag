@@ -9,7 +9,7 @@ export function LabelInput({ label, ...props }: InputLabelProps) {
     <label
       {...props}
       className={clsx(
-        "block text-sm font-medium text-gray-700",
+        "block text-base font-medium text-gray-700",
         props.className
       )}
     >

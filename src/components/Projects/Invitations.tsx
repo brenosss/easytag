@@ -38,7 +38,7 @@ const Invitations = () => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="flex  items-center rounded-md border border-transparent bg-white py-2 px-4 text-base font-medium text-emerald-600 hover:bg-emerald-50">
+        <Menu.Button className="flex  items-center rounded-md border border-transparent bg-white py-2 px-4 text-lg font-medium text-emerald-600 hover:bg-emerald-50">
           Pending invites
           <ChevronDownIcon
             className="-mr-1 h-5 w-5 text-emerald-600"

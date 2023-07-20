@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { getProjectFromCookie } from "src/app/cookies";
+import DangerAlert from "src/components/Alerts/DangerAlert";
+import SuccessAlert from "src/components/Alerts/SuccessAlert";
 
 interface Project {
   id: string;
@@ -120,12 +122,12 @@ const Settings = () => {
       </Head>
       <div className="mx-auto max-w-2xl space-y-16 lg:mx-0 lg:max-w-none">
         <div>
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Project</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-500">
+          <h2 className="text-lg font-semibold leading-7 text-gray-900">Project</h2>
+          <p className="mt-1 text-base leading-6 text-gray-500">
             This information will be displayed publicly so be careful what you share.
           </p>
 
-          <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
+          <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-base leading-6">
             <div className="pt-6 sm:flex">
               <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Name</dt>
               <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
@@ -149,40 +151,32 @@ const Settings = () => {
             </div>
           </dl>
           <div className="flex pt-6">
-            <button type="button" className="text-sm font-semibold leading-6 text-red-600 hover:text-red-500" onClick={() => generateNewAPIToken()}>
+            <button type="button" className="text-base font-semibold leading-6 text-red-600 hover:text-red-500" onClick={() => generateNewAPIToken()}>
               <span aria-hidden="true"></span> Generate a new API Token
             </button>
           </div>
           <div className="flex pt-6">
-            <button type="button" className="text-sm font-semibold leading-6 text-red-600 hover:text-red-500">
+            <button type="button" className="text-base font-semibold leading-6 text-red-600 hover:text-red-500">
               <span aria-hidden="true"></span> Delete project
             </button>
           </div>
         </div>
         <div>
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Payments information</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-500">Put your payment information and change your plan.</p>
-          <ul role="list" className="mt-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
-            <li className="flex justify-between gap-x-6 py-6">
-              <div className="font-medium text-gray-900">Your subscription is {subscriptionStatus}</div>
-              {subscriptionStatus === "incomplete" ? (
-                <button type="button" className="text-emerald-600 hover:text-emerald-500" onClick={() => createCheckoutSession()}>
-                  Complete
-                </button>
-              ) : (
-                <button type="button" className="font-semibold text-red-600 hover:text-red-500">
-                  Cancel
-                </button>
-              )}
-            </li>
-          </ul>
+          <h2 className="text-lg font-semibold leading-7 text-gray-900 pb-4">Payments information</h2>
+          {subscriptionStatus === "incomplete" ? (
+            <DangerAlert title="Your subscription is incomplete">
+              <p className="underline cursor-pointer" onClick={() => createCheckoutSession()}>Please complete your subscription to start using your project.</p>
+            </DangerAlert>
+          ) : (
+            <SuccessAlert title="Your subscription is complete"></SuccessAlert>
+          )}
         </div>
         <div>
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Language</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-500">
+          <h2 className="text-lg font-semibold leading-7 text-gray-900">Language</h2>
+          <p className="mt-1 text-base leading-6 text-gray-500">
             Choose what languages you project will support
           </p>
-          <p className="mt-1 text-sm leading-6 text-gray-500">
+          <p className="mt-1 text-base leading-6 text-gray-500">
             Support for extra languages coming soon, <Link href="/roadmap" className="text-emerald-600 hover:text-emerald-500">check our roadmap</Link>.
           </p>
         </div>

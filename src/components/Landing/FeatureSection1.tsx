@@ -10,7 +10,7 @@ export default function FeatureSection1() {
               </div>
               <div className="content">
                 <h3 className="mb-5">Bootstrap 5</h3>
-                <p className="text-lg">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                <p className="text-xl">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
                   invidunt ut labore</p>
               </div>
             </div>
@@ -22,7 +22,7 @@ export default function FeatureSection1() {
               </div>
               <div className="content">
                 <h3 className="mb-5">Clean Design</h3>
-                <p className="text-lg">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                <p className="text-xl">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
                   invidunt ut labore</p>
               </div>
             </div>
@@ -34,7 +34,7 @@ export default function FeatureSection1() {
               </div>
               <div className="content">
                 <h3 className="mb-5">Easy to Use</h3>
-                <p className="text-lg">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                <p className="text-xl">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
                   invidunt ut labore</p>
               </div>
             </div>

@@ -21,7 +21,7 @@ export default function Preview({
               key={category}
               className={({ selected }) =>
                 clsx(
-                  "w-full rounded-lg py-2.5 text-sm font-medium ring-offset-0 focus:outline-none",
+                  "w-full rounded-lg py-2.5 text-base font-medium ring-offset-0 focus:outline-none",
                   selected
                     ? "bg-white text-emerald-500 shadow"
                     : "text-gray-500 hover:bg-white/[0.12] hover:text-emerald-500"

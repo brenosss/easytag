@@ -47,10 +47,10 @@ const UsersInProjectPage = () => {
             .map((person) => (
               <li key={person.email} className="flex py-4">
                 <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-base font-medium text-gray-900">
                     {person.name}
                   </p>
-                  <p className="text-sm text-gray-500">{person.email}</p>
+                  <p className="text-base text-gray-500">{person.email}</p>
                 </div>
               </li>
             ))}

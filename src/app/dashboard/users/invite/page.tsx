@@ -40,14 +40,14 @@ const InviteUser = () => {
       <form className="mx-auto max-w-lg p-5" onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
-            <h2 className="text-base font-semibold leading-7 text-gray-900">
+            <h2 className="text-lg font-semibold leading-7 text-gray-900">
               Invite user
             </h2>
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-4">
                 <label
                   htmlFor="userEmail"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-base font-medium leading-6 text-gray-900"
                 >
                   User e-mail
                 </label>
@@ -60,7 +60,7 @@ const InviteUser = () => {
                       name="userEmail"
                       id="userEmail"
                       autoComplete="userEmail"
-                      className="block flex-1 rounded-md border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      className="block flex-1 rounded-md border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-base sm:leading-6"
                       placeholder="user@email.com"
                     />
                   </div>
@@ -73,7 +73,7 @@ const InviteUser = () => {
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="submit"
-            className="rounded-md bg-emerald-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+            className="rounded-md bg-emerald-600 py-2 px-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
           >
             Invite
           </button>

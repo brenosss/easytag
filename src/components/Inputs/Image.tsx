@@ -32,7 +32,7 @@ export function ImageInput({ image, ...props }: ImageInputProps) {
               />
             </svg>
           )}
-          <div className="flex text-sm text-gray-600 justify-center">
+          <div className="flex text-base text-gray-600 justify-center">
             <label
               htmlFor="file-upload"
               className="relative cursor-pointer rounded-md bg-white font-medium text-emerald-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-emerald-400 focus-within:ring-offset-2 hover:text-emerald-400"
