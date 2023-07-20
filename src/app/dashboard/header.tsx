@@ -3,8 +3,8 @@ import "src/styles/globals.css";
 import Link from "next/link";
 import { Suspense, useContext } from 'react'
 import LogoutButton from "src/components/Buttons/LogoutButton";
-import{ getProjectFromCookie } from "src/app/cookies";
 import { ArrowSmallLeftIcon } from "@heroicons/react/20/solid";
+
 
 import projectContext from "src/contexts/projectContext";
 
@@ -23,7 +23,7 @@ export default function Header() {
     ];
   
     return (
-      <header className="bg-emerald-600 rounded-b-3xl pb-36">
+      <header className="rounded-b-3xl pb-36">
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 border-b border-white border-opacity-20" aria-label="Top">
           <div className="flex w-full items-center justify-between border-b border-emerald-500 py-6 lg:border-none">
             <div className="flex items-center">
