@@ -10,7 +10,7 @@ import { getProjectFromCookie } from "src/app/cookies";
 interface Project {
   id: string;
   name: string;
-  description: string;
+  domain: string;
 }
 
 const Settings = () => {
@@ -107,7 +107,7 @@ const Settings = () => {
   useEffect(() => {
     (async () => {
       const project = getProjectFromCookie();
-      await getProject(typeof project === Object ? project.id : "");
+      await getProject(typeof project === "object" ? project.id : "");
       await getAPIToken();
       await getSubscriptionStatus();
     })();
@@ -118,7 +118,7 @@ const Settings = () => {
       <Head>
         <title>Settings</title>
       </Head>
-      <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
+      <div className="mx-auto max-w-2xl space-y-16 lg:mx-0 lg:max-w-none">
         <div>
           <h2 className="text-base font-semibold leading-7 text-gray-900">Project</h2>
           <p className="mt-1 text-sm leading-6 text-gray-500">
@@ -133,9 +133,9 @@ const Settings = () => {
               </dd>
             </div>
             <div className="pt-6 sm:flex">
-              <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Description</dt>
+              <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Domain</dt>
               <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                <div className="text-gray-900">{project && project.description}</div>
+                <div className="text-gray-900">{project && project.domain}</div>
               </dd>
             </div>
             <div className="pt-6 sm:flex">
@@ -159,11 +159,9 @@ const Settings = () => {
             </button>
           </div>
         </div>
-
         <div>
           <h2 className="text-base font-semibold leading-7 text-gray-900">Payments information</h2>
           <p className="mt-1 text-sm leading-6 text-gray-500">Put your payment information and change your plan.</p>
-
           <ul role="list" className="mt-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
             <li className="flex justify-between gap-x-6 py-6">
               <div className="font-medium text-gray-900">Your subscription is {subscriptionStatus}</div>
