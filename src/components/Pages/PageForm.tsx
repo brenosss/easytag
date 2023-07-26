@@ -84,7 +84,7 @@ const PageForm = ({
               className="w-full"
               name="url"
               value={url}
-              onChange={(event) => setUrl(event.target.value)}
+              onChange={(event) => { setUrl(event.target.value), setSocialCard({ ...socialCard, path: event.target.value }) }}
               onBlur={() => validatePath(url)}
             />
           </div>

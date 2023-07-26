@@ -13,36 +13,22 @@ export default function Preview({
   socialCard: SocialCardProps;
 }) {
   return (
-    <div>
-      <Tab.Group>
-        <Tab.List className="rounded-x flex space-x-1 p-1">
-          {["Cards", "Tags"].map((category) => (
-            <Tab
-              key={category}
-              className={({ selected }) =>
-                clsx(
-                  "w-full rounded-lg py-2.5 text-base font-medium ring-offset-0 focus:outline-none",
-                  selected
-                    ? "bg-white text-emerald-500 shadow"
-                    : "text-gray-500 hover:bg-white/[0.12] hover:text-emerald-500"
-                )
-              }
-            >
-              {category}
-            </Tab>
-          ))}
-        </Tab.List>
-        <Tab.Panels className="w-[510px] px-[5px] text-[14px]">
-          <Tab.Panel>
-            <GoogleCard socialCard={socialCard} />
-            <FacebookCard socialCard={socialCard} />
-            <TwitterCard socialCard={socialCard} />
-            <WhatsAppCard socialCard={socialCard} />
-            <LinkedinCard socialCard={socialCard} />
-          </Tab.Panel>
-          <Tab.Panel>Content 2</Tab.Panel>
-        </Tab.Panels>
-      </Tab.Group>
+    <div className="w-[510px] px-[5px] text-[14px]">
+      <div className="pb-8">
+        <GoogleCard socialCard={socialCard} />
+      </div>
+      <div className="pb-8">
+        <FacebookCard socialCard={socialCard} />
+      </div>
+      <div className="pb-8">
+        <TwitterCard socialCard={socialCard} />
+      </div>
+      <div className="pb-8">
+        <WhatsAppCard socialCard={socialCard} />
+      </div>
+      <div className="pb-8">
+        <LinkedinCard socialCard={socialCard} />
+      </div>
     </div>
   );
 }

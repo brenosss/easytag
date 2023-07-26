@@ -8,4 +8,5 @@ export interface SocialCardProps {
   image: string;
   domain: string;
   twitter?: TwitterCardProps;
+  path?: string
 }

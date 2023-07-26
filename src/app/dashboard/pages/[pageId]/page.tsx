@@ -37,6 +37,7 @@ const PageDetail = ({ params }) => {
         description: pageData.description,
         image: pageData.image,
         domain: "facebook.com",
+        path: pageData.path,
       });
       setUrl(pageData.path);
     }
