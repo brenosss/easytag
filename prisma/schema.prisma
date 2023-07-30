@@ -88,6 +88,7 @@ model UsersInProjects {
   projectId     String
   userId        String
   projectStatus Pending @default(PENDING)
+  role          Role    @default(MEMBER)
   project       Project @relation(fields: [projectId], references: [id])
   user          User    @relation(fields: [userId], references: [id])
 
@@ -98,6 +99,12 @@ enum Pending {
   PENDING
   ACCEPTED
   RECUSED
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
 }
 
 model Customer {

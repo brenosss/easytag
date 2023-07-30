@@ -44,6 +44,7 @@ async function post(
       userId: user.id,
       projectId: project.id,
       projectStatus: "ACCEPTED",
+      role: "OWNER"
     },
   });
   user.projects.push(project);
