@@ -88,9 +88,9 @@ model UsersInProjects {
   projectId     String
   userId        String
   projectStatus Pending @default(PENDING)
+  selected      Boolean @default(true)
   project       Project @relation(fields: [projectId], references: [id])
   user          User    @relation(fields: [userId], references: [id])
-
   @@unique([projectId, userId])
 }
 

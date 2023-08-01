@@ -46,6 +46,17 @@ async function post(
       projectStatus: "ACCEPTED",
     },
   });
+  await prisma.usersInProjects.updateMany({
+    where: {
+      userId: user.id,
+      projectId: {
+        not: project.id,
+      },
+    },
+    data: {
+      selected: false,
+    },
+  });
   user.projects.push(project);
   res.status(201).json(project);
 }
