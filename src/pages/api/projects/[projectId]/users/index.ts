@@ -2,6 +2,7 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 import { getServerAuthSession } from "../../../../../server/common/get-server-auth-session";
 import { prisma } from "../../../../../server/db/client";
 import { type SessionUser } from "../../../../../types/next-auth";
+import { getUsersByProjectId } from "src/domain/projects/users/users-in-projects";
 
 const post = async (
   req: NextApiRequest,
@@ -41,16 +42,7 @@ const get = async (
   res: NextApiResponse,
   projectId: string
 ) => {
-  const usersInProject = await prisma.usersInProjects.findMany({
-    where: {
-      projectId,
-      pending: false,
-    },
-    include: {
-      user: true,
-    },
-  });
-  return res.status(200).json(usersInProject);
+  return res.status(200).json(getUsersByProjectId(projectId));
 };
 
 const amIInProject = async (projectId: string, sessionUser: SessionUser) => {

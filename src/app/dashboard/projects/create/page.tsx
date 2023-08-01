@@ -3,8 +3,10 @@
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
-import { useState, type FormEvent } from "react";
+import { useState, useContext, type FormEvent } from "react";
 import { TextInput } from "src/components/Inputs/Text"
+import projectContext from "src/contexts/projectContext";
+
 type ProjectData = {
   domain: string;
   name: string;
@@ -13,6 +15,7 @@ type ProjectData = {
 const CreateProject = () => {
   const [errors, setErrors] = useState<ProjectData>({ domain: "", name: "" });
   const [data, setData] = useState<ProjectData>({ domain: "", name: "" });
+  const { currentProject, setCurrentProject } = useContext(projectContext);
 
   const router = useRouter();
 
@@ -50,7 +53,8 @@ const CreateProject = () => {
     if (response.status === 201) {
       const project = await response.json();
       setCookie("project", JSON.stringify(project));
-      await router.replace(`/dashboard/projects`);
+      setCurrentProject(project);
+      await router.replace(`/dashboard/pages`);
     }
   };
 
@@ -62,7 +66,7 @@ const CreateProject = () => {
       <form className="mx-auto max-w-lg p-5" onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
-            <h2 className="flex justify-between text-base font-semibold leading-7 text-gray-900">
+            <h2 className="flex justify-between text-lg font-semibold leading-7 text-gray-900">
               Setup your site
             </h2>
 
@@ -70,7 +74,7 @@ const CreateProject = () => {
               <div className="sm:col-span-4">
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-base font-medium leading-6 text-gray-900"
                 >
                   Name
                 </label>
@@ -82,7 +86,7 @@ const CreateProject = () => {
                       onChange={(e) => handleChange(e)}
                       name="name"
                       autoComplete="name"
-                      className="block flex-1 rounded-md border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      className="block flex-1 rounded-md border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-base sm:leading-6"
                       placeholder="My Project"
                     />
                   </div>
@@ -93,7 +97,7 @@ const CreateProject = () => {
               <div className="sm:col-span-4">
                 <label
                   htmlFor="domain"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-base font-medium leading-6 text-gray-900"
                 >
                   Domain
                 </label>
@@ -103,12 +107,11 @@ const CreateProject = () => {
                       displayText="https://"
                       value={data.domain}
                       onChange={(e) => handleChange(e)}
-                      className="ml-2 w-full sm:text-sm sm:leading-6"
+                      className="ml-2 w-full sm:text-base sm:leading-6"
                       name="domain"
                       autoComplete="domain"
                       placeholder="myproject.com"
                     />
-
                   </div>
                   <p className="text-red-500 text-xs italic pt-2">{errors.domain && errors.domain}</p>
                 </div>
@@ -120,7 +123,7 @@ const CreateProject = () => {
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="submit"
-            className="rounded-md bg-emerald-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+            className="rounded-md bg-emerald-600 py-2 px-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
           >
             Save
           </button>

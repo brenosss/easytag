@@ -84,3 +84,16 @@ You can find these values in the `.envrc` file.
    Access the application at: [http://localhost:3000/#](http://localhost:3000/#)
 
 By following these steps, you should have the project up and running on your local machine.
+
+
+#### 9. Code guide lines
+
+##### Server side components
+> check the next.js docs: https://nextjs.org/docs/getting-started/react-essentials#server-components
+
+To facilitatle that we shlould keep all the basic data access on the "domain" folder so we can reuse it on both APIs or Server Components
+
+- The domain function should perform a simple query to get that
+- The domain function should not do any data serialization, the serialization should be done on the interface
+- The input and output should be a JS native type or an @prisma model
+- We shouldn't access the prisma outside the domain folder

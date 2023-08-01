@@ -51,7 +51,7 @@ export default function Header() {
                     <li className="nav-item ml-5 lg:ml-11">
                       <Link
                         href="/api/auth/signin"
-                        className="text-sm font-semibold leading-6 text-gray-900"
+                        className="text-base font-semibold leading-6 text-gray-900"
                       >
                         Log in <span aria-hidden="true">&rarr;</span>
                       </Link>

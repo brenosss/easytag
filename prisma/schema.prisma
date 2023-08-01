@@ -85,14 +85,19 @@ model Project {
 }
 
 model UsersInProjects {
-  projectId String
-  userId    String
-  pending   Boolean @default(true)
-  selected  Boolean @default(true)
-  project   Project @relation(fields: [projectId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
-
+  projectId     String
+  userId        String
+  projectStatus Pending @default(PENDING)
+  selected      Boolean @default(true)
+  project       Project @relation(fields: [projectId], references: [id])
+  user          User    @relation(fields: [userId], references: [id])
   @@unique([projectId, userId])
+}
+
+enum Pending {
+  PENDING
+  ACCEPTED
+  RECUSED
 }
 
 model Customer {

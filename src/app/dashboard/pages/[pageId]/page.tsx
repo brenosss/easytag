@@ -90,7 +90,7 @@ const PageDetail = ({ params }) => {
         <title>Page detail</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {socialCard && url &&
+      {socialCard &&
         <PageForm
           socialCard={socialCard}
           setSocialCard={setSocialCard}

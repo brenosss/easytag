@@ -43,7 +43,7 @@ export default function TestimonialSection() {
                 <div className="lg:w-6/12">
                   <div className="content-wrapper">
                     <div className="content">
-                      <p className="mb-8 text-lg leading-7">
+                      <p className="mb-8 text-xl leading-7">
                         Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
                         sed dinonumy eirmod tempor invidunt ut labore et dolore
                         magna aliquyam erat, sed diam voluptua. At vero eos et
