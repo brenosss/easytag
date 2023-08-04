@@ -3,22 +3,21 @@ import { getServerAuthSession } from "../../../server/common/get-server-auth-ses
 
 import { prisma } from "../../../server/db/client";
 import { type SessionUser } from "../../../types/next-auth";
+import { getTokenByProjectId, createToken } from "src/domain/projects/tokens/project-token"
+import { getLastSelectedProject } from "src/domain/projects/projects";
 
 async function get(
   req: NextApiRequest,
   res: NextApiResponse,
   sessionUser: SessionUser
 ): Promise<void> {
-
-  const apiToken = await prisma.aPIToken.findFirst({
-    where: {
-      userId: sessionUser.id,
-      // TODO: add expires date
-    },
-  });
-
+  const lastProject = await getLastSelectedProject(sessionUser.id)
+  if (lastProject === null) {
+    return res.status(404).json({ error: "Not found" });
+  }
+  const apiToken = await getTokenByProjectId(lastProject.id)
   if (apiToken) {
-    return res.status(200).json({token: apiToken.token});
+    return res.status(200).json({ token: apiToken.token });
   } else {
     return res.status(404).json({ error: "Not found" });
   }
@@ -30,22 +29,20 @@ async function post(
   sessionUser: SessionUser
 ): Promise<void> {
 
+  const lastProject = await getLastSelectedProject(sessionUser.id)
+  if (lastProject === null) {
+    return res.status(404).json({ error: "Not found" });
+  }
+
   await prisma.aPIToken.deleteMany({
     where: {
-      userId: sessionUser.id,
+      projectId: lastProject.id,
     },
   });
 
-  const apiToken = await prisma.aPIToken.create({
-    data: {
-      token: (Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)).toLocaleUpperCase(),
-      userId: sessionUser.id,
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365 * 10)
-    }
-  });
-
+  const apiToken = await createToken(lastProject.id)
   if (apiToken) {
-    return res.status(200).json({token: apiToken.token });
+    return res.status(200).json({ token: apiToken.token });
   } else {
     return res.status(404).json({ error: "Not found" });
   }

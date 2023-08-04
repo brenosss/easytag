@@ -1,119 +1,21 @@
-'use client';
-
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { getProjectFromCookie } from "src/app/cookies";
-import DangerAlert from "src/components/Alerts/DangerAlert";
-import SuccessAlert from "src/components/Alerts/SuccessAlert";
+import { cookies } from 'next/headers'
+import { PaymentsSummary } from "src/app/dashboard/settings/payments";
+import { TokenSection } from "src/app/dashboard/settings/token";
+import { getProjectById } from "src/domain/projects/projects";
 
-interface Project {
-  id: string;
-  name: string;
-  domain: string;
+async function getProject() {
+  const cookieStore = cookies();
+  const projectCookie = cookieStore.get('project')
+  if(!projectCookie) throw new Error('No project cookie found')
+  const project = JSON.parse(projectCookie.value)
+  return await getProjectById(project.id)
 }
 
-const Settings = () => {
-  const router = useRouter();
+async function Settings() {
 
-  const [project, setProject] = useState<Project>();
-  const [showKey, setShowKey] = useState(false);
-  const [token, setToken] = useState<string>("");
-  const [_, setCreatingPaymentLink] = useState(false);
-  const [subscriptionStatus, setSubscriptionStatus] = useState<string>("");
-  const session = useSession();
-
-  async function getProject(projectId: string) {
-    const projectResponse = await fetch(`/api/projects/${projectId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (projectResponse.status === 200) {
-      const projectJson = await projectResponse.json();
-      setProject(projectJson);
-    }
-  }
-
-  async function getSubscriptionStatus() {
-    const projectResponse = await fetch("/api/settings/payments", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (projectResponse.status === 200) {
-      const subscriptionJson = await projectResponse.json();
-      setSubscriptionStatus(subscriptionJson.status);
-    }
-  }
-
-  async function createCheckoutSession() {
-    setCreatingPaymentLink(true);
-    const projectResponse = await fetch("/api/settings/payments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (projectResponse.status === 200) {
-      const subscriptionJson = await projectResponse.json();
-      if (subscriptionJson != null && typeof subscriptionJson.url === "string") {
-        window.open(subscriptionJson.url, '_blank').focus();
-        setCreatingPaymentLink(false);
-      }
-    }
-  }
-
-  async function getAPIToken() {
-    const projectResponse = await fetch("/api/settings/tokens", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (projectResponse.status === 200) {
-      const projectJson = await projectResponse.json();
-      setToken(projectJson.token);
-    }
-  }
-
-  async function generateNewAPIToken() {
-    const projectResponse = await fetch("/api/settings/tokens", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (projectResponse.status === 200) {
-      const projectJson = await projectResponse.json();
-      setToken(projectJson.token);
-    }
-  }
-
-  const shouldShowToken = (key: string): string => {
-    return showKey ? key : "*".repeat(key.length);
-  };
-
-  async function leftProject() {
-    if (!project) return;
-    await fetch(`/api/projects/${project.id}/users/${session.data?.user?.id}`, {
-      method: "DELETE",
-    });
-    router.reload();
-  }
-
-  useEffect(() => {
-    (async () => {
-      const project = getProjectFromCookie();
-      await getProject(typeof project === "object" ? project.id : "");
-      await getAPIToken();
-      await getSubscriptionStatus();
-    })();
-  }, []);
+  const project = await getProject();
 
   return (
     <>
@@ -140,37 +42,16 @@ const Settings = () => {
                 <div className="text-gray-900">{project && project.domain}</div>
               </dd>
             </div>
-            <div className="pt-6 sm:flex">
-              <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">API Key</dt>
-              <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                <div className="text-gray-900">{project && shouldShowToken(token)}</div>
-                <button type="button" onClick={() => setShowKey(!showKey)} className="font-semibold text-emerald-600 hover:text-emerald-500">
-                  {showKey ? "Hide" : "Show"}
-                </button>
-              </dd>
-            </div>
+            { project && <TokenSection project={project} /> }
           </dl>
-          <div className="flex pt-6">
-            <button type="button" className="text-base font-semibold leading-6 text-red-600 hover:text-red-500" onClick={() => generateNewAPIToken()}>
-              <span aria-hidden="true"></span> Generate a new API Token
-            </button>
-          </div>
+
           <div className="flex pt-6">
             <button type="button" className="text-base font-semibold leading-6 text-red-600 hover:text-red-500">
               <span aria-hidden="true"></span> Delete project
             </button>
           </div>
         </div>
-        <div>
-          <h2 className="text-lg font-semibold leading-7 text-gray-900 pb-4">Payments information</h2>
-          {subscriptionStatus === "incomplete" ? (
-            <DangerAlert title="Your subscription is incomplete">
-              <p className="underline cursor-pointer" onClick={() => createCheckoutSession()}>Please complete your subscription to start using your project.</p>
-            </DangerAlert>
-          ) : (
-            <SuccessAlert title="Your subscription is complete"></SuccessAlert>
-          )}
-        </div>
+        <PaymentsSummary />
         <div>
           <h2 className="text-lg font-semibold leading-7 text-gray-900">Language</h2>
           <p className="mt-1 text-base leading-6 text-gray-500">
@@ -183,7 +64,7 @@ const Settings = () => {
       </div>
     </>
   );
-};
+}
 
 Settings.auth = true;
 export default Settings;

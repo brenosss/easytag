@@ -31,8 +31,8 @@ model APIToken {
   token       String   @unique
   description String?
   expires     DateTime
-  userId      String?
-  User        User?    @relation(fields: [userId], references: [id])
+  projectId   String?
+  project     Project?    @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Session {
@@ -49,7 +49,6 @@ model User {
   email           String            @unique
   emailVerified   DateTime?
   image           String?
-  tokens          APIToken[]
   accounts        Account[]
   sessions        Session[]
   customer        Customer?
@@ -82,6 +81,7 @@ model Project {
   domain          String
   pages           Page[]
   UsersInProjects UsersInProjects[]
+  apiTokens          APIToken[]
 }
 
 model UsersInProjects {
