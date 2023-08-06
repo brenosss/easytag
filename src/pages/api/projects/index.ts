@@ -3,6 +3,7 @@ import { getServerAuthSession } from "../../../server/common/get-server-auth-ses
 
 import { prisma } from "../../../server/db/client";
 import { type SessionUser } from "../../../types/next-auth";
+import { createToken } from "src/domain/projects/tokens/project-token";
 
 async function get(
   req: NextApiRequest,
@@ -39,6 +40,7 @@ async function post(
       domain: req.body.domain,
     },
   });
+  await createToken(project.id);
   await prisma.usersInProjects.create({
     data: {
       userId: user.id,
