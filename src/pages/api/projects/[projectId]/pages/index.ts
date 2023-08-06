@@ -36,6 +36,7 @@ async function post(
       description: req.body.description,
       image: image,
       projectId,
+      twitterCard: req.body.twitterCard,
     },
   });
   res.status(200).json(page);

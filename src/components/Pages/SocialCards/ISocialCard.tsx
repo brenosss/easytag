@@ -1,5 +1,5 @@
 interface TwitterCardProps {
-    card: 'summary_large_image' | 'summary';
+    card: 'summary_large_image' | 'summary' | 'app' | 'player';
 }
 
 export interface SocialCardProps {

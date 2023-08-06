@@ -41,6 +41,7 @@ const CreatePage = () => {
         image: socialCard.image,
         newImage: await blobUrlToBase64(socialCard.image),
         projectId: project.id,
+        twitterCard: socialCard.twitter ? socialCard.twitter.card  : "summary",
       }),
 
     });
