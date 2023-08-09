@@ -12,16 +12,15 @@ import { getProjectFromCookie } from "src/app/cookies";
 
 const CreatePage = () => {
   const router = useRouter();
+  const project = getProjectFromCookie();
   const [socialCard, setSocialCard] = useState<SocialCardProps | undefined>({
     title: "Facebook",
     description:
       "Facebook is a social networking service and website launched in February 2004, operated and privately owned by Facebook, Inc.",
     image: "https://picsum.photos/200/300",
-    domain: "facebook.com",
+    domain: project.domain,
   });
-  const [url, setUrl] = useState("https://facebook.com");
-
-  const project = getProjectFromCookie();
+  const [url, setUrl] = useState("my/path/");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,6 +40,7 @@ const CreatePage = () => {
         image: socialCard.image,
         newImage: await blobUrlToBase64(socialCard.image),
         projectId: project.id,
+        twitterCard: socialCard.twitter ? socialCard.twitter.card  : "summary",
       }),
 
     });

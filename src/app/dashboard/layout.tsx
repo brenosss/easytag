@@ -1,15 +1,7 @@
-'use client';
-
-import AuthContext from "src/app/dashboard/AuthContext";
 import "src/styles/globals.css";
-import { SessionProvider } from "next-auth/react";
-import Image from "next/image";
 import Header from "src/app/dashboard/header";
 import Footer from "src/app/dashboard/footer";
 import hero_bg from 'src/images/hero/hero_bg.svg'
-
-import ProjectProvider from "src/contexts/projectProvider";
-
 
 export default function DashboardLayout({
   children,
@@ -17,9 +9,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SessionProvider>
-      <AuthContext >
-        <ProjectProvider>
+    <>
           <div className="hero-section relative bg-no-repeat bg-top z-0 min-h-screen"  style={{ backgroundImage: `url(${hero_bg.src})`}}>
             <Header />
             <div className="-mt-24 bg-white mx-auto w-5/6 rounded-3xl p-8">
@@ -33,8 +23,6 @@ export default function DashboardLayout({
             </div>
           </div>
           <Footer />
-        </ProjectProvider>
-      </AuthContext>
-    </SessionProvider>
+          </>
   );
 }

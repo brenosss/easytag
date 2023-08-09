@@ -22,3 +22,29 @@ export async function getLastSelectedProject(userId: string): Promise<Project | 
   })
   return project
 }
+
+export async function getProjectBySessionToken(sessionToken: string): Promise<Project> {
+  const user = await prisma.user.findFirst({
+    where: {
+      sessions: {
+        some: {
+          sessionToken: sessionToken
+        }
+      }
+    },
+    include: {
+      UsersInProjects: {
+        where: {
+          selected: true
+        },
+        include: {
+          project: true
+        }
+      }
+    }
+  })
+  if(!user) throw new Error('No user cookie found')
+  const userInProjects = user.UsersInProjects[0]
+  if(!userInProjects) throw new Error('No UsersInProjects found')
+  return userInProjects.project
+}

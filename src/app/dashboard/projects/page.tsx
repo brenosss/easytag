@@ -1,7 +1,6 @@
 'use client';
 
 import { setCookie } from "cookies-next";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,7 +16,6 @@ interface Project {
 
 const Projects = () => {
   const router = useRouter();
-  const session = useSession();
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [pendingProjects, setPendingProjects] = useState<Project[]>([]);
@@ -60,19 +58,14 @@ const Projects = () => {
   }
 
   async function selectProject(project: Project) {
-    setCookie("project", JSON.stringify(project));
     setCurrentProject(project);
     await fetch(`/api/projects/${project.id}`, {
       method: "PATCH",
     });
-    await router.replace(`/dashboard/pages`);
+    setCookie("project", JSON.stringify(project));
+    window.location.pathname = "/dashboard/pages";
   }
 
-  async function leftProject(project: Project) {
-    await fetch(`/api/projects/${project.id}/users/${session.data?.user?.id}/`, {
-      method: "DELETE",
-    });
-  }
   async function declineInvitation(project: Project) {
     setIsLoading(true);
     await fetch(`/api/projects/${project.id}/users/update/RECUSED`, {

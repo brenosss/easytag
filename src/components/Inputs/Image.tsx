@@ -47,7 +47,7 @@ export function ImageInput({ image, ...props }: ImageInputProps) {
               />
             </label>
           </div>
-          <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+          <p className="text-xs text-gray-500">PNG, JPG, GIF up to 200KB</p>
         </div>
       </div>
     </>

@@ -36,8 +36,11 @@ const PageDetail = ({ params }) => {
         title: pageData.title,
         description: pageData.description,
         image: pageData.image,
-        domain: "facebook.com",
+        domain: project.domain,
         path: pageData.path,
+        twitter: {
+          card: pageData.twitterCard,
+        }
       });
       setUrl(pageData.path);
     }
@@ -73,6 +76,7 @@ const PageDetail = ({ params }) => {
         description: socialCard.description,
         image: socialCard.image,
         newImage: newImage,
+        twitterCard: socialCard.twitter ? socialCard.twitter.card  : "summary",
       }),
     });
     setIsLoading(false)

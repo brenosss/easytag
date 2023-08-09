@@ -34,6 +34,7 @@ async function patch(
       title: req.body.title,
       description: req.body.description,
       image: image,
+      twitterCard: req.body.twitterCard,
     },
   });
   res.status(200).json({ message: "Page updated", data: page });
