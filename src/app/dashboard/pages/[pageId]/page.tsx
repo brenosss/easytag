@@ -36,7 +36,7 @@ const PageDetail = ({ params }) => {
         title: pageData.title,
         description: pageData.description,
         image: pageData.image,
-        domain: "facebook.com",
+        domain: project.domain,
         path: pageData.path,
         twitter: {
           card: pageData.twitterCard,
