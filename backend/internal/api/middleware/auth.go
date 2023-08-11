@@ -31,17 +31,14 @@ func AuthUser(s *domain.TokenService) gin.HandlerFunc {
 
 		// bind Authorization Header to h and check for validation errors
 		if err := c.ShouldBindHeader(&h); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
-			c.Abort()
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
 			return
 		}
 
 		idTokenHeader := strings.Split(h.IDToken, "Bearer ")
 
 		if len(idTokenHeader) < 2 {
-			err := errors.New("must provide Authorization header with format `Bearer {token}`")
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
-			c.Abort()
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "must provide Authorization header with format `Bearer {token}`"})
 			return
 		}
 
@@ -49,14 +46,12 @@ func AuthUser(s *domain.TokenService) gin.HandlerFunc {
 		projectID, err := s.GetProjectID(c.Request.Context(), idTokenHeader[1])
 
 		if projectID == "" || errors.Is(err, domain.ErrInvalidToken) {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "provided token is invalid"})
-			c.Abort()
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "provided token is invalid"})
 			return
 		}
 
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "something bad happened"})
-			c.Abort()
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "something bad happened"})
 			return
 		}
 

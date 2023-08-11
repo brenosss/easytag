@@ -25,7 +25,6 @@ func NewPageHandler(ps *domain.PageService, ts *domain.TokenService) PageHandler
 
 func (h PageHandler) Routes(router *gin.Engine) {
 	router.Use(middleware.AuthUser(h.tokenService))
-
 	pages := router.Group("/")
 	pages.GET("/projects/:project_id/pages", h.listByProject)
 	pages.POST("/pages/snippet", h.getSnippet)
@@ -75,14 +74,14 @@ func (h PageHandler) getSnippet(c *gin.Context) {
 	}
 	projectID, ok := c.Get("projectID")
 	if !ok {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not get user id"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not get the project ID"})
 		return
 	}
 	if b.Type == "nextApp" {
 		pages, err := h.service.GetSnippetNextApp(c.Request.Context(), b.Path, projectID.(string))
 		if err != nil {
 			zap.S().Errorw("error getting page", "error", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "something bad happened"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Path not founded"})
 			return
 		}
 		c.Data(http.StatusOK, "application/json; charset=utf-8", pages)
@@ -90,7 +89,7 @@ func (h PageHandler) getSnippet(c *gin.Context) {
 		pages, err := h.service.GetSnippet(c.Request.Context(), b.Path, projectID.(string))
 		if err != nil {
 			zap.S().Errorw("error getting page", "error", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "something bad happened"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Path not founded"})
 			return
 		}
 		c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(pages))
