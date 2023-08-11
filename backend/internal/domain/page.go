@@ -27,10 +27,18 @@ func (p PageService) Get(ctx context.Context, path, userID string) (model.Page, 
 	return p.repository.Get(ctx, path, userID)
 }
 
-func (p PageService) GetSnippet(ctx context.Context, path, userID string) (string, error) {
-	page, err := p.repository.Get(ctx, path, userID)
+func (p PageService) GetSnippet(ctx context.Context, path, projectID string) (string, error) {
+	page, err := p.repository.Get(ctx, path, projectID)
 	if err != nil {
 		return "", err
 	}
 	return page.Snippet(), nil
+}
+
+func (p PageService) GetSnippetNextApp(ctx context.Context, path, projectID string) ([]byte, error) {
+	page, err := p.repository.Get(ctx, path, projectID)
+	if err != nil {
+		return []byte{}, err
+	}
+	return page.SnippetNextApp(), nil
 }

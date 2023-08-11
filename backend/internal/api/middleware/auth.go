@@ -46,9 +46,9 @@ func AuthUser(s *domain.TokenService) gin.HandlerFunc {
 		}
 
 		// validate ID token here
-		userID, err := s.GetUserID(c.Request.Context(), idTokenHeader[1])
+		projectID, err := s.GetProjectID(c.Request.Context(), idTokenHeader[1])
 
-		if userID == "" || errors.Is(err, domain.ErrInvalidToken) {
+		if projectID == "" || errors.Is(err, domain.ErrInvalidToken) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "provided token is invalid"})
 			c.Abort()
 			return
@@ -60,7 +60,7 @@ func AuthUser(s *domain.TokenService) gin.HandlerFunc {
 			return
 		}
 
-		c.Set("user_id", userID)
+		c.Set("projectID", projectID)
 
 		c.Next()
 	}

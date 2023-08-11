@@ -66,22 +66,34 @@ func (h PageHandler) list(c *gin.Context) {
 func (h PageHandler) getSnippet(c *gin.Context) {
 	type body struct {
 		Path string `json:"path"`
+		Type string `json:"type" default:html`
 	}
 	var b body
 	if err := c.BindJSON(&b); err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
-	userID, ok := c.Get("user_id")
+	projectID, ok := c.Get("projectID")
 	if !ok {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not get user id"})
 		return
 	}
-	pages, err := h.service.GetSnippet(c.Request.Context(), b.Path, userID.(string))
-	if err != nil {
-		zap.S().Errorw("error getting page", "error", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "something bad happened"})
-		return
+	if b.Type == "nextApp" {
+		pages, err := h.service.GetSnippetNextApp(c.Request.Context(), b.Path, projectID.(string))
+		if err != nil {
+			zap.S().Errorw("error getting page", "error", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "something bad happened"})
+			return
+		}
+		c.Data(http.StatusOK, "application/json; charset=utf-8", pages)
+	} else {
+		pages, err := h.service.GetSnippet(c.Request.Context(), b.Path, projectID.(string))
+		if err != nil {
+			zap.S().Errorw("error getting page", "error", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "something bad happened"})
+			return
+		}
+		c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(pages))
 	}
-	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(pages))
+
 }
