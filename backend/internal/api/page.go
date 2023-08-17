@@ -1,6 +1,7 @@
 package api
 
 import (
+	"strings"
 	"net/http"
 
 	"github.com/brenosss/easytag/backend/internal/api/middleware"
@@ -76,6 +77,9 @@ func (h PageHandler) getSnippet(c *gin.Context) {
 	if !ok {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not get the project ID"})
 		return
+	}
+	if strings.HasPrefix(b.Path, "/") {
+		b.Path = strings.Replace(b.Path, "/", "", 1)
 	}
 	if b.Type == "nextApp" {
 		pages, err := h.service.GetSnippetNextApp(c.Request.Context(), b.Path, projectID.(string))

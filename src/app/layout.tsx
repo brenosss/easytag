@@ -1,5 +1,6 @@
 import "../styles/globals.css";
-import { Metadata, ResolvingMetadata } from 'next'
+import { Metadata } from 'next'
+import { headers } from "next/headers";
 
 
 export default function RootLayout({
@@ -19,6 +20,8 @@ export default function RootLayout({
 
 export async function generateMetadata(): Promise<Metadata> {
   // fetch data
+  const headersList = headers();
+  const pathname = headersList.get("x-invoke-path") || "";
   const tags = await fetch(`http://localhost:8080/pages/snippet`,
     {
       method: "POST",
@@ -27,10 +30,13 @@ export async function generateMetadata(): Promise<Metadata> {
         "Authorization": "Bearer 1T9660AVNG8PK7ZLJCRNHB"
       },
       body: JSON.stringify({
-        "path": "Test",
+        "path": pathname,
         "type": "nextApp"
       })
     }
-  ).then((res) => res.json())
+  ).then((res) => res.json()
+  ).catch(() => {
+    return {}
+  })
   return tags
 }
