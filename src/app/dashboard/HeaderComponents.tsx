@@ -11,8 +11,8 @@ import type { Project } from "@prisma/client";
 import { useState } from "react";
 import { usePathname } from 'next/navigation';
 
-export function ProjectHeader({ project }: { project: Project }) {
-  const [currentProject, ] = useState<Project>(project);
+export function ProjectHeader({ project }: { project: Project | null }) {
+  const [currentProject, ] = useState<Project | null>(project);
 
   const pathname = usePathname();
 

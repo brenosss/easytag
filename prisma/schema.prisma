@@ -32,7 +32,7 @@ model APIToken {
   description String?
   expires     DateTime
   projectId   String?
-  project     Project?    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Session {
@@ -69,7 +69,7 @@ model Page {
   title       String
   image       String
   description String
-  twitterCard     String
+  twitterCard String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   projectId   String
@@ -82,23 +82,20 @@ model Project {
   domain          String
   pages           Page[]
   UsersInProjects UsersInProjects[]
-  apiTokens          APIToken[]
+  apiTokens       APIToken[]
 }
 
 model UsersInProjects {
+  id            String  @id @default(cuid())
   projectId     String
   userId        String
-  projectStatus Pending @default(PENDING)
   selected      Boolean @default(true)
+  projectStatus Status  @default(PENDING)
+  role          Role    @default(MEMBER)
   project       Project @relation(fields: [projectId], references: [id])
   user          User    @relation(fields: [userId], references: [id])
-  @@unique([projectId, userId])
-}
 
-enum Pending {
-  PENDING
-  ACCEPTED
-  RECUSED
+  @@unique([projectId, userId])
 }
 
 model Customer {
@@ -107,4 +104,16 @@ model Customer {
   paymentStatus    String
   userId           String @unique
   user             User   @relation(fields: [userId], references: [id])
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  RECUSED
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
 }

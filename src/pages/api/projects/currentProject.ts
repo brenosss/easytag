@@ -27,7 +27,7 @@ async function get(
   res.status(200).json(project.project);
 }
 
-const lastProject = async (req: NextApiRequest, res: NextApiResponse) => {
+const currentProject = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getServerAuthSession({ req, res });
   if (!session || !session.user) {
     return res.status(401).json({ error: "Not authenticated" });
@@ -40,4 +40,4 @@ const lastProject = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default lastProject;
+export default currentProject;
