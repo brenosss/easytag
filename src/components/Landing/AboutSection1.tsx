@@ -15,13 +15,13 @@ export default function AboutSection1() {
 							<Image src={left_dots} alt="" className="shape shape-2"/>
 						</div>
 					</div>
-					<div className="w-full lg:w-1/2">
+					<div className="w-full lg:w-1/2 pl-8">
 						<div className="about-content">
 							<div className="section-title mb-8">
-								<h1 className="mb-6 ">Perfect Solution Thriving Online Business</h1>
-								<p className="">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed dinonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem.Lorem ipsum dolor sit amet.</p>
+								<h1 className="mb-6 ">Easy API integration</h1>
+								<p className="">Our API is designed to be easy to use and integrate with your existing website. Check out our documentation to see how to get started.</p>
 							</div>
-							<a className="main-btn btn-hover border-btn ">Discover More</a>
+							<a className="main-btn btn-hover border-btn ">Documentation</a>
 						</div>
 					</div>
 				</div>

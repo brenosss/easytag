@@ -36,7 +36,10 @@ export async function generateMetadata(): Promise<Metadata> {
     }
   ).then((res) => res.json()
   ).catch(() => {
-    return {}
+    return {
+      title: "Create beautiful social media previews",
+      description: "It's never been easier to create beautiful social media previews for your website. Just create the page and we'll creaete your tags for you.",
+    }
   })
   return tags
 }

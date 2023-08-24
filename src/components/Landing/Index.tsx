@@ -27,10 +27,7 @@ const Landing = () => {
             <HeroSection />
             <FeatureSection1 />
             <AboutSection1 />
-            <AboutSection2 />
-            <FeatureSection2 />
             <PricingSection />
-            <TestimonialSection />
             <SubscribeSection />
           </main>
           <Footer />
