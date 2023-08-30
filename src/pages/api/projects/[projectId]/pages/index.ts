@@ -6,26 +6,13 @@ import { prisma } from "src/server/db/client";
 import { type SessionUser } from "../../../../../types/next-auth";
 import { CloudFlareImage } from "src/server/integrations/cloud-flare";
 
-async function get(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  projectId: string
-): Promise<void> {
-  const pages = await prisma.page.findMany({
-    where: {
-      projectId,
-    },
-  });
-  res.status(200).json(pages);
-}
-
 async function post(
   req: NextApiRequest,
   res: NextApiResponse,
   projectId: string
 ): Promise<void> {
   let image = req.body.image;
-  if (req.body.newImage && typeof req.body.newImage === "string" ) {
+  if (req.body.newImage && typeof req.body.newImage === "string") {
     const cloudFlareImage = new CloudFlareImage(req.body.newImage)
     image = (await cloudFlareImage.upload()).result.variants[0];
   }
@@ -68,7 +55,6 @@ const pages = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(403).json({ error: "Forbidden." });
   }
   try {
-    if (req.method === "GET") await get(req, res, projectId);
     if (req.method === "POST") await post(req, res, projectId);
   } catch (error) {
     console.error(error);
