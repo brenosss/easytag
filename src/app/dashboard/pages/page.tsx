@@ -16,7 +16,7 @@ const Pages = () => {
   const [totalOnThisPage, setTotalOnThisPage] = useState();
 
   async function getPages() {
-    const pagesResponse = await fetch(`/api/projects/${project.id}/pages/getPages/${15 * (actualPage - 1)} `, {
+    const pagesResponse = await fetch(`/api/projects/${project.id}/pages?skip=${15 * (actualPage - 1)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

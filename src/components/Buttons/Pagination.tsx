@@ -8,22 +8,24 @@ interface paginationProps {
 }
 
 export default function Pagination({ totalItemsNumber, setActualPage, actualPage, totalOnThisPage }: paginationProps) {
+  const ITEMS_PER_PAGE = 15
   const [firstOfPage, setFirstOfPage] = useState(0)
-  const [lastOfPage, setLastOfPage] = useState(actualPage * 15 >= totalItemsNumber ? totalOnThisPage : totalItemsNumber - (totalItemsNumber % (actualPage * 15)))
+  const [lastOfPage, setLastOfPage] = useState(actualPage * ITEMS_PER_PAGE >= totalItemsNumber ? totalOnThisPage : totalItemsNumber - (totalItemsNumber % (actualPage * ITEMS_PER_PAGE)))
+  const hasNextPage = totalItemsNumber > (actualPage * ITEMS_PER_PAGE)
 
   function handleNextPage() {
-    if (totalItemsNumber > (actualPage * 15)) {
+    if (hasNextPage) {
       scrollToTop()
       setActualPage(actualPage + 1);
-      setFirstOfPage((actualPage * 15) + 1)
-      setLastOfPage(((actualPage + 1) * 15) < totalItemsNumber ? totalItemsNumber - (totalItemsNumber % (actualPage * 15)) : totalItemsNumber);
+      setFirstOfPage((actualPage * ITEMS_PER_PAGE) + 1)
+      setLastOfPage(((actualPage + 1) * ITEMS_PER_PAGE) < totalItemsNumber ? totalItemsNumber - (totalItemsNumber % (actualPage * ITEMS_PER_PAGE)) : totalItemsNumber);
     }
   }
   function handlePreviousPage() {
     if (actualPage > 1) {
       setActualPage(actualPage - 1);
-      setFirstOfPage(((actualPage - 1) * 15) - 14)
-      setLastOfPage((actualPage - 1) * 15);
+      setFirstOfPage(((actualPage - 1) * ITEMS_PER_PAGE) - 14)
+      setLastOfPage((actualPage - 1) * ITEMS_PER_PAGE);
     }
   }
   function scrollToTop() {
@@ -61,23 +63,3 @@ export default function Pagination({ totalItemsNumber, setActualPage, actualPage
     </nav>
   )
 }
-
-
-
-
-
-
-
-/*
-total de items
-quantos items em cada Pagina
-pagina atual
-
-ultimo item da pagina = totaldeitems - (totalDeItems % (paginaatual * 15))
-
-
-
-31 - 16
-
-15
-*/
