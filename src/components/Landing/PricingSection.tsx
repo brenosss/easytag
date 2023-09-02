@@ -9,7 +9,7 @@ export default function PricingSection() {
           <div className="w-full md:w-9/12 lg:w-8/12 xl:w-6/12">
             <div className="section-title text-center mb-9">
               <h1 className="mb-6 ">Choose a Plan</h1>
-              <p className="">Lorem ipsum dolor sit amet consetetur sadipscing elitr sswed diam nonumy eirmod tempor nvidunt.
+              <p className="">We have a plan that fits your needs. have any questions? <a href="#contact-us" className="text-emerald-500">Contact us</a>
               </p>
             </div>
           </div>
@@ -29,6 +29,7 @@ export default function PricingSection() {
           {pricingSection === 1 ?
             <div className="tab-pane active" id="monthlyPlan" data-tab-content>
               <div className="row flex flex-wrap justify-center">
+                {/*
                 <div className="w-full sm:w-10/12 md:w-8/12 lg:w-4/12">
                   <div className="single-pricing mx-4">
                     <div className="pricing-header">
@@ -68,16 +69,16 @@ export default function PricingSection() {
                       <a href="/" className="main-btn btn-hover">Get Start</a>
                     </div>
                   </div>
-                </div>
+          </div> */}
                 <div className="w-full sm:w-10/12 md:w-8/12 lg:w-4/12">
                   <div className="single-pricing mx-4">
                     <div className="pricing-header">
-                      <h1 className="mb-8 text-theme-color">$89</h1>
+                      <h1 className="mb-8 text-theme-color">$30</h1>
                       <h3 className="package-name">Premium Account</h3>
                     </div>
                     <div className="content mb-8 2xl:pl-13">
                       <ul className="pricing-feature">
-                        <li> <i className="lni lni-checkmark active"></i> Unlimited Acces</li>
+                        <li> <i className="lni lni-checkmark active"></i> Unlimited Sites</li>
                         <li> <i className="lni lni-checkmark active"></i> Unlimited Users </li>
                         <li> <i className="lni lni-checkmark active"></i> Unlimited Storage</li>
                         <li> <i className="lni lni-checkmark active"></i> 24/7 Support </li>
@@ -93,6 +94,7 @@ export default function PricingSection() {
             </div>
             : <div className="tab-pane active" id="yearlyPlan" data-tab-content>
               <div className="row flex flex-wrap justify-center">
+                {/*
                 <div className="w-full sm:w-10/12 md:w-8/12 lg:w-4/12">
                   <div className="single-pricing mx-4">
                     <div className="pricing-header">
@@ -133,15 +135,16 @@ export default function PricingSection() {
                     </div>
                   </div>
                 </div>
+              */}
                 <div className="w-full sm:w-10/12 md:w-8/12 lg:w-4/12">
                   <div className="single-pricing mx-4">
                     <div className="pricing-header">
-                      <h1 className="mb-8 text-theme-color">$189</h1>
+                      <h1 className="mb-8 text-theme-color">$130</h1>
                       <h3 className="package-name">Premium Account</h3>
                     </div>
                     <div className="mb-8 2xl:pl-13">
                       <ul className="pricing-feature">
-                        <li> <i className="lni lni-checkmark active"></i> Unlimited Acces</li>
+                        <li> <i className="lni lni-checkmark active"></i> Unlimited Sites</li>
                         <li> <i className="lni lni-checkmark active"></i> Unlimited Users </li>
                         <li> <i className="lni lni-checkmark active"></i> Unlimited Storage</li>
                         <li> <i className="lni lni-checkmark active"></i> 24/7 Support </li>

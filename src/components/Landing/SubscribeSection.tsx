@@ -19,13 +19,12 @@ function emailForm() {
 
 export default function SubscribeSection() {
   return (
-    <section id="contact" className="subscribe-section pt-120">
+    <section id="contact-us" className="subscribe-section pt-120">
       <div className="container">
         <div
-          className="subscribe-wrapper pb-13 md:px-13 rounded-3xl bg-cover bg-center bg-no-repeat px-8 pt-16"
-          style={{ backgroundImage: `url(${subscribe_bg.src})` }}
+          className="subscribe-wrapper pb-13 md:px-13 rounded-3xl bg-cover bg-center bg-no-repeat px-8 pt-16 bg-emerald-500"
         >
-          <div className="row flex items-center">
+          <div className="flex items-center md:flex-row flex-col">
             <div className="w-full lg:w-7/12 xl:w-6/12">
               <div className="section-title mb-4">
                 <h1 className="mb-6 text-white">Contact us</h1>
@@ -35,7 +34,7 @@ export default function SubscribeSection() {
               </div>
             </div>
             <div className="w-full lg:w-5/12 xl:w-6/12 text-center">
-              <h1 className="text-white cursor-pointer">contact@easytag.com</h1>
+              <h2 className="text-white cursor-pointer">admin@socialsharing.dev</h2>
             </div>
           </div>
         </div>

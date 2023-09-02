@@ -54,7 +54,7 @@ const CreateProject = () => {
       const project = await response.json();
       setCookie("project", JSON.stringify(project));
       setCurrentProject(project);
-      await router.replace(`/dashboard/pages`);
+      window.location.pathname = "/dashboard/pages";
     }
   };
 
