@@ -6,26 +6,13 @@ import { prisma } from "src/server/db/client";
 import { type SessionUser } from "../../../../../types/next-auth";
 import { CloudFlareImage } from "src/server/integrations/cloud-flare";
 
-async function get(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  projectId: string
-): Promise<void> {
-  const pages = await prisma.page.findMany({
-    where: {
-      projectId,
-    },
-  });
-  res.status(200).json(pages);
-}
-
 async function post(
   req: NextApiRequest,
   res: NextApiResponse,
   projectId: string
 ): Promise<void> {
   let image = req.body.image;
-  if (req.body.newImage && typeof req.body.newImage === "string" ) {
+  if (req.body.newImage && typeof req.body.newImage === "string") {
     const cloudFlareImage = new CloudFlareImage(req.body.newImage)
     image = (await cloudFlareImage.upload()).result.variants[0];
   }
@@ -40,6 +27,27 @@ async function post(
     },
   });
   res.status(200).json(page);
+}
+
+async function get(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  projectId: string,
+  skip: number
+): Promise<void> {
+  const totalPages = await prisma.page.count({
+    where: {
+      projectId,
+    },
+  });
+  const pages = await prisma.page.findMany({
+    skip: skip,
+    take: 15,
+    where: {
+      projectId,
+    },
+  });
+  res.status(200).json({ "pages": pages, "totalPages": totalPages });
 }
 
 const amIInProject = async (projectId: string, sessionUser: SessionUser) => {
@@ -67,9 +75,10 @@ const pages = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!(await amIInProject(projectId, session.user))) {
     return res.status(403).json({ error: "Forbidden." });
   }
+  const queryParams = new URLSearchParams(req.query)
   try {
-    if (req.method === "GET") await get(req, res, projectId);
     if (req.method === "POST") await post(req, res, projectId);
+    if (req.method === "GET") await get(req, res, projectId, Number(queryParams.get("skip")));
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong" });
