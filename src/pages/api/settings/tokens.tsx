@@ -11,11 +11,11 @@ async function get(
   res: NextApiResponse,
   sessionUser: SessionUser
 ): Promise<void> {
-  const lastProject = await getLastSelectedProject(sessionUser.id)
-  if (lastProject === null) {
+  const currentProject = await getLastSelectedProject(sessionUser.id)
+  if (currentProject === null) {
     return res.status(404).json({ error: "Not found" });
   }
-  const apiToken = await getTokenByProjectId(lastProject.id)
+  const apiToken = await getTokenByProjectId(currentProject.id)
   if (apiToken) {
     return res.status(200).json({ token: apiToken.token });
   } else {
@@ -29,18 +29,18 @@ async function post(
   sessionUser: SessionUser
 ): Promise<void> {
 
-  const lastProject = await getLastSelectedProject(sessionUser.id)
-  if (lastProject === null) {
+  const currentProject = await getLastSelectedProject(sessionUser.id)
+  if (currentProject === null) {
     return res.status(404).json({ error: "Not found" });
   }
 
   await prisma.aPIToken.deleteMany({
     where: {
-      projectId: lastProject.id,
+      projectId: currentProject.id,
     },
   });
 
-  const apiToken = await createToken(lastProject.id)
+  const apiToken = await createToken(currentProject.id)
   if (apiToken) {
     return res.status(200).json({ token: apiToken.token });
   } else {

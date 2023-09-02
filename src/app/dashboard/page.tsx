@@ -10,8 +10,8 @@ export default function LandingPage() {
   const { currentProject, setCurrentProject } = useContext(projectContext);
   const router = useRouter();
 
-  async function getLastProject() {
-    const response = await fetch("/api/projects/lastProject", {
+  async function getcurrentProject() {
+    const response = await fetch("/api/projects/currentProject", {
       method: "GET",
     });
     if (response.status === 200) {
@@ -23,7 +23,7 @@ export default function LandingPage() {
   }
 
   useEffect(() => {
-    getLastProject();
+    getcurrentProject();
   }, []);
 
   return (
