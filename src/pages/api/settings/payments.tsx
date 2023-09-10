@@ -1,8 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
-import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
+import { getToken } from "next-auth/jwt";
 
 import { prisma } from "../../../server/db/client";
-import { type SessionUser } from "../../../types/next-auth";
 import { env } from "src/env/server.mjs";
 
 import Stripe from 'stripe';
@@ -28,11 +27,11 @@ async function createCheckoutSession(stripeCustomerId: string): Promise<Stripe.C
 async function post(
   req: NextApiRequest,
   res: NextApiResponse,
-  sessionUser: SessionUser
+  userId: string
 ): Promise<void> {
   const user = await prisma.user.findFirst({
     where: {
-      id: sessionUser.id,
+      id: userId,
     },
     include: {
       customer: true,
@@ -63,12 +62,12 @@ async function post(
 async function get(
   req: NextApiRequest,
   res: NextApiResponse,
-  sessionUser: SessionUser
+  userId: string
 ): Promise<void> {
 
   const customer = await prisma.customer.findFirst({
     where: {
-      userId: sessionUser.id,
+      userId: userId,
     },
   });
 
@@ -80,13 +79,13 @@ async function get(
 }
 
 const payments = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getServerAuthSession({ req, res });
-  if (!session || !session.user) {
+  const token = await getToken({ req, secret: env.NEXTAUTH_SECRET });
+  if (!token || !token.userId) {
     return res.status(401).json({ error: "Not authenticated" });
   }
   try {
-    if (req.method === "GET") await get(req, res, session.user);
-    if (req.method === "POST") await post(req, res, session.user);
+    if (req.method === "GET") await get(req, res, token.userId);
+    if (req.method === "POST") await post(req, res, token.userId);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong" });

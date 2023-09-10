@@ -8,10 +8,41 @@ import { useEffect, useState, useContext } from "react";
 import projectContext from "src/contexts/projectContext";
 import { LoadingButton } from "src/components/Buttons/LoadingButton";
 import Notification from "src/components/Buttons/Notification";
+import { SessionProvider, useSession } from "next-auth/react"
+
 interface Project {
   id: string;
   name: string;
   domain: string;
+}
+
+function ProjectsSelection({projects}: {projects: Project[]}) {
+  const { setCurrentProject } = useContext(projectContext);
+  const { update } = useSession();
+
+  async function selectProject(project: Project) {
+    setCurrentProject(project);
+    await fetch(`/api/projects/${project.id}`, {
+      method: "PATCH",
+    });
+    await update()
+    window.location.pathname = "/dashboard/pages";
+  }
+
+  return (
+    <>
+      {projects.map((project) => (
+        <tr key={project.name} onClick={() => selectProject(project)} className="cursor-pointer">
+          <td className="whitespace-nowrap hover:text-emerald-500 py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-0">
+            {project.name}
+          </td>
+          <td className="whitespace-nowrap py-4 px-3 text-base text-gray-500">
+            {project.domain}
+          </td>
+        </tr>
+      ))}
+    </>
+  )
 }
 
 const Projects = () => {
@@ -23,8 +54,6 @@ const Projects = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [notificationTitle, setNotificationTitle] = useState("")
   const [notificationDescription, setNotificationDescription] = useState("Reload the page to update your Projects")
-
-  const { currentProject, setCurrentProject } = useContext(projectContext);
 
   async function getProjects() {
     const projectsResponse = await fetch("/api/projects", {
@@ -55,15 +84,6 @@ const Projects = () => {
         setHasPendingProjects(true);
       }
     }
-  }
-
-  async function selectProject(project: Project) {
-    setCurrentProject(project);
-    await fetch(`/api/projects/${project.id}`, {
-      method: "PATCH",
-    });
-    setCookie("project", JSON.stringify(project));
-    window.location.pathname = "/dashboard/pages";
   }
 
   async function declineInvitation(project: Project) {
@@ -145,16 +165,9 @@ const Projects = () => {
                 </tr>
               </thead>
               <tbody className="w-full divide-y divide-gray-200">
-                {projects.map((project) => (
-                  <tr key={project.name} onClick={() => selectProject(project)} className="cursor-pointer">
-                    <td className="whitespace-nowrap hover:text-emerald-500 py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-0">
-                      {project.name}
-                    </td>
-                    <td className="whitespace-nowrap py-4 px-3 text-base text-gray-500">
-                      {project.domain}
-                    </td>
-                  </tr>
-                ))}
+                <SessionProvider>
+                  <ProjectsSelection projects={projects}/>
+                </SessionProvider>
               </tbody>
             </table>
             <div className="flex items-center justify-center divide-gray-200">

@@ -1,20 +1,20 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
-import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
-
+import { env } from "src/env/server.mjs";
 import { prisma } from "../../../server/db/client";
-import { type SessionUser } from "../../../types/next-auth";
+import type { JWT } from "next-auth/jwt"
 import { createToken } from "src/domain/projects/tokens/project-token";
+import { getToken } from "next-auth/jwt"
 
 async function get(
   req: NextApiRequest,
   res: NextApiResponse,
-  user: SessionUser
+  token: JWT
 ): Promise<void> {
   const projects = await prisma.project.findMany({
     where: {
       UsersInProjects: {
         some: {
-          userId: user.id,
+          userId: token.userId,
           projectStatus: "ACCEPTED",
         },
       },
@@ -26,7 +26,7 @@ async function get(
 async function post(
   req: NextApiRequest,
   res: NextApiResponse,
-  user: SessionUser
+  token: JWT
 ): Promise<void> {
   if (
     typeof req.body.name !== "string" ||
@@ -43,7 +43,7 @@ async function post(
   await createToken(project.id);
   await prisma.usersInProjects.create({
     data: {
-      userId: user.id,
+      userId: token.userId,
       projectId: project.id,
       projectStatus: "ACCEPTED",
       role: "OWNER",
@@ -51,7 +51,7 @@ async function post(
   });
   await prisma.usersInProjects.updateMany({
     where: {
-      userId: user.id,
+      userId: token.userId,
       projectId: {
         not: project.id,
       },
@@ -60,18 +60,17 @@ async function post(
       selected: false,
     },
   });
-  user.projects.push(project);
   res.status(201).json(project);
 }
 
 const projects = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getServerAuthSession({ req, res });
-  if (!session || !session.user) {
+  const token = await getToken({ req, secret: env.NEXTAUTH_SECRET })
+  if (!token || !token.userId) {
     return res.status(401).json({ error: "Not authenticated" });
   }
   try {
-    if (req.method === "GET") await get(req, res, session.user);
-    if (req.method === "POST") await post(req, res, session.user);
+    if (req.method === "GET") await get(req, res, token);
+    if (req.method === "POST") await post(req, res, token);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong" });

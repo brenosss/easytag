@@ -56,7 +56,6 @@ export async function canUserEditRole(userId: string, userInProjectId: string) {
 }
 
 export async function getRoleBySession(sessionId: string): Promise<Role | null> {
-  console.log(sessionId)
   const user = await prisma.user.findFirst({
     where: {
       sessions: {

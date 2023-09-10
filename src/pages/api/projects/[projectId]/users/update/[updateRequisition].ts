@@ -1,21 +1,23 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
-import { getServerAuthSession } from "../../../../../../server/common/get-server-auth-session";
 import { prisma } from "../../../../../../server/db/client";
-import { type SessionUser } from "../../../../../../types/next-auth";
+import { Status } from "@prisma/client"
+import { getToken } from "next-auth/jwt";
+import { env } from "src/env/server.mjs";
+
 
 const patch = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  user: SessionUser,
+  userId: string,
   projectId: string,
-  update: string
+  update: Status
 ): Promise<void> => {
   try {
     await prisma.usersInProjects.update({
       where: {
         projectId_userId: {
           projectId: projectId,
-          userId: user.id,
+          userId: userId,
         },
       },
       data: { projectStatus: update },
@@ -28,17 +30,23 @@ const patch = async (
 };
 
 const updateRelation = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getServerAuthSession({ req, res });
+  const token = await getToken({ req, secret: env.NEXTAUTH_SECRET });
   const { projectId, updateRequisition } = req.query;
 
-  if (!session || !session.user) {
+  if (!token || !token.userId) {
     return res.status(401).json({ error: "Not authenticated" });
   }
   if (typeof projectId !== "string") {
     return res.status(400).json({ error: "Invalid project id" });
   }
+  if (typeof updateRequisition !== "string") {
+    return res.status(400).json({ error: "Invalid update requisition" });
+  }
+  if (updateRequisition !== Status.ACCEPTED && updateRequisition !== Status.RECUSED && updateRequisition !== Status.PENDING) {
+    return res.status(400).json({ error: "Invalid update requisition" });
+  }
   if (req.method === "PATCH")
-    await patch(req, res, session.user, projectId, updateRequisition);
+    await patch(req, res, token.userId, projectId, updateRequisition);
 };
 
 export default updateRelation;
