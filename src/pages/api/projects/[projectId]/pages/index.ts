@@ -9,7 +9,7 @@ import { CloudFlareImage } from "src/server/integrations/cloud-flare";
 async function post(
   req: NextApiRequest,
   res: NextApiResponse,
-  projectId: string
+  projectId: string,
 ): Promise<void> {
   let image = req.body.image;
   if (req.body.newImage && typeof req.body.newImage === "string") {
@@ -33,21 +33,37 @@ async function get(
   req: NextApiRequest,
   res: NextApiResponse,
   projectId: string,
-  skip: number
+  skip: number,
+  search: string
 ): Promise<void> {
   const totalPages = await prisma.page.count({
     where: {
       projectId,
     },
   });
-  const pages = await prisma.page.findMany({
-    skip: skip,
-    take: 15,
-    where: {
-      projectId,
-    },
-  });
-  res.status(200).json({ "pages": pages, "totalPages": totalPages });
+  if (search !== '') {
+    const pages = await prisma.page.findMany({
+      skip: skip,
+      take: 15,
+      where: {
+        projectId,
+        path: {
+          contains: search,
+          mode: 'insensitive'
+        },
+      },
+    });
+    res.status(200).json({ "pages": pages, "totalPages": totalPages });
+  } else {
+    const pages = await prisma.page.findMany({
+      skip: skip,
+      take: 15,
+      where: {
+        projectId,
+      },
+    });
+    res.status(200).json({ "pages": pages, "totalPages": totalPages });
+  }
 }
 
 const amIInProject = async (projectId: string, sessionUser: SessionUser) => {
@@ -78,7 +94,7 @@ const pages = async (req: NextApiRequest, res: NextApiResponse) => {
   const queryParams = new URLSearchParams(req.query)
   try {
     if (req.method === "POST") await post(req, res, projectId);
-    if (req.method === "GET") await get(req, res, projectId, Number(queryParams.get("skip")));
+    if (req.method === "GET") await get(req, res, projectId, Number(queryParams.get("skip")), String(queryParams.get("path")));
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong" });

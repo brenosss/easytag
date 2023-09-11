@@ -7,6 +7,7 @@ import { PrimaryLink } from "src/components/Buttons/Links";
 import PageList from "src/components/Pages/PageList";
 import { getProjectFromCookie } from "src/app/cookies";
 import Pagination from "src/components/Buttons/Pagination";
+import SearchBar from "src/components/Inputs/SearchBar";
 
 const Pages = () => {
   const [pages, setPages] = useState<Page[]>([]);
@@ -14,9 +15,10 @@ const Pages = () => {
   const [totalItems, setTotalItems] = useState();
   const [actualPage, setActualPage] = useState(1)
   const [totalOnThisPage, setTotalOnThisPage] = useState();
+  const [searchValue, setSearchValue] = useState<string>('')
 
   async function getPages() {
-    const pagesResponse = await fetch(`/api/projects/${project.id}/pages?skip=${15 * (actualPage - 1)}`, {
+    const pagesResponse = await fetch(`/api/projects/${project.id}/pages?skip=${15 * (actualPage - 1)}&path=${searchValue}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -41,8 +43,14 @@ const Pages = () => {
       <Head>
         <title>Pages</title>
       </Head>
-      <div className="">
+      <div>
         <div className="flex flex-col justify-around">
+          <SearchBar
+            labelText="Path"
+            placeholderText="/my/path"
+            setSearchValue={setSearchValue}
+            onSearch={() => { getPages() }}
+          />
           <div className="mb-6 flex justify-between">
             <PrimaryLink
               href={"/dashboard/pages/create"}
