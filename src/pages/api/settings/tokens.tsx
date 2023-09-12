@@ -1,17 +1,17 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
-import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
 
 import { prisma } from "../../../server/db/client";
-import { type SessionUser } from "../../../types/next-auth";
 import { getTokenByProjectId, createToken } from "src/domain/projects/tokens/project-token"
 import { getLastSelectedProject } from "src/domain/projects/projects";
+import { getToken } from "next-auth/jwt";
+
 
 async function get(
   req: NextApiRequest,
   res: NextApiResponse,
-  sessionUser: SessionUser
+  userId: string
 ): Promise<void> {
-  const currentProject = await getLastSelectedProject(sessionUser.id)
+  const currentProject = await getLastSelectedProject(userId)
   if (currentProject === null) {
     return res.status(404).json({ error: "Not found" });
   }
@@ -26,10 +26,10 @@ async function get(
 async function post(
   req: NextApiRequest,
   res: NextApiResponse,
-  sessionUser: SessionUser
+  userId: string
 ): Promise<void> {
 
-  const currentProject = await getLastSelectedProject(sessionUser.id)
+  const currentProject = await getLastSelectedProject(userId)
   if (currentProject === null) {
     return res.status(404).json({ error: "Not found" });
   }
@@ -49,13 +49,13 @@ async function post(
 }
 
 const tokens = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getServerAuthSession({ req, res });
-  if (!session || !session.user) {
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  if (!token || !token.userId) {
     return res.status(401).json({ error: "Not authenticated" });
   }
   try {
-    if (req.method === "GET") await get(req, res, session.user);
-    if (req.method === "POST") await post(req, res, session.user);
+    if (req.method === "GET") await get(req, res, token.userId);
+    if (req.method === "POST") await post(req, res, token.userId);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong" });

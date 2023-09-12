@@ -1,7 +1,5 @@
 import { clsx } from "clsx";
 
-interface TextAreaInputProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> { }
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   displayText?: string;
 }
@@ -23,7 +21,7 @@ export function TextInput({ ...props }: TextInputProps) {
   );
 }
 
-export function TextAreaInput(props: TextAreaInputProps) {
+export function TextAreaInput(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <textarea
       {...props}

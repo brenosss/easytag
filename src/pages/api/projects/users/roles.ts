@@ -2,6 +2,9 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 
 import { changeUserInProjectRole, canUserEditRole } from "src/domain/projects/users/users-in-projects";
+import { getToken } from "next-auth/jwt";
+import { env } from "src/env/server.mjs";
+
 
 async function patch(
   req: NextApiRequest,
@@ -12,11 +15,11 @@ async function patch(
 }
 
 const roles = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getServerAuthSession({ req, res });
-  if (!session || !session.user) {
+  const token = await getToken({ req, secret: env.NEXTAUTH_SECRET });
+  if (!token || !token.userId) {
     return res.status(401).json({ error: "Not authenticated" });
   }
-  const canEdit = await canUserEditRole(session.user.id, req.body.userInProjectId)
+  const canEdit = await canUserEditRole(token.userId, req.body.userInProjectId)
   if (!canEdit) {
     return res.status(403).json({ error: "Not authorized" });
   }

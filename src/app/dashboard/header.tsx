@@ -3,7 +3,7 @@ import Link from "next/link";
 import LogoutButton from "src/components/Buttons/LogoutButton";
 
 import { cookies } from 'next/headers'
-import { getProjectBySessionToken } from "src/domain/projects/projects";
+import { getJWTSession } from "src/domain/JWT";
 import { NavigationProject, NavigationUser, ProjectHeader } from "src/app/dashboard/HeaderComponents";
 
 
@@ -12,7 +12,8 @@ async function getCurrentProject() {
   const sessionCookie = cookieStore.get('next-auth.session-token')
   if (!sessionCookie) throw new Error('No session cookie found')
   const session = sessionCookie.value
-  return await getProjectBySessionToken(session)
+  const jwtData = await getJWTSession(session)
+  return jwtData.selectedProject
 }
 
 export default async function Header() {

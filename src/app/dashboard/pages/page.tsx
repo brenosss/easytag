@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { PrimaryLink } from "src/components/Buttons/Links";
 import PageList from "src/components/Pages/PageList";
 import { getProjectFromCookie } from "src/app/cookies";
+import Pagination from "src/components/Buttons/Pagination";
 
 
 function EmptyState() {
@@ -13,7 +14,7 @@ function EmptyState() {
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-3 py-8">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          You don't have any pages yet.
+          You don&apost have any pages yet.
         </h2>
         <h4>
           Start by creating one then check the documentation to see how to integrate it.
@@ -33,9 +34,12 @@ function EmptyState() {
 const Pages = () => {
   const [pages, setPages] = useState<Page[]>([]);
   const project = getProjectFromCookie();
+  const [totalItems, setTotalItems] = useState<number>(1);
+  const [actualPage, setActualPage] = useState<number>(1)
+  const [totalOnThisPage, setTotalOnThisPage] = useState<number>(1);
 
   async function getPages() {
-    const pagesResponse = await fetch(`/api/projects/${project.id}/pages`, {
+    const pagesResponse = await fetch(`/api/projects/${project.id}/pages?skip=${15 * (actualPage - 1)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +47,9 @@ const Pages = () => {
     });
     if (pagesResponse.status === 200) {
       const pages = await pagesResponse.json();
-      setPages(pages);
+      setPages(pages.pages);
+      setTotalOnThisPage(pages.pages.length)
+      setTotalItems(pages.totalPages)
     }
   }
 
@@ -51,7 +57,7 @@ const Pages = () => {
     (async () => {
       await getPages();
     })();
-  }, [])
+  }, [actualPage])
 
   return (
     <>
@@ -79,6 +85,12 @@ const Pages = () => {
         </div>
         : <EmptyState />}
       </div>
+      <Pagination
+        totalItemsNumber={totalItems}
+        setActualPage={setActualPage}
+        actualPage={actualPage}
+        totalOnThisPage={totalOnThisPage}
+      ></Pagination>
     </>
   );
 };

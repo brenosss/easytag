@@ -19,7 +19,7 @@ interface PageFormProps {
   submitFunction: (event: React.FormEvent) => void;
   isLoading: boolean;
   deleteButton: boolean;
-  deleteFunction?: (event: React.FormEvent) => void;
+  deleteFunction?: () => void;
 }
 
 function PageForm({
@@ -69,7 +69,7 @@ function PageForm({
           onClose={() => {
             setModal(false);
           }}
-          onAccept={deleteFunction}
+          onAccept={deleteFunction ? deleteFunction : () => { return }}
           title="You are about to delete this page"
           acceptButtonMessage="Delete"
         >

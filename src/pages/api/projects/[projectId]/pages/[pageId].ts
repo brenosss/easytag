@@ -1,9 +1,9 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
-import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 
 import { prisma } from "src/server/db/client";
-import { type SessionUser } from "src/types/next-auth";
 import { CloudFlareImage } from "src/server/integrations/cloud-flare";
+import { getToken } from "next-auth/jwt";
+import { env } from "src/env/server.mjs";
 
 async function get(
   req: NextApiRequest,
@@ -40,13 +40,13 @@ async function patch(
   res.status(200).json({ message: "Page updated", data: page });
 }
 
-const amIInProject = async (projectId: string, sessionUser: SessionUser) => {
+const amIInProject = async (projectId: string, userId: string) => {
   return Boolean(
     await prisma.usersInProjects.findUnique({
       where: {
         projectId_userId: {
           projectId,
-          userId: sessionUser.id,
+          userId: userId,
         },
       },
     })
@@ -54,15 +54,15 @@ const amIInProject = async (projectId: string, sessionUser: SessionUser) => {
 };
 
 const pages = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getServerAuthSession({ req, res });
-  if (!session || !session.user) {
+  const token = await getToken({ req, secret: env.NEXTAUTH_SECRET });
+  if (!token || !token.userId) {
     return res.status(401).json({ error: "Not authenticated" });
   }
   const { projectId, pageId } = req.query;
   if (typeof projectId !== "string" || typeof pageId !== "string") {
     return res.status(400).json({ error: "Invalid/missing project or page" });
   }
-  if (!(await amIInProject(projectId, session.user))) {
+  if (!(await amIInProject(projectId, token.userId))) {
     return res.status(403).json({ error: "Forbidden" });
   }
   try {

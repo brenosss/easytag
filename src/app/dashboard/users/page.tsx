@@ -1,10 +1,11 @@
 import Head from "next/head";
 import { cookies } from 'next/headers'
+import  Image from "next/image";
 import { PrimaryLink } from "src/components/Buttons/Links";
 import { getUsersByProjectId, getRoleBySession } from "src/domain/projects/users/users-in-projects";
 import SelectionMenuUserRole from "src/app/dashboard/users/RoleSelection"
 import type { UsersInProjectsWithUser } from "src/domain/projects/users/users-in-projects";
-import type { User, UsersInProjects } from "@prisma/client"
+import type { User } from "@prisma/client"
 
 async function getUsersInProject() {
   const cookieStore = cookies();
@@ -58,26 +59,20 @@ async function UsersInProjectPage() {
   );
 }
 
-function UserItem({ user, userInProject, showSelectionRole }: { user: User, userInProject: UsersInProjects, showSelectionRole: boolean }) {
+function UserItem({ user, userInProject, showSelectionRole }: { user: User, userInProject: UsersInProjectsWithUser, showSelectionRole: boolean }) {
   return (
     <li className="flex justify-between gap-x-6 py-5">
       <div className="flex min-w-0 gap-x-4">
-        <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={user.image} alt="" />
+        { user.image && <Image className="h-12 w-12 flex-none rounded-full bg-gray-50" src={user.image} alt="" /> }
         <div className="min-w-0 flex-auto">
           <p className="text-sm font-semibold leading-6 text-gray-900">{user.name}</p>
           <p className="mt-1 truncate text-xs leading-5 text-gray-500">{user.email}</p>
         </div>
       </div>
       <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-        {user.lastSeen ? (
-          <p className="mt-1 text-xs leading-5 text-gray-500">
-            Last seen <time dateTime={user.lastSeenDateTime}>{user.lastSeen}</time>
-          </p>
-        ) : (
-          <div className="mt-1 flex items-center gap-x-1.5">
-            <p className="text-xs leading-5 text-gray-500 capitalize">{userInProject.projectStatus.toLowerCase()}</p>
-          </div>
-        )}
+        <div className="mt-1 flex items-center gap-x-1.5">
+          <p className="text-xs leading-5 text-gray-500 capitalize">{userInProject.projectStatus.toLowerCase()}</p>
+        </div>
         {
           (showSelectionRole && userInProject.role !== 'OWNER' ) ?
           <SelectionMenuUserRole userInProject={userInProject}/> :

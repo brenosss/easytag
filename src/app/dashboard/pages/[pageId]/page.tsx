@@ -6,12 +6,12 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import PageForm from "src/components/Pages/PageForm";
-import type { SocialCardProps } from "src/components/Pages/SocialCards/ISocialCard";
+import type { SocialCardProps, TwitterCardProps } from "src/components/Pages/SocialCards/ISocialCard";
 import { blobUrlToBase64 } from "src/services/files";
 import { getProjectFromCookie } from "src/app/cookies";
 
 
-const PageDetail = ({ params }) => {
+const PageDetail = ({ params }: any) => {
   const [socialCard, setSocialCard] = useState<SocialCardProps>();
   const [currentImage, setCurrentImage] = useState<string>('');
   const [url, setUrl] = useState<string>('');
@@ -39,7 +39,7 @@ const PageDetail = ({ params }) => {
         domain: project.domain,
         path: pageData.path,
         twitter: {
-          card: pageData.twitterCard,
+          card: pageData.twitterCard as TwitterCardProps['card'],
         }
       });
       setUrl(pageData.path);

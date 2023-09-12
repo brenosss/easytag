@@ -2,12 +2,10 @@
 
 import { setCookie } from "cookies-next";
 import Head from "next/head";
-import { useContext, useEffect } from "react";
-import projectContext from "src/contexts/projectContext";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function LandingPage() {
-  const { currentProject, setCurrentProject } = useContext(projectContext);
   const router = useRouter();
 
   async function getcurrentProject() {
@@ -17,7 +15,6 @@ export default function LandingPage() {
     if (response.status === 200) {
       const projectData = await response.json();
       setCookie("project", JSON.stringify(projectData));
-      setCurrentProject(projectData);
       router.push("/dashboard/pages")
     }
   }

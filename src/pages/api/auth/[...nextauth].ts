@@ -10,22 +10,50 @@ import { prisma } from "src/server/db/client";
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    async session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
-        session.user.projects = await prisma.usersInProjects.findMany({
+    async jwt({ token, user, account, trigger }) {
+      if(user && user.id){
+        token.userId = user.id
+      }
+      if (account && user) {
+        token.accessToken = account.access_token
+        const project = await prisma.usersInProjects.findFirst({
           where: {
             userId: user.id,
+            selected: true,
           },
-        });
+          select: {
+            project: true,
+          },
+        })
+        if (project) {
+          token.selectedProject = project.project
+        }
+      } 
+      else if (trigger == "update") {
+        const project = await prisma.usersInProjects.findFirst({
+          where: {
+            userId: token.userId,
+            selected: true,
+          },
+          select: {
+            project: true,
+          },
+        })
+        if (project) {
+          token.selectedProject = project.project
+        }
       }
-      
-      return session;
+      return token
+    },
+    async session ({ session, token, user }) {
+      session.user = user
+      return session
     },
     async redirect() {
       return "/dashboard/"
     }
   },
+  session: { strategy: "jwt" },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
   providers: [

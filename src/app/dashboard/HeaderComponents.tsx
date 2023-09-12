@@ -18,7 +18,7 @@ export function ProjectHeader({ project }: { project: Project | null }) {
 
   function isCurrentRouter(href: string): boolean {
     return pathname ? pathname.includes(href) : false;
-  };
+  }
 
   return (
     <>
@@ -69,7 +69,7 @@ export function NavigationProject() {
 
   function isCurrentRouter(href: string): boolean {
     return pathname ? pathname.includes(href) : false;
-  };
+  }
 
   const navigationProject = [
     { name: "Pages", href: `/dashboard/pages` },

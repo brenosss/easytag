@@ -1,5 +1,6 @@
+import type { JWT } from "next-auth/jwt"
+import type { Project } from "@prisma/client"
 
-import NextAuth from "next-auth"
 
 declare module "next-auth" {
   /**
@@ -9,5 +10,13 @@ declare module "next-auth" {
     user: {
       projects: string
     }
+    token: JWT
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    userId: string
+    selectedProject: Project | null
   }
 }

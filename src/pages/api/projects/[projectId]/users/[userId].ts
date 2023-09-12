@@ -1,12 +1,13 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
-import { getServerAuthSession } from "../../../../../server/common/get-server-auth-session";
 import { prisma } from "../../../../../server/db/client";
-import { type SessionUser } from "../../../../../types/next-auth";
+import { getToken } from "next-auth/jwt";
+import { env } from "src/env/server.mjs";
+
 
 const patch = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  sessionUser: SessionUser,
+  userId: string,
   projectId: string,
   userToBeUpdatedId: string
 ) => {
@@ -21,7 +22,7 @@ const patch = async (
   if (!invitation) {
     return res.status(404).json({ error: "No invitation found" });
   }
-  const amITryingToUpdateMyself = sessionUser.id === userToBeUpdatedId;
+  const amITryingToUpdateMyself = userId === userToBeUpdatedId;
   if (!amITryingToUpdateMyself) {
     return res.status(403).json({ error: "Forbidden" });
   }
@@ -45,7 +46,7 @@ const patch = async (
 const deleteRelation = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  sessionUser: SessionUser,
+  userId: string,
   projectId: string,
   userToBeDeletedId: string
 ) => {
@@ -57,7 +58,7 @@ const deleteRelation = async (
   if (!project) {
     return res.status(404).json({ error: "No project found" });
   }
-  const amITryingToDeleteMyself = sessionUser.id === userToBeDeletedId;
+  const amITryingToDeleteMyself = userId === userToBeDeletedId;
   if (!amITryingToDeleteMyself) {
     return res.status(403).json({ error: "Forbidden" });
   }
@@ -65,7 +66,7 @@ const deleteRelation = async (
     where: {
       projectId_userId: {
         projectId,
-        userId: sessionUser.id,
+        userId: userId,
       },
     },
   });
@@ -83,12 +84,12 @@ const deleteRelation = async (
   return res.status(200).json({ message: "Left project" });
 };
 
-const amIInProject = async (projectId: string, sessionUser: SessionUser) => {
+const amIInProject = async (projectId: string, userId: string) => {
   const relationship = await prisma.usersInProjects.findUnique({
     where: {
       projectId_userId: {
         projectId,
-        userId: sessionUser.id,
+        userId: userId,
       },
     },
   });
@@ -96,22 +97,22 @@ const amIInProject = async (projectId: string, sessionUser: SessionUser) => {
 };
 
 const projectUser = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getServerAuthSession({ req, res });
-  if (!session || !session.user) {
+  const token = await getToken({ req, secret: env.NEXTAUTH_SECRET });
+  if (!token || !token.userId) {
     return res.status(401).json({ error: "Not authenticated" });
   }
   const { projectId, userId: userToBeChanged } = req.query;
   if (typeof projectId !== "string" || typeof userToBeChanged !== "string") {
     return res.status(400).json({ error: "Invalid params" });
   }
-  if (!(await amIInProject(projectId, session.user))) {
+  if (!(await amIInProject(projectId, token.userId))) {
     return res.status(403).json({ error: "Forbidden" });
   }
   try {
     if (req.method === "PATCH")
-      return patch(req, res, session.user, projectId, userToBeChanged);
+      return patch(req, res, token.userId, projectId, userToBeChanged);
     if (req.method === "DELETE")
-      return deleteRelation(req, res, session.user, projectId, userToBeChanged);
+      return deleteRelation(req, res, token.userId, projectId, userToBeChanged);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong" });

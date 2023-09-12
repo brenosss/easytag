@@ -1,13 +1,15 @@
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import type { ClientSafeProvider } from "next-auth/react";
 import Image from 'next/image';
 import "src/styles/globals.css";
 import { getProviders, signIn } from "next-auth/react"
 import { unstable_getServerSession } from "next-auth/next"
 import { authOptions } from "src/pages/api/auth/[...nextauth]";
 import about_right_shape from "src/images/about/about_right_shape.svg"
-import left_right_dots from "src/images/about/right_dots.svg"
+import { env } from "src/env/server.mjs";
 
-function GoogleButton({provider}) {
+
+function GoogleButton({provider}: {provider: ClientSafeProvider}) {
   return (
     <div
       onClick={() => signIn(provider.id)}
@@ -20,7 +22,7 @@ function GoogleButton({provider}) {
   )
 }
 
-function MicrosoftButton({provider}) {
+function MicrosoftButton({provider}: {provider: ClientSafeProvider}) {
   return (
     <div
       onClick={() => signIn(provider.id)}
@@ -72,7 +74,7 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
 
         <p className="mt-10 text-center text-sm text-gray-900">
           Not a member?{' '}
-          <span href="#" className="font-semibold leading-6 text-emerald-900 hover:text-emerald-800">
+          <span className="font-semibold leading-6 text-emerald-900 hover:text-emerald-800">
             Start a 14 day free trial
           </span>
         </p>
@@ -94,6 +96,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const providers = await getProviders();
   
   return {
-    props: { providers: providers ?? [] },
+    props: { providers: providers ?? [],
+      url: URL
+    },
   }
 }
