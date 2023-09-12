@@ -4,7 +4,7 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 
 interface NotificationProps {
-  modalTheme?: string;
+  modalTheme?: "Success" | "SomethingWrong";
   notificationTheme?: string;
   onClose: () => void;
   title: string;

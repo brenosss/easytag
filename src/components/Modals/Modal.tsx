@@ -9,7 +9,7 @@ interface modalProps {
   onClose: () => void;
   onAccept: () => void;
   isOpen: boolean
-  modalTheme?: string;
+  modalTheme?: "danger" | "alert";
   title: string;
   acceptButtonMessage: string;
   children?: React.ReactNode;

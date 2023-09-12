@@ -74,6 +74,7 @@ const pages = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!(await amIInProject(projectId, token.userId))) {
     return res.status(403).json({ error: "Forbidden." });
   }
+  /* @ts-expect-error Should do de parser of all the query params first */
   const queryParams = new URLSearchParams(req.query)
   try {
     if (req.method === "POST") await post(req, res, projectId);

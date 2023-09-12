@@ -3,10 +3,12 @@ import clsx from 'clsx';
 import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import type { Role, UsersInProjects } from '@prisma/client';
+import type { Role, } from '@prisma/client';
 import { Modal } from 'src/components/Modals/Modal'
+import type { UsersInProjectsWithUser } from "src/domain/projects/users/users-in-projects";
 
-export default function SelectionMenuUserRole({ userInProject }: { userInProject: UsersInProjects }) {
+
+export default function SelectionMenuUserRole({ userInProject }: { userInProject: UsersInProjectsWithUser }) {
 
   const [selected, setSelected] = useState<Role>(userInProject.role);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

@@ -13,7 +13,7 @@ export default function HeroSection() {
               <p className="text-white text-xl mb-10 xl:pr-18 2xl:pr-120">
                 Boost your social media strategy with our SAAS platform, uniquely designed for marketing teams.
                 Our intuitive platform allows you to effortlessly create and modify social cards, no coding or redeployment necessary.
-                Just define your card's and using a simple API integration we will render your cards directly on your website
+                Just define your card&aposs and using a simple API integration we will render your cards directly on your website
               </p>
               <a className="main-btn border-btn btn-hover mb-2">Get Started</a>
               <a href="#features" className="scroll-bottom"> <i className="lni lni-arrow-down"></i></a>

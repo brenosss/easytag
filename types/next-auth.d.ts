@@ -1,7 +1,5 @@
-
-import NextAuth from "next-auth"
-import { JWT } from "next-auth/jwt"
-import { Project } from "@prisma/client"
+import type { JWT } from "next-auth/jwt"
+import type { Project } from "@prisma/client"
 
 
 declare module "next-auth" {

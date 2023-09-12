@@ -8,9 +8,8 @@ import {
 interface modalProps {
   onClose: () => void;
   onAccept: () => void;
-  modalTheme?: string;
+  modalTheme?: "danger" | "alert";
   title: string;
-  message: string;
   acceptButtonMessage: string;
   children: React.ReactNode;
 }

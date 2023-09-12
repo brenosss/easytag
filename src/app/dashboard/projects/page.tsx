@@ -1,11 +1,9 @@
 'use client';
 
-import { setCookie } from "cookies-next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useContext } from "react";
-import projectContext from "src/contexts/projectContext";
+import { useEffect, useState } from "react";
 import { LoadingButton } from "src/components/Buttons/LoadingButton";
 import Notification from "src/components/Buttons/Notification";
 import { SessionProvider, useSession } from "next-auth/react"
@@ -17,11 +15,9 @@ interface Project {
 }
 
 function ProjectsSelection({projects}: {projects: Project[]}) {
-  const { setCurrentProject } = useContext(projectContext);
   const { update } = useSession();
 
   async function selectProject(project: Project) {
-    setCurrentProject(project);
     await fetch(`/api/projects/${project.id}`, {
       method: "PATCH",
     });

@@ -29,16 +29,17 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       event = stripe.webhooks.constructEvent(buf, sig, env.STRIPE_WEBHOOK_SECRET)
     } catch (err) {
-      console.log(`❌ Error message: ${err.message}`)
       res.status(400).send("Webhook Error!")
       return
     }
     if (event.type === 'checkout.session.completed') {
+      /* @ts-expect-error need to extend the strip types */
       if(event.data.object.customer === null) {
         res.status(400).send("Webhook Error!")
       }
       await prisma.customer.update({
         where: {
+          /* @ts-expect-error need to extend the strip types */
           stripeCustomerId: event.data.object.customer,
         },
         data: {

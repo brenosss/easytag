@@ -11,9 +11,9 @@ import Pagination from "src/components/Buttons/Pagination";
 const Pages = () => {
   const [pages, setPages] = useState<Page[]>([]);
   const project = getProjectFromCookie();
-  const [totalItems, setTotalItems] = useState();
-  const [actualPage, setActualPage] = useState(1)
-  const [totalOnThisPage, setTotalOnThisPage] = useState();
+  const [totalItems, setTotalItems] = useState<number>(1);
+  const [actualPage, setActualPage] = useState<number>(1)
+  const [totalOnThisPage, setTotalOnThisPage] = useState<number>(1);
 
   async function getPages() {
     const pagesResponse = await fetch(`/api/projects/${project.id}/pages?skip=${15 * (actualPage - 1)}`, {
