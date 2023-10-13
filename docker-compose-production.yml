@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  frontend:
+    image: easytag-frontend
+    command: npm run build && npm run start
+    env_file:
+      - .env.frontend.production
+    volumes:
+      - ./:/usr/src/app 
+      - /usr/src/app/node_modules
+    ports:
+      - 3000:3000
+    restart: "no"
