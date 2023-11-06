@@ -1,23 +1,26 @@
 import Head from "next/head";
 import { cookies } from 'next/headers'
-import  Image from "next/image";
 import { PrimaryLink } from "src/components/Buttons/Links";
 import { getUsersByProjectId, getRoleBySession } from "src/domain/projects/users/users-in-projects";
+import { getJWTSession } from "src/domain/JWT";
 import SelectionMenuUserRole from "src/app/dashboard/users/RoleSelection"
 import type { UsersInProjectsWithUser } from "src/domain/projects/users/users-in-projects";
 import type { User } from "@prisma/client"
+import { env } from "src/env/server.mjs";
 
 async function getUsersInProject() {
   const cookieStore = cookies();
-  const projectCookie = cookieStore.get('project')
-  if (!projectCookie) throw new Error('No project cookie found')
-  const project = JSON.parse(projectCookie.value)
-  return await getUsersByProjectId(project.id)
+  const sessionCookie = cookieStore.get(env.NEXTAUTH_COOKIE)
+  if (!sessionCookie) throw new Error('No session cookie found')
+  const session = sessionCookie.value
+  const jwtData = await getJWTSession(session)
+  if (!jwtData.selectedProject) throw new Error('No session cookie found')
+  return await getUsersByProjectId(jwtData.selectedProject.id)
 }
 
 async function getCurrentRoleBySession() {
   const cookieStore = cookies();
-  const sessionCookie = cookieStore.get('next-auth.session-token')
+  const sessionCookie = cookieStore.get(env.NEXTAUTH_COOKIE)
   if (!sessionCookie) throw new Error('No session cookie found')
   const session = sessionCookie.value
   return await getRoleBySession(session)
@@ -60,10 +63,10 @@ async function UsersInProjectPage() {
 }
 
 function UserItem({ user, userInProject, showSelectionRole }: { user: User, userInProject: UsersInProjectsWithUser, showSelectionRole: boolean }) {
+  ///{ user.image && <Image className="h-12 w-12 flex-none rounded-full bg-gray-50" src={user.image} alt="" width={50} height={50}/> }
   return (
     <li className="flex justify-between gap-x-6 py-5">
       <div className="flex min-w-0 gap-x-4">
-        { user.image && <Image className="h-12 w-12 flex-none rounded-full bg-gray-50" src={user.image} alt="" /> }
         <div className="min-w-0 flex-auto">
           <p className="text-sm font-semibold leading-6 text-gray-900">{user.name}</p>
           <p className="mt-1 truncate text-xs leading-5 text-gray-500">{user.email}</p>

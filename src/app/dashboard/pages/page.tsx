@@ -14,7 +14,7 @@ function EmptyState() {
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-3 py-8">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          You don&apost have any pages yet.
+          You don't have any pages yet.
         </h2>
         <h4>
           Start by creating one then check the documentation to see how to integrate it.

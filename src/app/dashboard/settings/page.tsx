@@ -3,14 +3,17 @@ import Link from "next/link";
 import { cookies } from 'next/headers'
 import { PaymentsSummary } from "src/app/dashboard/settings/payments";
 import { TokenSection } from "src/app/dashboard/settings/token";
-import { getProjectById } from "src/domain/projects/projects";
+import { getJWTSession } from "src/domain/JWT";
+import { env } from "src/env/server.mjs";
 
 async function getProject() {
   const cookieStore = cookies();
-  const projectCookie = cookieStore.get('project')
-  if(!projectCookie) throw new Error('No project cookie found')
-  const project = JSON.parse(projectCookie.value)
-  return await getProjectById(project.id)
+  const sessionCookie = cookieStore.get(env.NEXTAUTH_COOKIE)
+  if (!sessionCookie) throw new Error('No session cookie found')
+  const session = sessionCookie.value
+  const jwtData = await getJWTSession(session)
+  if (!jwtData.selectedProject) throw new Error('No session cookie found')
+  return jwtData.selectedProject;
 }
 
 async function Settings() {
