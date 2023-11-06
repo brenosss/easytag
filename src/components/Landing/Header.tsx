@@ -1,5 +1,3 @@
-import logo from "src/images/logo/logo.svg";
-import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -19,7 +17,7 @@ export default function Header() {
             <div className="w-full">
               <nav className="flex items-center justify-between py-4 navbar navbar-expand-lg">
                 <a className="navbar-brand mr-5" href="/">
-                  <Image src={logo} alt="Logo" />
+                  <h2 className="text-white">SocialShare</h2>
                 </a>
                 <button className={menuClassName} type="button" onClick={toggleMenu} aria-controls="navbarOne" aria-expanded="false" aria-label="Toggle navigation">
                   <span className="toggler-icon"></span>
@@ -38,15 +36,8 @@ export default function Header() {
                     <li className="nav-item ml-5 lg:ml-11">
                       <a className="page-scroll" href="#about">About</a>
                     </li>
-
-                    <li className="nav-item ml-5 lg:ml-11">
-                      <a className="page-scroll" href="#why">Why</a>
-                    </li>
                     <li className="nav-item ml-5 lg:ml-11">
                       <a className="page-scroll" href="#pricing">Pricing</a>
-                    </li>
-                    <li className="nav-item ml-5 lg:ml-11">
-                      <a className="page-scroll" href="#testimonials">Clients</a>
                     </li>
                     <li className="nav-item ml-5 lg:ml-11">
                       <Link
