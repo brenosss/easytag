@@ -7,8 +7,19 @@ services:
     env_file:
       - .env.frontend.production
     volumes:
-      - ./:/usr/src/app 
+      - ./:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - 3000:3000
+    restart: "no"
+  studio:
+    image: easytag-frontend
+    command: yarn prisma studio
+    env_file:
+      - .env.frontend.production
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 5555:5555
     restart: "no"
