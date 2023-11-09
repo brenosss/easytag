@@ -5,11 +5,12 @@ import LogoutButton from "src/components/Buttons/LogoutButton";
 import { cookies } from 'next/headers'
 import { getJWTSession } from "src/domain/JWT";
 import { NavigationProject, NavigationUser, ProjectHeader } from "src/app/dashboard/HeaderComponents";
+import { env } from "src/env/server.mjs";
 
 
 async function getCurrentProject() {
   const cookieStore = cookies();
-  const sessionCookie = cookieStore.get('next-auth.session-token')
+  const sessionCookie = cookieStore.get(env.NEXTAUTH_COOKIE)
   if (!sessionCookie) throw new Error('No session cookie found')
   const session = sessionCookie.value
   const jwtData = await getJWTSession(session)

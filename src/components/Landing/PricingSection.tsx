@@ -86,7 +86,7 @@ export default function PricingSection() {
                       </ul>
                     </div>
                     <div className="pricing-btn">
-                      <a href="/" className="main-btn btn-hover border-btn">Get Start</a>
+                      <a href="/api/auth/signin" className="main-btn btn-hover border-btn">Get Start</a>
                     </div>
                   </div>
                 </div>
@@ -152,7 +152,7 @@ export default function PricingSection() {
                       </ul>
                     </div>
                     <div className="pricing-btn">
-                      <a href="/" className="main-btn btn-hover border-btn">Get Start</a>
+                      <a href="/api/auth/signin" className="main-btn btn-hover border-btn">Get Start</a>
                     </div>
                   </div>
                 </div>

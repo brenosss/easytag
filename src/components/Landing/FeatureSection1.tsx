@@ -6,7 +6,7 @@ export default function FeatureSection1() {
           <div className="w-full md:w-8/12 lg:w-4/12">
             <div className="text-center px-3 2xl:px-10 py-8">
               <div className="feature-icon">
-                <i className="lni lni-bootstrap"></i>
+                <i className="lni lni-postcard"></i>
               </div>
               <div className="content">
                 <h3 className="mb-5">Seamless Card Creation</h3>
@@ -19,7 +19,7 @@ export default function FeatureSection1() {
           <div className="w-full md:w-8/12 lg:w-4/12">
             <div className="text-center px-3 2xl:px-10 py-8">
               <div className="feature-icon">
-                <i className="lni lni-layout"></i>
+                <i className="lni lni-bolt-alt"></i>
               </div>
               <div className="content">
                 <h3 className="mb-5">Optimized Card Performance</h3>

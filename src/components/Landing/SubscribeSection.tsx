@@ -34,7 +34,7 @@ export default function SubscribeSection() {
               </div>
             </div>
             <div className="w-full lg:w-5/12 xl:w-6/12 text-center">
-              <h2 className="text-white cursor-pointer">admin@socialsharing.dev</h2>
+              <h2 className="text-white cursor-pointer break-all">admin@socialsharing.dev</h2>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import type { Metadata } from 'next'
 import { headers } from "next/headers";
+import { env } from "src/env/server.mjs";
 
 
 export default function RootLayout({
@@ -22,12 +23,12 @@ export async function generateMetadata(): Promise<Metadata> {
   // fetch data
   const headersList = headers();
   const pathname = headersList.get("x-invoke-path") || "";
-  const tags = await fetch(`http://localhost:8080/pages/snippet`,
+  const tags = await fetch(`${env.API_URL}/pages/snippet`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer 1T9660AVNG8PK7ZLJCRNHB"
+        "Authorization": `Bearer ${env.API_KEY}`
       },
       body: JSON.stringify({
         "path": pathname,

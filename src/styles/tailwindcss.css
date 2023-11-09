@@ -1365,7 +1365,6 @@ a, button {
 }
 
 .scroll-bottom {
-  position: absolute;
   bottom: -80px;
   left: 0px;
   display: none;
