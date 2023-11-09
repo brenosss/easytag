@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="footer bg-cover bg-no-repeat bg-right-top pt-120 mt-25 bg-theme-color md:bg-transparent md:pt-260 lg:pt-260"  style={{backgroundImage: `url(${footer_bg.src})`}}>
       <div className="container">
         <div className="widget-wrapper">
-          <div className="row">
+          <div className="row justify-evenly">
 
             <div className="w-full md:w-6/12 lg:w-4/12">
               <div className="footer-widget mb-10 mx-3">
@@ -46,13 +46,13 @@ export default function Footer() {
                 <h3 className="mb-6 text-white">Features</h3>
                 <ul className="links">
                   <li> <a href="">How it works</a> </li>
-                  <li> <a href="">Privacy policy</a> </li>
+                  <li> <a href="/privacy">Privacy policy</a> </li>
                   <li> <a href="">Terms of service</a> </li>
                   <li> <a href="">Refund policy</a></li>
                 </ul>
               </div>
             </div>
-
+            {/*
             <div className="w-full md:w-6/12 lg:w-3/12">
               <div className="footer-widget mb-10 mx-3">
                 <h3 className="mb-6 text-white">Other Products</h3>
@@ -64,7 +64,7 @@ export default function Footer() {
                 </ul>
               </div>
             </div>
-
+            */}
           </div>
         </div>
 
