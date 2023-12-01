@@ -27,6 +27,8 @@ export const serverSchema = z.object({
   AZURE_CLIENT_ID: z.string(),
   AZURE_CLIENT_SECRET: z.string(),
   AZURE_TENANT_ID: z.string(),
+  GITHUB_ID: z.string(),
+  GITHUB_SECRET: z.string(),
 
   STRIPE_SECRET_KEY: z.string(),
   STRIPE_WEBHOOK_SECRET: z.string(),
