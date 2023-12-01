@@ -16,7 +16,7 @@ const post = async (
     },
   });
   if (!userToBeAdded) {
-    return res.status(404).json({ error: "User not found" });
+    return res.status(404).json({ error: "The user must create an account first" });
   }
   const isUserAlreadyInProject = await prisma.usersInProjects.findUnique({
     where: {

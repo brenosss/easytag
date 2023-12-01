@@ -6,7 +6,6 @@ import { getProviders, signIn } from "next-auth/react"
 import { unstable_getServerSession } from "next-auth/next"
 import { authOptions } from "src/pages/api/auth/[...nextauth]";
 import about_right_shape from "src/images/about/about_right_shape.svg"
-import { env } from "src/env/server.mjs";
 
 
 function GoogleButton({provider}: {provider: ClientSafeProvider}) {
